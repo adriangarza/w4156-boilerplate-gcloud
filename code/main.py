@@ -179,40 +179,39 @@ def landing_page():
         return render_template("index.html", user_logged_in=False, login_url=login_url)
 
 
-
-@app.route('/listform', methods=['POST', 'GET'])
+@app.route('/listform', methods=['POST'])
 def create_listing():
-
-    if request.method == 'POST':
-        cafeteria = request.form['Cafeteria']
-        timestamp = request.form['timestamp']
-        needSwipe = request.form.get('needswipe') != None
-        # print(cafeteria, timestamp, needSwipe)
+    cafeteria = request.form['Cafeteria']
+    timestamp = request.form['timestamp']
+    needSwipe = request.form.get('needswipe') != None
+    # print(cafeteria, timestamp, needSwipe)
 
 
-        # store in database
-        db = connect_to_cloudsql()
-        cursor = db.cursor()
-        cursor.execute('use cuLunch')
+    # store in database
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute('use cuLunch')
 
-        query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (timestamp, 'tcl3403', needSwipe, cafeteria)
-        # print('query generated')
-        # print(query)
+    query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (timestamp, 'tcl3403', needSwipe, cafeteria)
+    # print('query generated')
+    # print(query)
 
-        try:
-            cursor.execute(query)
-            # commit the changes in the DB
-            db.commit()
-        except:
-            # rollback when an error occurs
-            db.rollback()
+    try:
+        cursor.execute(query)
+        # commit the changes in the DB
+        db.commit()
+    except:
+        # rollback when an error occurs
+        db.rollback()
 
-        # disconnect from db after use
-        db.close()
+    # disconnect from db after use
+    db.close()
 
-        return redirect(url_for('output'))
+    return redirect(url_for('output'))
 
 
+@app.route("/listform", methods=["GET"])
+def show_listings():
     return render_template('/listings/index.html')
 
 

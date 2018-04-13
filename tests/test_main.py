@@ -61,16 +61,6 @@ class MainTest(unittest.TestCase):
         rv = self.app.get("/listform")
         self.check_culunch(rv)
 
-    """
-
-    def test_listings(self):
-        rv = self.app.get("/listings/index.html")
-        self.check_culunch(rv)
-
-    def test_settings(self):
-        rv = self.app.get("/settings/index.html")
-        self.check_culunch(rv)
-    """
     def tearDown(self):
         self.testbed.deactivate()
 
