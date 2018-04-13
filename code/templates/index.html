@@ -39,7 +39,6 @@
         {% if not user_logged_in %}
             <a href="{{ login_url }}">Sign in with your UNI</a>
         {% elif account_creation %}
-        <a href="{{ logout_url }}">Log Out</a>
 		<form action="#" method="post">
 		    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 			    <input class="mdl-textfield__input" type="text" id="name" name="first_name_field">
@@ -54,11 +53,6 @@
 		   	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 			    <input class="mdl-textfield__input" type="text" id="uni" name="uni_field" value="{{ uni }}" disabled>
 			    <label class="mdl-textfield__label" for="uni">UNI</label>
-		    </div>
-
-		   	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-			    <input class="mdl-textfield__input" type="password" id="password" name="password_field">
-			    <label class="mdl-textfield__label" for="password">Password</label>
 		    </div>
 
 		    <div class="mdl-selectfield mdl-js-selectfield">
@@ -92,6 +86,7 @@
             <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="register-button">
 		  	Register
 		    </button>
+            <a href="{{ logout_url }}">Log Out</a>
 		</form>
         {% endif %}
 

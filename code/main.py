@@ -76,11 +76,9 @@ def create_user():
         f_name = request.form['first_name_field']
         l_name = request.form['last_name_field']
         uni = request.form['uni_field']
-        password = request.form['password_field']
         school = request.form['school_field']
         year = request.form['year_field']
         interests = request.form['interests_field']
-
 
         # connect to db
         db = connect_to_cloudsql()
@@ -93,12 +91,11 @@ def create_user():
         registered_uni = set([row[0] for row in cursor.fetchall()])
         unique = uni not in registered_uni
 
-
-        form_input = Form(f_name, l_name, uni, password, school, year, interests)
+        form_input = Form(f_name, l_name, uni, school, year, interests)
         user_check, error = form_input.form_input_valid()
 
         print (form_input.uni + " " + form_input.f_name + " " + form_input.l_name + " " + form_input.school +
-               " " + form_input.interests + " " + form_input.school + " " + form_input.pwd)
+               " " + form_input.interests + " " + form_input.school)
 
         '''if not user_check:
             error = error
@@ -108,14 +105,11 @@ def create_user():
         if user_check and unique:
 
             name = form_input.f_name + ' ' + form_input.l_name
-            user = User(uni, name, year, interests, school, password)
+            user = User(uni, name, year, interests, school)
             # else send error to user
 
             # store in database
-
-
-
-            insert_query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (user.uni, user.password, user.name,
+            insert_query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s')" % (user.uni, user.name,
                                                                                        user.schoolYear, user.interests, user.school)
             # print('query generated')
             # print(query)
