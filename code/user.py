@@ -36,11 +36,10 @@ class Form:
         error = ''
         if self.f_name == "" or self.l_name == "" or self.uni == "" or self.pwd == "":
             uChecker = False
-            error = "Empty answer in one field"
+            error = "empty"
         elif len(self.pwd) < 8 or self.pwd.isupper() or self.pwd.islower() or self.pwd.isdigit():
             uChecker = False
-            error = "Password is not valid: length of password is at least 8, and it should contain at all three of the \
-            following: digits, uppercase letters, and lowercase letters."
+            error = "bad pass"
         return uChecker, error
 
 
