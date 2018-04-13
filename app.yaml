@@ -19,8 +19,6 @@ handlers:
 libraries:
 - name: MySQLdb
   version: "latest"
-- name: google-api-python-client
-  version: "latest"
 
 env_variables:
   CLOUDSQL_USER: root
