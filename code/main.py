@@ -16,6 +16,8 @@ CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
 
 app = Flask(__name__, template_folder=tmpl_dir)
 
+from google.appengine.api import users
+
 def connect_to_cloudsql():
     # When deployed to App Engine, the `SERVER_SOFTWARE` environment variable
     # will be set to 'Google App Engine/version'.
@@ -44,11 +46,6 @@ def connect_to_cloudsql():
     return db
 
 
-@app.route('/')
-def index():
-    return "Hello, World (lets see how long a change takes III)!"
-
-
 @app.route('/databases')
 def showDatabases():
     """Simple request handler that shows all of the MySQL SCHEMAS/DATABASES."""
@@ -70,7 +67,7 @@ def showDatabases():
     return response
 
 
-@app.route('/index.html', methods=['POST', 'GET'])
+@app.route('/', methods=['POST'])
 def create_user():
     error = None
 
@@ -155,6 +152,19 @@ def create_user():
             db.close()
 
     return render_template('index.html', error=error)
+
+
+@app.route('/', methods=['POST'])
+def landing_page():
+    user = users.get_current_user()
+    if user:
+        nickname = user.nickname()
+        logout_url = users.create_logout_url('/')
+        greeting = 'Welcome, {}! (<a href="{}">sign out</a>)'.format(
+            nickname, logout_url)
+    else:
+        login_url = users.create_login_url('/')
+        greeting = '<a href="{}">Sign in</a>'.format(login_url)
 
 
 @app.route('/listform/index.html', methods=['POST', 'GET'])
