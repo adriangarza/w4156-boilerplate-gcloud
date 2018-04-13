@@ -40,8 +40,10 @@ class MainTest(unittest.TestCase):
         self.assertTrue(users.is_current_user_admin())
 
     def check_culunch(self, rv):
-        print(rv.data)
-        assert ("cu@lunch" in rv.data.lower())
+        assert("cu@lunch" in rv.data.lower())
+
+    def test_registered_user(self):
+        assert(main.check_registered_user("ahg2142"))
 
     def setUp(self):
         self.app = main.app.test_client()
@@ -52,9 +54,15 @@ class MainTest(unittest.TestCase):
         self.testbed.init_user_stub()
 
     def test_index(self):
+        # make sure it stays on the landing page for a non-registered user
+
+
+        # test redirecting for a logged-in user who has an account
         self.loginUser()
-        rv = self.app.get('/')
-        self.check_culunch(rv)
+        rv = self.app.get('/', follow_redirects=True)
+        # make sure it redirects on a logged-in user
+        assert("listings" in rv.data.lower())
+
 
     def test_listform(self):
         self.loginUser()
@@ -68,7 +76,6 @@ class MainTest(unittest.TestCase):
 class ValidTest(unittest.TestCase):
 
     def test_form(self):
-        
         # good
         form = Form("Shelley", "S", "sks2209", "school", "year", "interests")
         self.assertTrue(form.form_input_valid())
@@ -93,7 +100,6 @@ class ValidTest(unittest.TestCase):
         form = Form("Shelley", "S", "", "school", "year", "interests")
         self.assertTrue((form.form_input_valid() == (False, 'empty')))
 
-# check database
 
 
 if __name__ == '__main__':

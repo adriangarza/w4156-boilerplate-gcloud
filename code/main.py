@@ -2,6 +2,7 @@ from __future__ import print_function
 from google.appengine.ext import vendor
 import os
 import re
+import sys
 from user import *
 
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
@@ -153,13 +154,12 @@ def create_user():
 def landing_page():
     user = users.get_current_user()
     if user:
-        nickname = user.nickname()
         logout_url = users.create_logout_url('/')
 
         # then check if it's a valid uni and they have an account
         if valid_uni(user.email()):
             # if they have an account
-            if check_registered_user(user.email()):
+            if check_registered_user(email_to_uni(user.email())):
                 # redirect them to the listings page for their user
                 return redirect("/listings")
             else:
@@ -230,13 +230,13 @@ def valid_uni(email):
 
 
 # given an email, checks if it corresponds to a registered user in the database
-def check_registered_user(email):
+def check_registered_user(uni):
     db = connect_to_cloudsql()
     cursor = db.cursor()
     cursor.execute('use cuLunch')
 
-    uni = email_to_uni(email)
-    query = "SELECT * FROM TABLE users WHERE users.uni = {}".format(uni)
+    query = "SELECT * FROM users WHERE users.uni = '{}'".format(uni)
+    cursor.execute(query)
 
     if not cursor.rowcount:
         return False
