@@ -86,14 +86,14 @@ class ValidTest(unittest.TestCase):
 
         # pass all lower
         form = Form("Shelley", "S", "sks2209", "lunch", "school", "year", "interests")
-        self.assertTrue(form.form_input_valid () == (False, 'bad pass'))
+        self.assertTrue(form.form_input_valid() == (False, 'bad pass'))
         # pass all upper
         form = Form("Shelley", "S", "sks2209", "LUNCH", "school", "year", "interests")
-        self.assertTrue(form.form_input_valid () == (False, 'bad pass'))
+        self.assertTrue(form.form_input_valid() == (False, 'bad pass'))
 
         # pass all numbers
         form = Form("Shelley", "S", "sks2209", "1234", "school", "year", "interests")
-        self.assertTrue(form.form_input_valid () == (False, 'bad pass'))
+        self.assertTrue(form.form_input_valid() == (False, 'bad pass'))
 
 # check database
 

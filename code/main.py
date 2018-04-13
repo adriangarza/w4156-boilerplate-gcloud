@@ -106,7 +106,6 @@ def create_user():
             error = error
             db.close()'''
 
-
         if user_check and unique:
 
             name = form_input.f_name + ' ' + form_input.l_name
@@ -114,8 +113,6 @@ def create_user():
             # else send error to user
 
             # store in database
-
-            
 
             insert_query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (user.uni, user.password, user.name,
                                                                                        user.schoolYear, user.interests, user.school)
@@ -134,27 +131,29 @@ def create_user():
             db.close()
             return redirect(url_for('create_listing'))
 
-        elif user_check == (False, 'bad pass'):
+        elif not user_check and error == 'empty':
+            error = 'Empty answer in one field'
+            print("empty")
+            db.close()
+            return render_template('index.html', error=error)
+
+        elif not user_check and error == 'empty':
             error = 'Password is not valid: length of password is at least 8, and it should contain at all three of the \
                     following: digits, uppercase letters, and lowercase letters.'
             db.close()
             return render_template('index.html', error=error)
 
-        elif user_check == (False, 'empty'):
-            error = 'Empty answer in one field'
-            db.close()
-            return render_template('index.html', error=error)
-
         elif not unique:
             error = 'This UNI has been registered already.'
+            print("not unique")
             db.close()
-            
+            return render_template('index.html', error=error)
 
         else:
             # return redirect(url_for('static', filename='index.html', error=error))
             db.close()
 
-    return render_template('index.html', error=error)
+    return render_template('index.html')
 
 
 @app.route('/listform/index.html', methods=['POST', 'GET'])
