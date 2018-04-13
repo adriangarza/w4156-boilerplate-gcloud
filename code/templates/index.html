@@ -30,7 +30,13 @@
 <div class="fullpage" id="register-container">
 	<div id="register-card" class="mdl-card">
 		<h3>Register</h3>
-		{% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+		{% if error %}
+            <p class=error><strong>Error:</strong> {{ error }} </p>
+        {% endif %}
+
+        {% if not user_logged_in %}
+            <a href="{{ login_url }}">Sign in</a>
+        {% elif user_valid_uni %}
 		<form action="#" method="post">
 		    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 			    <input class="mdl-textfield__input" type="text" id="name" name="first_name_field">
@@ -84,9 +90,11 @@
 		  	Register
 		    </button>
 		</form>
+        {% endif %}
 
 	    <script src="../static/script.js"></script>
 	</div>
+
 </div>
 </body>
 
