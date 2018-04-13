@@ -1,5 +1,6 @@
 from __future__ import print_function
 from google.appengine.ext import vendor
+import datetime
 import os
 from user import *
 
@@ -102,10 +103,6 @@ def create_user():
         print (form_input.uni + " " + form_input.f_name + " " + form_input.l_name + " " + form_input.school +
                " " + form_input.interests + " " + form_input.school + " " + form_input.pwd)
 
-        '''if not user_check:
-            error = error
-            db.close()'''
-
         if user_check and unique:
 
             name = form_input.f_name + ' ' + form_input.l_name
@@ -129,7 +126,7 @@ def create_user():
 
             # disconnect from db after use
             db.close()
-            return redirect(url_for('create_listing'))
+            return render_template('/listform/index.html')
 
         elif not user_check and error == 'empty':
             error = 'Empty answer in one field'
@@ -188,14 +185,21 @@ def create_listing():
       
         return redirect(url_for('output'))
 
-
     return render_template('/listings/index.html')
 
 
 @app.route('/listings')
 def output():
     # serve index template
-    return render_template('listings/index.html', name="carson")
+
+    #  get list of listings from db-- just hard coded list rn
+
+    l1 = Listing(datetime.date(2018, 7, 18), datetime.time(7, 30, 0), 'cck2127', 'Diana Center')
+    l2 = Listing(datetime.date(2018, 6, 20), datetime.time(13, 30, 0), 'cck2127', 'Diana Center')
+
+    listings = [l1, l2]
+
+    return render_template('/listings/index.html', listings=listings)
 
 
 if __name__ == '__main__':
