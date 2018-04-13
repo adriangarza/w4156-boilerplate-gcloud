@@ -142,10 +142,4 @@ class ListForm:
 								lChecker = time_range(start, end, time)
 			if lChecker == False:
 				error = self.cafeteria + "is not open at the time selected"
-		return lChecker, error'''
-
-
-
-
-
-
+		return lChecker, error
