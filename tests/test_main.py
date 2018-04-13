@@ -16,12 +16,12 @@ import os.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir, 'code')))
 
 
-# import main
+import main
 from code.user import *
 import unittest
 
 
-'''class MainTest(unittest.TestCase):
+class MainTest(unittest.TestCase):
     """This class uses the Flask tests app to run an integration test against a
     local instance of the server."""
 
@@ -49,7 +49,7 @@ import unittest
     def test_settings(self):
         rv = self.app.get("/settings/index.html")
         self.check_culunch(rv)
-    """'''
+    """
 
 # user creation validation
 class ValidTest(unittest.TestCase):
