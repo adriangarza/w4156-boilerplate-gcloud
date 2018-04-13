@@ -32,7 +32,7 @@ class Form:
     def form_input_valid(self):
         uChecker = True
         error = ''
-        if self.f_name == "" or self.l_name == "" or self.uni == "" or self.pwd == "":
+        if self.f_name == "" or self.l_name == "" or self.uni == "":
             uChecker = False
             error = "empty"
         return uChecker, error

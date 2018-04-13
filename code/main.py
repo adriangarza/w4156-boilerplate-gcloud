@@ -180,7 +180,7 @@ def landing_page():
 
 
 
-@app.route('/listform/index.html', methods=['POST', 'GET'])
+@app.route('/listform', methods=['POST', 'GET'])
 def create_listing():
 
     if request.method == 'POST':
@@ -195,7 +195,7 @@ def create_listing():
         cursor = db.cursor()
         cursor.execute('use cuLunch')
 
-        query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (timestamp, 'cl3403', needSwipe, cafeteria)
+        query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (timestamp, 'tcl3403', needSwipe, cafeteria)
         # print('query generated')
         # print(query)
 
