@@ -36,6 +36,12 @@ class MainTest(unittest.TestCase):
         rv = self.app.get('/index.html')
         self.check_culunch(rv)
 
+    def test_listform(self):
+        rv = self.app.get("/listform/index.html")
+        self.check_culunch(rv)
+
+    """
+
     def test_listings(self):
         rv = self.app.get("/listings/index.html")
         self.check_culunch(rv)
@@ -43,6 +49,7 @@ class MainTest(unittest.TestCase):
     def test_settings(self):
         rv = self.app.get("/settings/index.html")
         self.check_culunch(rv)
+    """
 
 # user creation validation
 class ValidTest(unittest.TestCase):
@@ -51,43 +58,42 @@ class ValidTest(unittest.TestCase):
         
         # good
         form = Form("Shelley", "S", "sks2209", "lunch657", "school", "year", "interests")
-        self.assertTrue = form.form_input_valid()
+        self.assertTrue(form.form_input_valid())
 
         # good
         form = Form("Shelley", "S", "sks2209", "Lunch", "school", "year", "interests")
-        self.assertTrue = form.form_input_valid()
+        self.assertTrue(form.form_input_valid())
 
         # good
         form = Form("Shelley", "S", "sks2209", "LUNCH657", "school", "year", "interests")
-        self.assertTrue = form.form_input_valid()
+        self.assertTrue(form.form_input_valid())
 
         # no name
         form = Form("", "S", "sks2209", "Lunch657", "school", "year", "interests")
-        self.assertFalse = form.form_input_valid()
+        self.assertTrue((form.form_input_valid() == (False, 'empty')))
 
         # no last
         form = Form("Shelley", "", "sks2209", "Lunch657", "school", "year", "interests")
-        self.assertFalse = form.form_input_valid()
+        self.assertTrue((form.form_input_valid () == (False, 'empty')))
 
         # no uni
         form = Form("Shelley", "S", "", "Lunch657", "school", "year", "interests")
-        self.assertFalse = form.form_input_valid()
+        self.assertTrue((form.form_input_valid() == (False, 'empty')))
 
         # no pass
         form = Form("Shelley", "S", "sks2209", "", "school", "year", "interests")
-        self.assertFalse = form.form_input_valid()
+        self.assertTrue((form.form_input_valid() == (False, 'empty')))
 
         # pass all lower
         form = Form("Shelley", "S", "sks2209", "lunch", "school", "year", "interests")
-        self.assertFalse = form.form_input_valid()
-
+        self.assertTrue(form.form_input_valid () == (False, 'bad pass'))
         # pass all upper
         form = Form("Shelley", "S", "sks2209", "LUNCH", "school", "year", "interests")
-        self.assertFalse = form.form_input_valid()
+        self.assertTrue(form.form_input_valid () == (False, 'bad pass'))
 
         # pass all numbers
         form = Form("Shelley", "S", "sks2209", "1234", "school", "year", "interests")
-        self.assertFalse = form.form_input_valid()
+        self.assertTrue(form.form_input_valid () == (False, 'bad pass'))
 
 # check database
 

@@ -49,3 +49,8 @@ deployment:
         #gcloud app create --region=us-central
         # deploy to AppEngine
         - gcloud -q app deploy app.yaml --promote --version=1        
+
+general:
+  branches:
+    only:
+      - master # list of branches to build

@@ -33,8 +33,13 @@ class Form:
 
     def form_input_valid(self):
         uChecker = True
+        error = ''
         if self.f_name == "" or self.l_name == "" or self.uni == "" or self.pwd == "":
             uChecker = False
+            error = "empty"
         elif len(self.pwd) < 8 or self.pwd.isupper() or self.pwd.islower() or self.pwd.isdigit():
             uChecker = False
-        return uChecker
+            error = "bad pass"
+        return uChecker, error
+
+
