@@ -170,11 +170,15 @@ def landing_page():
                 return redirect("/listings")
             else:
                 # render the account creation page
-                return render_template("index.html", account_creation=True)
+                return render_template("index.html",
+                                       account_creation=True,
+                                       user_logged_in=True,
+                                       logout_url=logout_url,
+                                       uni=email_to_uni(user.email()))
 
         else:
             # then immediately log them out (unauthorized email)
-            return redirect(logout_url, 401)
+            return redirect(logout_url)
 
     else:
         login_url = users.create_login_url('/')
@@ -234,7 +238,7 @@ def valid_uni(email):
 
 def check_registered_user(email):
     # TODO: look for their email in the database
-    return True
+    return False
 
 
 def email_to_uni(email):
