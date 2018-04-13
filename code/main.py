@@ -134,14 +134,26 @@ def create_user():
             db.close()
             return redirect(url_for('create_listing'))
 
+        elif user_check == (False, 'bad pass'):
+            error = 'Password is not valid: length of password is at least 8, and it should contain at all three of the \
+                    following: digits, uppercase letters, and lowercase letters.'
+            db.close()
+            return render_template('index.html', error=error)
+
+        elif user_check == (False, 'empty'):
+            error = 'Empty answer in one field'
+            db.close()
+            return render_template('index.html', error=error)
+
         elif not unique:
             error = 'This UNI has been registered already.'
             db.close()
             
 
         else:
-            #return redirect(url_for('static', filename='index.html', error=error))
+            # return redirect(url_for('static', filename='index.html', error=error))
             db.close()
+
     return render_template('index.html', error=error)
 
 
