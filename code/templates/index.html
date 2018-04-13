@@ -35,8 +35,8 @@
         {% endif %}
 
         {% if not user_logged_in %}
-            <a href="{{ login_url }}">Sign in</a>
-        {% elif user_valid_uni %}
+            <a href="{{ login_url }}">Sign in with your UNI</a>
+        {% elif account_creation %}
 		<form action="#" method="post">
 		    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 			    <input class="mdl-textfield__input" type="text" id="name" name="first_name_field">

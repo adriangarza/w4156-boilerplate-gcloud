@@ -1,6 +1,7 @@
 from __future__ import print_function
 from google.appengine.ext import vendor
 import os
+import re
 from user import *
 
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
@@ -154,17 +155,31 @@ def create_user():
     return render_template('index.html', error=error)
 
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET'])
 def landing_page():
     user = users.get_current_user()
     if user:
         nickname = user.nickname()
         logout_url = users.create_logout_url('/')
-        greeting = 'Welcome, {}! (<a href="{}">sign out</a>)'.format(
-            nickname, logout_url)
+
+        # then check if it's a valid uni and they have an account
+        if valid_uni(user.email()):
+            # if they have an account
+            if check_registered_user(user.email()):
+                # redirect them to the listings page for their user
+                return redirect("/listings")
+            else:
+                # render the account creation page
+                return render_template("index.html", account_creation=True)
+
+        else:
+            # then immediately log them out (unauthorized email)
+            return redirect(logout_url, 401)
+
     else:
         login_url = users.create_login_url('/')
-        greeting = '<a href="{}">Sign in</a>'.format(login_url)
+        return render_template("index.html", user_logged_in=False, login_url=login_url)
+
 
 
 @app.route('/listform/index.html', methods=['POST', 'GET'])
@@ -206,7 +221,24 @@ def create_listing():
 @app.route('/listings')
 def output():
     # serve index template
-    return render_template('listings/index.html', name="carson")
+    user = users.get_current_user()
+    return render_template('listings/index.html', name=user.nickname(), logout_link=users.create_logout_url("/"))
+
+
+def valid_uni(email):
+    if re.match("\S+@(columbia|barnard)\.edu", email) is not None:
+        return True
+    else:
+        return False
+
+
+def check_registered_user(email):
+    # TODO: look for their email in the database
+    return True
+
+
+def email_to_uni(email):
+    return email.split('@')[0]
 
 
 if __name__ == '__main__':
