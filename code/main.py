@@ -102,6 +102,11 @@ def create_user():
         print (form_input.uni + " " + form_input.f_name + " " + form_input.l_name + " " + form_input.school +
                " " + form_input.interests + " " + form_input.school + " " + form_input.pwd)
 
+        '''if not user_check:
+            error = error
+            db.close()'''
+
+
         if user_check and unique:
 
             name = form_input.f_name + ' ' + form_input.l_name
@@ -173,7 +178,7 @@ def create_listing():
         return redirect(url_for('output'))
 
 
-    return render_template('/listform/index.html')
+    return render_template('/listings/index.html')
 
 
 @app.route('/listings')
