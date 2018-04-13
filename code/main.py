@@ -236,9 +236,19 @@ def valid_uni(email):
         return False
 
 
+# given an email, checks if it corresponds to a registered user in the database
 def check_registered_user(email):
-    # TODO: look for their email in the database
-    return False
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute('use cuLunch')
+
+    uni = email_to_uni(email)
+    query = "SELECT * FROM TABLE users WHERE users.uni = {}".format(uni)
+
+    if not cursor.rowcount:
+        return False
+    else:
+        return True
 
 
 def email_to_uni(email):
