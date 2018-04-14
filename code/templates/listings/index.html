@@ -80,29 +80,28 @@
                 </div>
               </li>
 
-               {%  for listing in listings %}
+               {%  for listingpost in listingposts %}
 
               <li>
                 <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
                   <div class="mdl-card__title lunch">
-                    <h2 class='mdl-card__title-text'>Wednesday, {{ listing.time }}</h2>
+                    <h2 class='mdl-card__title-text'>Wednesday, {{ listingpost.listing.time }}</h2>
                   </div>
                   <div class="mdl-card__supporting-text post-description">
-                    Offered by: {{ listing.uni }}
+                    Offered by: {{ listingpost.user.uni }}
                   </div>
                   <div class="panel-hidden">
                     <div class="personal-info">
                       <div class="mdl-card__supporting-text info-list">
-                        <h3>{{ listing.uni }}</h3>
-                        <p><b>School: </b>Columbia College</p>
-                        <p><b>Year: </b>Senior</p>
-                        <p><b>Interests: </b>Running, hiking, complaining about things</p>
-                        <p><b>Bio: </b>I'm a second-semester senior who has completed all his core requirements like a good boy</p>
+                        <h3>{{ listingpost.listing.uni }}</h3>
+                        <p><b>School: </b>{{ listingpost.user.school }}</p>
+                        <p><b>Year: </b>{{ listingpost.user.year }}</p>
+                        <p><b>Interests: </b>{{ listingpost.user.interests }}</p>
                       </div>
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
                         <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
-                          {{ listing.uni }}@columbia.edu
+                          {{ listingpost.user.uni }}@columbia.edu
                         </a>
                     </div>
                   </div>

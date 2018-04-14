@@ -3,6 +3,7 @@ from google.appengine.ext import vendor
 import datetime
 import os
 from user import *
+from listing import *
 
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
@@ -192,14 +193,24 @@ def create_listing():
 def output():
     # serve index template
 
-    #  get list of listings from db-- just hard coded list rn
+    #  Need to: get listings and associated users from db
+    #  sort listings by date and time
+
+    u1 = User('cck2127', 'Carson Kraft', 2018, 'skiing', 'Barnard', 'doin Stuff')
+    u2 = User('jds2246', 'Jonathan Shapiro', 2018, 'singing', 'Columbia College', 'Being cool')
+    u3 = User('test', 'John Doe', '3000', 'interests', 'General Studies', 'Test')
 
     l1 = Listing(datetime.date(2018, 7, 18), datetime.time(7, 30, 0), 'cck2127', 'Diana Center')
-    l2 = Listing(datetime.date(2018, 6, 20), datetime.time(13, 30, 0), 'cck2127', 'Diana Center')
+    l2 = Listing(datetime.date(2018, 6, 20), datetime.time(13, 30, 0), 'jds2246', 'Diana Center')
+    l3 = Listing(datetime.date(2018, 5, 11), datetime.time(18, 30, 0), 'test', 'Diana Center')
 
-    listings = [l1, l2]
+    lp1 = ListingPost(l1, u1)
+    lp2 = ListingPost(l2, u2)
+    lp3 = ListingPost(l3, u3)
 
-    return render_template('/listings/index.html', listings=listings)
+    listingposts = [lp1, lp2, lp3]
+
+    return render_template('/listings/index.html', listingposts=listingposts)
 
 
 if __name__ == '__main__':

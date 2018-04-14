@@ -1,6 +1,7 @@
 # from dateutil.parser import parse
 import datetime
 
+
 class Listing:
 
     def __init__(self, date, time, uni, place):
@@ -8,6 +9,15 @@ class Listing:
         self.time = time
         self.uni = uni
         self.place = place
+
+
+class ListingPost:
+
+    def __init__(self, listing, user):
+        # type:(object, object)
+        self.listing = listing
+        self.user = user
+
 
 '''class ListForm:
 
@@ -136,9 +146,3 @@ class Listing:
 			if lChecker == False:
 				error = self.cafeteria + "is not open at the time selected"
 		return lChecker, error'''
-
-
-
-
-
-
