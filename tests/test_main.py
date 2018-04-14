@@ -102,8 +102,4 @@ class ValidTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    sys.path.append('/usr/local/google_appengine/')
-    sys.path.append('/usr/local/google_appengine/lib/yaml/lib/')
-    if 'google' in sys.modules:
-        del sys.modules['google']
     unittest.main()

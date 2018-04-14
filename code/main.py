@@ -217,8 +217,18 @@ def show_listings():
 
 @app.route('/listings')
 def output():
-    # serve index template
     user = users.get_current_user()
+    
+    # can't see listings if you don't have an account :^)
+    if not user or not check_registered_user(email_to_uni(user.email())):
+        return redirect("/")
+
+    # then fetch the listings
+    uni = email_to_uni(user.email())
+    # grab the relevant information and make sure the user doesn't see their own listings there
+    query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
+            "users u JOIN listings l ON u.uni=l.uni WHERE NOT u.uni = '{}'".format(uni)
+
     return render_template('listings/index.html', name=user.nickname(), logout_link=users.create_logout_url("/"))
 
 
