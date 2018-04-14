@@ -88,12 +88,12 @@
                     <h2 class='mdl-card__title-text'>Wednesday, {{ listingpost.listing.time }}</h2>
                   </div>
                   <div class="mdl-card__supporting-text post-description">
-                    Offered by: {{ listingpost.user.uni }}
+                    Offered by: {{ listingpost.user.name }}
                   </div>
                   <div class="panel-hidden">
                     <div class="personal-info">
                       <div class="mdl-card__supporting-text info-list">
-                        <h3>{{ listingpost.listing.uni }}</h3>
+                        <h3>{{ listingpost.listing.name }}</h3>
                         <p><b>School: </b>{{ listingpost.user.school }}</p>
                         <p><b>Year: </b>{{ listingpost.user.year }}</p>
                         <p><b>Interests: </b>{{ listingpost.user.interests }}</p>
@@ -101,7 +101,7 @@
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
                         <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
-                          {{ listingpost.user.uni }}@columbia.edu
+                          {{ listingpost.user.uni }}@{% if listingpost.user.school == 'Barnard'%}barnard{% else %}columbia{% endif %}.edu
                         </a>
                     </div>
                   </div>
