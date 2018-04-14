@@ -85,17 +85,17 @@
               <li>
                 <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
                   <div class="mdl-card__title lunch">
-                    <h2 class='mdl-card__title-text'>Wednesday, {{ listingpost.listing.time }}</h2>
+                      <h2 class='mdl-card__title-text'>{{ listingpost.week_day() }}, {{ listingpost.get_date() }} at {{ listingpost.get_time() }}</h2>
                   </div>
                   <div class="mdl-card__supporting-text post-description">
-                    Offered by: {{ listingpost.user.name }}
+                    Offered by: {{ listingpost.user.first_name() }}
                   </div>
                   <div class="panel-hidden">
                     <div class="personal-info">
                       <div class="mdl-card__supporting-text info-list">
-                        <h3>{{ listingpost.listing.name }}</h3>
+                        <h3>{{ listingpost.user.first_name() }}</h3>
                         <p><b>School: </b>{{ listingpost.user.school }}</p>
-                        <p><b>Year: </b>{{ listingpost.user.year }}</p>
+                        <p><b>Year: </b>{{ listingpost.user.class_name() }}</p>
                         <p><b>Interests: </b>{{ listingpost.user.interests }}</p>
                       </div>
                     </div>
