@@ -87,10 +87,7 @@ def create_user():
         cursor.execute('use cuLunch')
 
         # check if uni is already registered
-        uniqueuni_query = "SELECT uni from users"
-        cursor.execute(uniqueuni_query)
-        registered_uni = set([row[0] for row in cursor.fetchall()])
-        unique = uni not in registered_uni
+        unique = check_registered_user(uni)
 
         form_input = Form(f_name, l_name, uni, school, year, interests)
         user_check, error = form_input.form_input_valid()
@@ -215,7 +212,7 @@ def show_listings():
     return render_template('/listings/index.html')
 
 
-@app.route('/listings')
+@app.route('/listings', methods=["GET"])
 def output():
     user = users.get_current_user()
 
@@ -225,6 +222,8 @@ def output():
 
     # then fetch the listings
     uni = email_to_uni(user.email())
+
+    cursor = get_cursor()
     # grab the relevant information and make sure the user doesn't see their own listings there
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
             "users u JOIN listings l ON u.uni=l.uni WHERE NOT u.uni = '{}'".format(uni)
@@ -241,9 +240,7 @@ def valid_uni(email):
 
 # given an email, checks if it corresponds to a registered user in the database
 def check_registered_user(uni):
-    db = connect_to_cloudsql()
-    cursor = db.cursor()
-    cursor.execute('use cuLunch')
+    cursor = get_cursor()
 
     query = "SELECT * FROM users WHERE users.uni = '{}'".format(uni)
     cursor.execute(query)
@@ -256,6 +253,13 @@ def check_registered_user(uni):
 
 def email_to_uni(email):
     return email.split('@')[0]
+
+
+def get_cursor():
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute("use cuLunch")
+    return cursor
 
 
 if __name__ == '__main__':
