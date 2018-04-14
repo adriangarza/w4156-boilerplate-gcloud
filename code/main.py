@@ -218,7 +218,7 @@ def show_listings():
 @app.route('/listings')
 def output():
     user = users.get_current_user()
-    
+
     # can't see listings if you don't have an account :^)
     if not user or not check_registered_user(email_to_uni(user.email())):
         return redirect("/")
