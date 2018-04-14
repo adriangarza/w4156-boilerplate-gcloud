@@ -159,7 +159,8 @@ def create_listing():
 
     if request.method == 'POST':
         cafeteria = request.form['Cafeteria']
-        timestamp = request.form['timestamp']
+        date = request.form['date']
+        time = request.form['time']
         needSwipe = request.form.get('needswipe') != None
         # print(cafeteria, timestamp, needSwipe)
         
@@ -168,6 +169,8 @@ def create_listing():
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute('use cuLunch')
+
+        timestamp = date + "T" + time
 
         query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (timestamp, 'cl3403', needSwipe, cafeteria)
         # print('query generated')
