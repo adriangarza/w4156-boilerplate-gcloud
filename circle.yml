@@ -32,8 +32,7 @@ dependencies:
     # Make sure gcloud is up to date
     - gcloud --quiet components update app
     # actually INSTALL THE TOOLS
-    - install.sh
-    - source ~/.bashrc
+    - gcloud components install app-engine-python
     # authenticate gcloud
     - gcloud auth activate-service-account --key-file ${HOME}/client-secret.json  
     # Replace <your-project-id>
