@@ -127,31 +127,26 @@ def create_user():
 
             # disconnect from db after use
             db.close()
-            return render_template('/listform/index.html')
+            return redirect(url_for('create_listing'))
 
         elif not user_check and error == 'empty':
             error = 'Empty answer in one field'
-            print("empty")
             db.close()
-            return render_template('index.html', error=error)
 
-        elif not user_check and error == 'empty':
+        elif not user_check and error == 'bad pass':
             error = 'Password is not valid: length of password is at least 8, and it should contain at all three of the \
                     following: digits, uppercase letters, and lowercase letters.'
             db.close()
-            return render_template('index.html', error=error)
 
         elif not unique:
             error = 'This UNI has been registered already.'
-            print("not unique")
             db.close()
-            return render_template('index.html', error=error)
 
         else:
             # return redirect(url_for('static', filename='index.html', error=error))
             db.close()
 
-    return render_template('index.html')
+    return render_template('index.html', error=error)
 
 
 @app.route('/listform/index.html', methods=['POST', 'GET'])
@@ -189,7 +184,7 @@ def create_listing():
       
         return redirect(url_for('output'))
 
-    return render_template('/listings/index.html')
+    return render_template('/listform/index.html')
 
 
 @app.route('/listings')
