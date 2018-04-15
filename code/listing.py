@@ -95,7 +95,7 @@ class ListForm:
         error = ''
         if self.cafeteria == "" or self.date == "" or self.time == "":
             lChecker = False
-            error = "Need to pick a cafeteria"
+            error = "empty"
         else:
             time = time_parser ()
             day = day_of_week ()
@@ -194,6 +194,6 @@ class ListForm:
                                 end = datetime.time (23, 0, 0)
                                 lChecker = time_range (start, end, time)
             if lChecker == False:
-                error = self.cafeteria + "is not open at the time selected"
+                error = "bad time"
 
         return lChecker, error
