@@ -1,9 +1,11 @@
 from __future__ import print_function
 from google.appengine.ext import vendor
+import datetime
 import os
 import re
 import sys
 from user import *
+from listing import *
 
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
@@ -124,21 +126,18 @@ def create_user():
             db.close()
             return redirect(url_for('create_listing'))
 
-        elif user_check == (False, 'bad pass'):
+        elif not user_check and error == 'empty':
+            error = 'Empty answer in one field'
+            db.close()
+
+        elif not user_check and error == 'bad pass':
             error = 'Password is not valid: length of password is at least 8, and it should contain at all three of the \
                     following: digits, uppercase letters, and lowercase letters.'
             db.close()
-            return render_template('index.html', error=error)
-
-        elif user_check == (False, 'empty'):
-            error = 'Empty answer in one field'
-            db.close()
-            return render_template('index.html', error=error)
 
         elif not unique:
             error = 'This UNI has been registered already.'
             db.close()
-
 
         else:
             # return redirect(url_for('static', filename='index.html', error=error))
@@ -183,15 +182,23 @@ def create_listing():
     needSwipe = request.form.get('needswipe') != None
     # print(cafeteria, timestamp, needSwipe)
 
+    query = None
+    if request.method == 'POST':
+        cafeteria = request.form['Cafeteria']
+        date = request.form['date']
+        time = request.form['time']
+        needSwipe = request.form.get('needswipe') != None
+        # print(cafeteria, timestamp, needSwipe)
+        timestamp = date + "T" + time
+
+        query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (timestamp, 'cl3403', needSwipe, cafeteria)
+        # print('query generated')
+        # print(query)
 
     # store in database
     db = connect_to_cloudsql()
     cursor = db.cursor()
     cursor.execute('use cuLunch')
-
-    query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (timestamp, 'tcl3403', needSwipe, cafeteria)
-    # print('query generated')
-    # print(query)
 
     try:
         cursor.execute(query)
@@ -205,7 +212,6 @@ def create_listing():
     db.close()
 
     return redirect(url_for('output'))
-
 
 @app.route("/listform", methods=["GET"])
 def show_listings():
@@ -228,9 +234,28 @@ def output():
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
             "users u JOIN listings l ON u.uni=l.uni WHERE NOT u.uni = '{}'".format(uni)
 
-    return render_template('listings/index.html', name=user.nickname(), logout_link=users.create_logout_url("/"))
+    # serve index template
 
+    #  Need to: get listings and associated users from db
+    #  sort listings by date and time
 
+    u1 = User('cck2127', 'Carson Kraft', 2019, 'skiing', 'Barnard', 'doin Stuff')
+    u2 = User('jds2246', 'Jonathan Shapiro', 2018, 'singing', 'Columbia College', 'Being cool')
+    u3 = User('test', 'John Doe', 2000, 'interests', 'General Studies', 'Test')
+
+    l1 = Listing(datetime.date(2018, 7, 18), datetime.time(7, 30, 0), 'cck2127', 'Diana Center')
+    l2 = Listing(datetime.date(2018, 6, 20), datetime.time(13, 30, 0), 'jds2246', 'Diana Center')
+    l3 = Listing(datetime.date(2018, 5, 11), datetime.time(18, 30, 0), 'test', 'Diana Center')
+
+    lp1 = ListingPost(l1, u1)
+    lp2 = ListingPost(l2, u2)
+    lp3 = ListingPost(l3, u3)
+
+    listingposts = [lp1, lp2, lp3]
+
+    return render_template('/listings/index.html', listingposts=listingposts, name=user.nickname(), logout_link=users.create_logout_url("/"))
+
+  
 def valid_uni(email):
     if re.match("\S+@(columbia|barnard)\.edu", email) is not None:
         return True

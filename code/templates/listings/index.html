@@ -79,30 +79,38 @@
                   </button>
                 </div>
               </li>
+
+               {%  for listingpost in listingposts %}
+
               <li>
                 <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
                   <div class="mdl-card__title lunch">
-                    <h2 class='mdl-card__title-text'>Wednesday, 12:30 PM</h2>
+                      <h2 class='mdl-card__title-text'>{{ listingpost.week_day() }}, {{ listingpost.get_date() }} at {{ listingpost.get_time() }}</h2>
                   </div>
                   <div class="mdl-card__supporting-text post-description">
-                    Offered by: {{ name }}
+                    Offered by: {{ listingpost.user.first_name() }}
                   </div>
                   <div class="panel-hidden">
                     <div class="personal-info">
                       <div class="mdl-card__supporting-text info-list">
-                        <h3>{{ name }}</h3>
-                        <p><b>School: </b>Columbia College</p>
-                        <p><b>Year: </b>Senior</p>
-                        <p><b>Interests: </b>Running, hiking, complaining about things</p>
-                        <p><b>Bio: </b>I'm a second-semester senior who has completed all his core requirements like a good boy</p>
+                        <h3>{{ listingpost.user.first_name() }}</h3>
+                        <p><b>School: </b>{{ listingpost.user.school }}</p>
+                        <p><b>Year: </b>{{ listingpost.user.class_name() }}</p>
+                        <p><b>Interests: </b>{{ listingpost.user.interests }}</p>
                       </div>
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
                         <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
-                          ahg2142@columbia.edu
+                          {{ listingpost.user.uni }}@{% if listingpost.user.school == 'Barnard'%}barnard{% else %}columbia{% endif %}.edu
                         </a>
                     </div>
                   </div>
+
+                  <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
+                </div>
+              </li>
+
+              {% endfor %}
 
                   <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
                 </div>

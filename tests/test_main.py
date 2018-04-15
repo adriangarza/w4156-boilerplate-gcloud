@@ -108,6 +108,5 @@ class ValidTest(unittest.TestCase):
         self.assertTrue((form.form_input_valid() == (False, 'empty')))
 
 
-
 if __name__ == '__main__':
     unittest.main()
