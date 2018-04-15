@@ -27,7 +27,7 @@ dependencies:
     # Retrieve our secrets from the CircleCI environment
     - echo $CLIENT_SECRET | base64 --decode > ${HOME}/client-secret.json
     # vendor our dependencies
-    - mkdir code/lib
+    - mkdir -p lib
     - pip install -r requirements.txt -t code/lib
     # Make sure gcloud is up to date
     - gcloud --quiet components update app

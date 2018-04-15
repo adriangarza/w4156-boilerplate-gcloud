@@ -20,8 +20,8 @@ import main
 from code.user import *
 import unittest
 
-# from google.appengine.api import users
-# from google.appengine.ext import testbed
+from google.appengine.api import users
+from google.appengine.ext import testbed
 
 class MainTest(unittest.TestCase):
     def loginUser(self, email="ahg2142@columbia.edu", id="666", is_admin=False):
