@@ -2,10 +2,11 @@ import datetime
 
 class Listing:
 
-    def __init__(self, expirytime, uni, place):
+    def __init__(self, expirytime, uni, place, needSwipe):
         self.expirytime= expirytime
         self.uni = uni
         self.place = place
+        self.needSwipe = needSwipe
 
     # copied code from ListForm -- is there a way to consolidate?
     def parse_date(self):
