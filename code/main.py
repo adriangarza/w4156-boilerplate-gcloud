@@ -218,7 +218,7 @@ def create_listing():
             lerror = 'Empty answer in one field'
             db.close()
 
-        elif not listing_check and lerror == 'bad time'
+        elif not listing_check and lerror == 'bad time':
             lerror = listform_input.cafeteria + " is not open at the time selected"
             db.close()
 
