@@ -177,41 +177,56 @@ def landing_page():
 
 @app.route('/listform', methods=['POST'])
 def create_listing():
-    cafeteria = request.form['Cafeteria']
-    timestamp = request.form['timestamp']
-    needSwipe = request.form.get('needswipe') != None
-    # print(cafeteria, timestamp, needSwipe)
-
-    query = None
+    lerror = None
     if request.method == 'POST':
         cafeteria = request.form['Cafeteria']
         date = request.form['date']
         time = request.form['time']
         needSwipe = request.form.get('needswipe') != None
         # print(cafeteria, timestamp, needSwipe)
-        timestamp = date + "T" + time
 
-        query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (timestamp, 'cl3403', needSwipe, cafeteria)
-        # print('query generated')
-        # print(query)
+        # store in database
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute('use cuLunch')
 
-    # store in database
-    db = connect_to_cloudsql()
-    cursor = db.cursor()
-    cursor.execute('use cuLunch')
+        listform_input = ListForm(cafeteria, date, time, needSwipe)
+        listing_check, lerror = listform_input.listform_dateime_valid()
 
-    try:
-        cursor.execute(query)
-        # commit the changes in the DB
-        db.commit()
-    except:
-        # rollback when an error occurs
-        db.rollback()
+        if listing_check: 
 
-    # disconnect from db after use
-    db.close()
+            expirytime = listform_input.date + " " + listform_input.time
+            listing = Listing(expirytime, uni, cafeteria, needSwipe)
 
-    return redirect(url_for('output'))
+            query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (listing.expirytime, listing.uni, listing.needSwipe, listing.place)
+            # print('query generated')
+            # print(query)
+
+            try:
+                cursor.execute(query)
+                # commit the changes in the DB
+                db.commit()
+            except:
+                # rollback when an error occurs
+                db.rollback()
+
+            # disconnect from db after use
+            db.close()
+            return redirect(url_for('output'))
+
+        elif not listing_check and lerror == 'empty':
+            lerror = 'Empty answer in one field'
+            db.close()
+
+        elif not listing_check and lerror == 'bad time'
+            lerror = listform_input.cafeteria + " is not open at the time selected"
+            db.close()
+
+        else:
+            db.close()
+
+    return render_template('/listform/index.html', error=lerror)
+
 
 @app.route("/listform", methods=["GET"])
 def show_listings():
