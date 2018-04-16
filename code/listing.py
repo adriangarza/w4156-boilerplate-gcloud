@@ -1,22 +1,30 @@
 import datetime
 
-
 class Listing:
 
-    def __init__(self, date, time, uni, place):
-        self.date = date
-        self.time = time
+    def __init__(self, expirytime, uni, place, needSwipe):
+        self.expirytime= expirytime
         self.uni = uni
         self.place = place
+        self.needSwipe = needSwipe
 
     # copied code from ListForm -- is there a way to consolidate?
+    def parse_date(self):
+        expirytime = self.expirytime.partition(" ")
+        date = expirytime[0]
+        return date
+
+    def parse_time(self):
+        expirytime = self.expirytime.partition(" ")
+        time = expirytime[2]
+        return time
+
     def list_day_of_week(self):
         # parsing the dateime input
-        date = self.date
+        date = self.parse_date()
         wkday = date.weekday()
         return wkday
         # 0 = Monday, 1 = Tuesday, 2 = Wednesday, 3 = Thursday, 4 = Friday, 5 = Saturday, 6 = Sunday
-
 
 class ListingPost:
 
@@ -50,20 +58,27 @@ class ListingPost:
 
     def get_date(self):
         # returns date as a string in the format "Jan. 1"
-        month = self.listing.date.strftime("%b")
-        listing_date = "{}. {}".format(month, self.listing.date.day)
+        date = self.listing.parse_date()
+        y, m, d = [int(i) for i in date.split('-')]
+        month= datetime.date(y, m, d).strftime("%b")
+        listing_date = "{}. {}".format(month, d)
+        #month = self.listing.date.strftime("%b")
+        #listing_date = "{}. {}".format(month, self.listing.date.day)
         return listing_date
 
     def get_time(self):
         # returns time in the format 01:00pm or 11:00am
-        time_no_military = self.listing.time.strftime("%I:%M%p")
+        time = self.listing.parse_time()
+        h, m = [int(i) for i in time.split(':')]
+        time_no_military = datetime.time(h,m,0).strftime("%I:%M%p")
+        #time_no_military = self.listing.time.strftime("%I:%M%p")
         return time_no_military
 
 
 class ListForm:
 
     def __init__(self, cafeteria, date, time, swipe):
-        # type:(object, object, object, boolean)
+        # type:(object, object, object, bool)
         self.cafeteria = cafeteria
         self.date = date
         self.time = time

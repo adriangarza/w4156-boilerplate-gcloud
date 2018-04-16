@@ -177,41 +177,56 @@ def landing_page():
 
 @app.route('/listform', methods=['POST'])
 def create_listing():
-    cafeteria = request.form['Cafeteria']
-    timestamp = request.form['timestamp']
-    needSwipe = request.form.get('needswipe') != None
-    # print(cafeteria, timestamp, needSwipe)
-
-    query = None
+    lerror = None
     if request.method == 'POST':
         cafeteria = request.form['Cafeteria']
         date = request.form['date']
         time = request.form['time']
         needSwipe = request.form.get('needswipe') != None
         # print(cafeteria, timestamp, needSwipe)
-        timestamp = date + "T" + time
 
-        query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (timestamp, 'cl3403', needSwipe, cafeteria)
-        # print('query generated')
-        # print(query)
+        # store in database
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute('use cuLunch')
 
-    # store in database
-    db = connect_to_cloudsql()
-    cursor = db.cursor()
-    cursor.execute('use cuLunch')
+        listform_input = ListForm(cafeteria, date, time, needSwipe)
+        listing_check, lerror = listform_input.listform_dateime_valid()
 
-    try:
-        cursor.execute(query)
-        # commit the changes in the DB
-        db.commit()
-    except:
-        # rollback when an error occurs
-        db.rollback()
+        if listing_check: 
 
-    # disconnect from db after use
-    db.close()
+            expirytime = listform_input.date + " " + listform_input.time
+            listing = Listing(expirytime, uni, cafeteria, needSwipe)
 
-    return redirect(url_for('output'))
+            query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (listing.expirytime, listing.uni, listing.needSwipe, listing.place)
+            # print('query generated')
+            # print(query)
+
+            try:
+                cursor.execute(query)
+                # commit the changes in the DB
+                db.commit()
+            except:
+                # rollback when an error occurs
+                db.rollback()
+
+            # disconnect from db after use
+            db.close()
+            return redirect(url_for('output'))
+
+        elif not listing_check and lerror == 'empty':
+            lerror = 'Empty answer in one field'
+            db.close()
+
+        elif not listing_check and lerror == 'bad time':
+            lerror = listform_input.cafeteria + " is not open at the time selected"
+            db.close()
+
+        else:
+            db.close()
+
+    return render_template('/listform/index.html', error=lerror)
+
 
 @app.route("/listform", methods=["GET"])
 def show_listings():
@@ -234,7 +249,16 @@ def output():
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
             "users u JOIN listings l ON u.uni=l.uni WHERE NOT u.uni = '{}'".format(uni)
 
+    cursor.execute(query)
+    posts = []
+    for r in cursor.fetchall():
+        #TODO: make schoolYear an int
+        u = User(r[0], r[1], int(r[2]), r[3], r[4])
+        # we need to convert datetime into a separate date and time for the listing object
+        l = Listing(dt_to_date(r[5]), dt_to_time(r[5]), r[0], r[7])
+        posts.append(ListingPost(l, u))
     # serve index template
+
 
     #  Need to: get listings and associated users from db
     #  sort listings by date and time
@@ -253,7 +277,7 @@ def output():
 
     listingposts = [lp1, lp2, lp3]
 
-    return render_template('/listings/index.html', listingposts=listingposts, name=user.nickname(), logout_link=users.create_logout_url("/"))
+    return render_template('/listings/index.html', listingposts=posts, name=user.nickname(), logout_link=users.create_logout_url("/"))
 
   
 def valid_uni(email):
@@ -286,8 +310,23 @@ def get_cursor():
     cursor.execute("use cuLunch")
     return cursor
 
-
 @app.route('/profile')
+def dt_to_date(dt_string):
+    # gets an SQL DATETIME string and returns a datetime.date
+    # 1997-07-18 14:00:00 -> [1997, 7, 18]
+    # delightfully devilish, seymour
+    l = [int(x) for x in str(dt_string).split(" ")[0].split("-")]
+    return datetime.date(l[0], l[1], l[2])
+
+
+def dt_to_time(dt_string):
+    # gets an SQL DATETIME string and returns a datetime.time
+    # 1997-07-18 14:00:00 -> [14, 0, 0]
+    l = [int(x) for x in str(dt_string).split(" ")[1].split(":")]
+    return datetime.time(l[0], l[1], l[2])
+
+
+@app.route('/settings')
 def show_settings():
     return render_template('/profile/index.html')
 
