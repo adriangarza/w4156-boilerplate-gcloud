@@ -12,6 +12,9 @@
 
 	<script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"> </script>
 	<script src="https://cdn.rawgit.com/kybarg/mdl-selectfield/mdl-menu-implementation/mdl-selectfield.min.js"></script>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="850022657355-jamcssab3itmpm5t62gfbkgak8hmc3be.apps.googleusercontent.com">
 	<link rel="stylesheet" href="style.css" />
 	<title>CU@Lunch</title>
 </head>
@@ -30,16 +33,17 @@
 <div class="fullpage" id="register-container">
 	<div id="register-card" class="mdl-card">
 		<h3>Register</h3>
-		{% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+        <!-- {% if error %}<p class=error><strong>Error:</strong> {{ error }}</p>{% endif %} -->
 		<form action="#" method="post">
+            <!--
 		    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-			    <input class="mdl-textfield__input" type="text" id="name" name="first_name_field">
-			    <label class="mdl-textfield__label" for="name">First Name</label>
+			    <input class="mdl-textfield__input" type="text" id="firstname" name="first_name_field">
+			    <label class="mdl-textfield__label" for="firstname">First Name</label>
 		    </div>
 
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-			    <input class="mdl-textfield__input" type="text" id="name" name="last_name_field">
-			    <label class="mdl-textfield__label" for="name">Last Name</label>
+			    <input class="mdl-textfield__input" type="text" id="lastname" name="last_name_field">
+			    <label class="mdl-textfield__label" for="lastname">Last Name</label>
 		    </div>
 
 		   	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -51,6 +55,10 @@
 			    <input class="mdl-textfield__input" type="password" id="password" name="password_field">
 			    <label class="mdl-textfield__label" for="password">Password</label>
 		    </div>
+		    -->
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            <p>sign in with google! yes</p>
+            <a href="#" onclick="signOut();">Sign out</a>
 
 		    <div class="mdl-selectfield mdl-js-selectfield">
 		        <select class="mdl-selectfield__select" id="school" name="school_field">

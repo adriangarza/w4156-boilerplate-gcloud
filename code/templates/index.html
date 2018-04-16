@@ -16,6 +16,7 @@
 	<title>CU@Lunch</title>
 </head>
 <body class="mdc-typography">
+{% if not account_creation %}
 <div id="landing-container" class="fullpage">
 	<div id="title-container">
 		<span class="title">CU@Lunch</span>
@@ -26,11 +27,18 @@
 		<button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="startbutton">Get Started</button>
 	</div>
 </div>
+{%  endif %}
 
 <div class="fullpage" id="register-container">
 	<div id="register-card" class="mdl-card">
 		<h3>Register</h3>
-		{% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+		{% if error %}
+            <p class=error><strong>Error:</strong> {{ error }} </p>
+        {% endif %}
+
+        {% if not user_logged_in %}
+            <a href="{{ login_url }}">Sign in with your UNI</a>
+        {% elif account_creation %}
 		<form action="#" method="post">
 		    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 			    <input class="mdl-textfield__input" type="text" id="name" name="first_name_field">
@@ -43,13 +51,8 @@
 		    </div>
 
 		   	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-			    <input class="mdl-textfield__input" type="text" id="uni" name="uni_field">
+			    <input class="mdl-textfield__input" type="text" id="uni" name="uni_field" value="{{ uni }}" disabled>
 			    <label class="mdl-textfield__label" for="uni">UNI</label>
-		    </div>
-
-		   	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-			    <input class="mdl-textfield__input" type="password" id="password" name="password_field">
-			    <label class="mdl-textfield__label" for="password">Password</label>
 		    </div>
 
 		    <div class="mdl-selectfield mdl-js-selectfield">
@@ -83,10 +86,14 @@
             <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="register-button">
 		  	Register
 		    </button>
+            <br>
+            <a href="{{ logout_url }}">Log Out</a>
 		</form>
+        {% endif %}
 
 	    <script src="../static/script.js"></script>
 	</div>
+
 </div>
 </body>
 

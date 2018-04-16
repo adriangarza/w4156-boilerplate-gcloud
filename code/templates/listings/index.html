@@ -30,7 +30,7 @@
       <nav class="mdl-navigation">
         <a class="mdl-navigation__link" href="">Home</a>
         <a class="mdl-navigation__link" href="../settings/index.html">Settings</a>
-        <a class="mdl-navigation__link" href="../index.html">Logout</a>
+        <a class="mdl-navigation__link" href={{ logout_link }}>Logout</a>
       </nav>
     </div>
   </header>
@@ -83,7 +83,7 @@
                {%  for listingpost in listingposts %}
 
               <li>
-                <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
+                <div class="mdl-card mdl-shadow--2dp posting fadeup" style="animation-delay: .{{ loop.index - 1 }}s" onclick="expandPost(this);">
                   <div class="mdl-card__title lunch">
                       <h2 class='mdl-card__title-text'>{{ listingpost.week_day() }}, {{ listingpost.get_date() }} at {{ listingpost.get_time() }}</h2>
                   </div>

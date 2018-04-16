@@ -4,13 +4,12 @@ import datetime
 
 class User:
 
-    def __init__(self, uni, name, year, interests, school, password):
+    def __init__(self, uni, name, year, interests, school):
         self.uni = uni
         self.name = name
         self.year = year
         self.interests = interests
         self.school = school
-        self.password = password
         self.listings = []
 
     def add_listing(self, listing):
@@ -61,23 +60,20 @@ class User:
 
 class Form:
 
-    def __init__(self, f_name, l_name, uni, pwd, school, year, interests):
-        # type: (object, object, object, object, object, object, object) -> object
+    def __init__(self, f_name, l_name, uni, school, year, interests):
+        # type: (object, object, object, object, object, object) -> object
         self.uni = uni
         self.f_name = f_name
         self.l_name = l_name
         self.year = year
         self.interests = interests
         self.school = school
-        self.pwd = pwd
 
     def form_input_valid(self):
         uChecker = True
         error = ''
-        if self.f_name == "" or self.l_name == "" or self.uni == "" or self.pwd == "":
+        if self.f_name == "" or self.l_name == "" or self.uni == "":
             uChecker = False
             error = "empty"
-        elif len (self.pwd) < 8 or self.pwd.isupper () or self.pwd.islower () or self.pwd.isdigit ():
-            uChecker = False
-            error = "bad pass"
+            
         return uChecker, error

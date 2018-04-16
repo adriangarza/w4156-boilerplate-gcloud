@@ -12,5 +12,5 @@ CREATE TABLE listings (
   uni VARCHAR (10),
   location VARCHAR (10) NOT NULL,
   PRIMARY KEY (uni, expiryTime),
-  FOREIGN KEY (uni) REFERENCES users
+  FOREIGN KEY (uni) REFERENCES users(uni)
 )
