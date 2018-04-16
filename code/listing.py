@@ -41,9 +41,9 @@ class ListingPost:
             day = 'Thursday'
         if day == 4:
             day = 'Friday'
-        if day == 4:
+        if day == 5:
             day = 'Saturday'
-        if day == 4:
+        if day == 6:
             day = 'Sunday'
 
         return day

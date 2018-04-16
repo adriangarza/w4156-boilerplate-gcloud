@@ -63,10 +63,8 @@ class MainTest(unittest.TestCase):
         pass
 
     def test_settings(self):
-        rv = self.app.get("/settings")
+        rv = self.app.get("/profile")
         self.check_culunch(rv)
-
-
 
     def test_listform(self):
         self.loginUser()
@@ -99,7 +97,7 @@ class ValidTest(unittest.TestCase):
 
         # no last
         form = Form("Shelley", "", "sks2209", "school", "year", "interests")
-        self.assertTrue((form.form_input_valid () == (False, 'empty')))
+        self.assertTrue((form.form_input_valid() == (False, 'empty')))
 
         # no uni
         form = Form("Shelley", "S", "", "school", "year", "interests")

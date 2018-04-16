@@ -287,9 +287,9 @@ def get_cursor():
     return cursor
 
 
-@app.route('/settings')
+@app.route('/profile')
 def show_settings():
-    return render_template('/settings/index.html')
+    return render_template('/profile/index.html')
 
 
 if __name__ == '__main__':
