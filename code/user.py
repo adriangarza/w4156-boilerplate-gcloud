@@ -75,9 +75,5 @@ class Form:
         if self.f_name == "" or self.l_name == "" or self.uni == "":
             uChecker = False
             error = "empty"
-
-        elif len (self.pwd) < 8 or self.pwd.isupper () or self.pwd.islower () or self.pwd.isdigit ():
-            uChecker = False
-            error = "bad pass"
             
         return uChecker, error

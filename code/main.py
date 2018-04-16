@@ -110,7 +110,7 @@ def create_user():
 
             # store in database
             insert_query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s')" % (user.uni, user.name,
-                                                                                       user.schoolYear, user.interests, user.school)
+                                                                                       user.year, user.interests, user.school)
             # print('query generated')
             # print(query)
 
@@ -239,9 +239,9 @@ def output():
     #  Need to: get listings and associated users from db
     #  sort listings by date and time
 
-    u1 = User('cck2127', 'Carson Kraft', 2019, 'skiing', 'Barnard', 'doin Stuff')
-    u2 = User('jds2246', 'Jonathan Shapiro', 2018, 'singing', 'Columbia College', 'Being cool')
-    u3 = User('test', 'John Doe', 2000, 'interests', 'General Studies', 'Test')
+    u1 = User('cck2127', 'Carson Kraft', 2019, 'skiing', 'Barnard')
+    u2 = User('jds2246', 'Jonathan Shapiro', 2018, 'singing', 'Columbia College')
+    u3 = User('test', 'John Doe', 2000, 'interests', 'General Studies')
 
     l1 = Listing(datetime.date(2018, 7, 18), datetime.time(7, 30, 0), 'cck2127', 'Diana Center')
     l2 = Listing(datetime.date(2018, 6, 20), datetime.time(13, 30, 0), 'jds2246', 'Diana Center')
