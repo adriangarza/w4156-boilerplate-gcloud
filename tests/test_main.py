@@ -60,14 +60,12 @@ class MainTest(unittest.TestCase):
 
     def test_index(self):
         # make sure it stays on the landing page for a non-registered user
+        pass
 
+    def test_settings(self):
+        rv = self.app.get("/settings")
+        self.check_culunch(rv)
 
-        # test redirecting for a logged-in user who has an account
-        """
-        self.loginUser()
-        rv = self.app.get('/', follow_redirects=True)
-        assert("get started" in rv.data.lower())
-        """
 
 
     def test_listform(self):
