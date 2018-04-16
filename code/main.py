@@ -211,5 +211,10 @@ def output():
     return render_template('/listings/index.html', listingposts=listingposts)
 
 
+@app.route('/settings')
+def show_settings():
+    return render_template('/settings/index.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)

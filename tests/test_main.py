@@ -40,6 +40,10 @@ class MainTest(unittest.TestCase):
         rv = self.app.get("/listform/index.html")
         self.check_culunch(rv)
 
+    def test_settings(self):
+        rv = self.app.get("/settings")
+        self.check_culunch(rv)
+
     """
 
     def test_listings(self):
