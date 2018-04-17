@@ -91,7 +91,7 @@ class UserValidTest(unittest.TestCase):
         form = Form("Shelley", "S", "", "school", "year", "interests")
         self.assertTrue((form.form_input_valid() == (False, 'empty')))
 
-# listing creation validation
+# some listing creation validation
 class ListingValidTest(unittest.TestCase):
     
     def test_listform(self):
