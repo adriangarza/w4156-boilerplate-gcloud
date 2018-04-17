@@ -324,10 +324,32 @@ def dt_to_time(dt_string):
     return datetime.time(l[0], l[1], l[2])
 
 
+# gets the user info from the database from a uni
+def get_user_info():
+    user = users.get_current_user()
+    uni = email_to_uni(user.email())
+
+    cursor = get_cursor()
+    query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName FROM users u WHERE u.uni='{}'".format(uni)
+    cursor.execute(query)
+
+    if not cursor.rowcount:
+        raise ValueError("User {} not found in database!".format(uni))
+
+    r = cursor.fetchone()
+    #TODO: make the schoolyear an int (again)
+    return User(r[0], r[1], int(r[2]), r[3], r[4])
+
+
+
 @app.route('/profile')
 def show_profile():
     # find current user
-    current_user = User('cck2127', 'Carson Kraft', 2019, 'skiing', 'Barnard')
+    current_user = None
+    if users.get_current_user():
+        current_user = get_user_info()
+    else:
+        return redirect("/")
 
     # find their listings in the database
     l1 = Listing(datetime.date(2018, 7, 18), datetime.time(7, 30, 0), 'cck2127', 'Diana Center')
