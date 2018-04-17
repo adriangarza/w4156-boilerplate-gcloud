@@ -75,70 +75,70 @@ def showDatabases():
 def create_user():
     error = None
 
-    if request.method == 'POST':
-        f_name = request.form['first_name_field']
-        l_name = request.form['last_name_field']
-        uni = request.form['uni_field']
-        school = request.form['school_field']
-        year = request.form['year_field']
-        interests = request.form['interests_field']
+    request.method == 'POST':
+    f_name = request.form['first_name_field']
+    l_name = request.form['last_name_field']
+    uni = request.form['uni_field']
+    school = request.form['school_field']
+    year = request.form['year_field']
+    interests = request.form['interests_field']
 
-        # connect to db
-        db = connect_to_cloudsql()
-        cursor = db.cursor()
-        cursor.execute('use cuLunch')
+    # connect to db
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute('use cuLunch')
 
-        # check if uni is already registered
-        unique = check_registered_user(uni)
+    # check if uni is already registered
+    unique = check_registered_user(uni)
 
-        form_input = Form(f_name, l_name, uni, school, year, interests)
-        user_check, error = form_input.form_input_valid()
+    form_input = Form(f_name, l_name, uni, school, year, interests)
+    user_check, error = form_input.form_input_valid()
 
-        print (form_input.uni + " " + form_input.f_name + " " + form_input.l_name + " " + form_input.school +
-               " " + form_input.interests + " " + form_input.school)
+    print (form_input.uni + " " + form_input.f_name + " " + form_input.l_name + " " + form_input.school +
+            " " + form_input.interests + " " + form_input.school)
 
-        '''if not user_check:
-            error = error
-            db.close()'''
+    '''if not user_check:
+        error = error
+        db.close()'''
 
 
-        if user_check and unique:
+    if user_check and unique:
 
-            name = form_input.f_name + ' ' + form_input.l_name
-            user = User(uni, name, year, interests, school)
-            # else send error to user
+        name = form_input.f_name + ' ' + form_input.l_name
+        user = User(uni, name, year, interests, school)
+        # else send error to user
 
-            # store in database
-            insert_query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s')" % (user.uni, user.name,
+        # store in database
+        insert_query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s')" % (user.uni, user.name,
                                                                                        user.year, user.interests, user.school)
-            # print('query generated')
-            # print(query)
+        # print('query generated')
+        # print(query)
 
-            try:
-                cursor.execute(insert_query)
-                # commit the changes in the DB
-                db.commit()
-            except:
-                # rollback when an error occurs
-                db.rollback()
+        try:
+            cursor.execute(insert_query)
+            # commit the changes in the DB
+            db.commit()
+        except:
+            # rollback when an error occurs
+            db.rollback()
 
-            # disconnect from db after use
-            db.close()
-            return redirect(url_for('create_listing'))
+        # disconnect from db after use
+        db.close()
+        return redirect(url_for('create_listing'))
 
-        elif not user_check and error == 'empty':
-            error = 'Empty answer in one field'
-            db.close()
+    elif not user_check and error == 'empty':
+        error = 'Empty answer in one field'
+        db.close()
 
-        elif not unique:
-            error = 'This UNI has been registered already.'
-            db.close()
+    elif not unique:
+        error = 'This UNI has been registered already.'
+        db.close()
 
-        else:
-            # return redirect(url_for('static', filename='index.html', error=error))
-            db.close()
+    else:
+        # return redirect(url_for('static', filename='index.html', error=error))
+        db.close()
 
-    return render_template('index.html', error=error)
+return render_template('index.html', error=error)
 
 
 @app.route('/', methods=['GET'])
@@ -172,53 +172,50 @@ def landing_page():
 
 @app.route('/listform', methods=['POST'])
 def create_listing():
-    lerror = None
-    if request.method == 'POST':
-        cafeteria = request.form['Cafeteria']
-        date = request.form['date']
-        time = request.form['time']
-        needSwipe = request.form.get('needswipe') != None
-        # print(cafeteria, timestamp, needSwipe)
+    error = None
+    cafeteria = request.form['Cafeteria']
+    date = request.form['date']
+    time = request.form['time']
+    needSwipe = request.form.get('needswipe') != None
+    # print(cafeteria, timestamp, needSwipe)
 
-        # store in database
-        db = connect_to_cloudsql()
-        cursor = db.cursor()
-        cursor.execute('use cuLunch')
+    # store in database
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute('use cuLunch')
 
-        listform_input = ListForm(cafeteria, date, time, needSwipe)
-        listing_check, lerror = listform_input.listform_dateime_valid()
+    listform_input = ListForm(cafeteria, date, time, needSwipe)
+    listing_check, lerror = listform_input.listform_dateime_valid()
 
-        if listing_check: 
+    if listing_check: 
 
-            expirytime = listform_input.date + " " + listform_input.time
-            listing = Listing(expirytime, uni, cafeteria, needSwipe)
+        expirytime = listform_input.date + " " + listform_input.time
+        query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (listing.expirytime, listing.uni, listing.needSwipe, listing.place)
+        # print('query generated')
+        # print(query)
 
-            query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (listing.expirytime, listing.uni, listing.needSwipe, listing.place)
-            # print('query generated')
-            # print(query)
+        try:
+            cursor.execute(query)
+            # commit the changes in the DB
+            db.commit()
+        except:
+            # rollback when an error occurs
+            db.rollback()
 
-            try:
-                cursor.execute(query)
-                # commit the changes in the DB
-                db.commit()
-            except:
-                # rollback when an error occurs
-                db.rollback()
+        # disconnect from db after use
+        db.close()
+        return redirect(url_for('output'))
 
-            # disconnect from db after use
-            db.close()
-            return redirect(url_for('output'))
+    elif not listing_check and lerror == 'empty':
+        error = 'Empty answer in one field'
+        db.close()
 
-        elif not listing_check and lerror == 'empty':
-            lerror = 'Empty answer in one field'
-            db.close()
+    elif not listing_check and lerror == 'bad time':
+        error = listing.place + " is not open at the time selected"
+        db.close()
 
-        elif not listing_check and lerror == 'bad time':
-            lerror = listing.place + " is not open at the time selected"
-            db.close()
-
-        else:
-            db.close()
+    else:
+        db.close()
 
     return render_template('/listform/index.html', error=lerror)
 
