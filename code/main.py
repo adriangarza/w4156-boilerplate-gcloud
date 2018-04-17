@@ -326,9 +326,18 @@ def dt_to_time(dt_string):
 
 
 @app.route('/profile')
-def show_settings():
-    return render_template('/profile/index.html')
+def show_profile():
+    # find current user
+    current_user = User('cck2127', 'Carson Kraft', 2019, 'skiing', 'Barnard')
 
+    # find their listings in the database
+    l1 = Listing(datetime.date(2018, 7, 18), datetime.time(7, 30, 0), 'cck2127', 'Diana Center')
+    l2 = Listing(datetime.date(2018, 6, 20), datetime.time(13, 30, 0), 'cck2127', 'Diana Center')
+    l3 = Listing(datetime.date(2018, 5, 11), datetime.time (18, 30, 0), 'cck2127', 'Diana Center')
+
+    yourListings = [l1, l2, l3]
+
+    return render_template('/profile/index.html', current_user=current_user, yourListings=yourListings)
 
 if __name__ == '__main__':
     app.run(debug=True)

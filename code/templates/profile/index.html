@@ -50,12 +50,12 @@
 				  </div>
 			<form action="#">
 			    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-				    <input class="mdl-textfield__input" type="text" id="name" value="Adrian Garza">
+				    <input class="mdl-textfield__input" type="text" id="name" value={{ current_user.name }}>
 				    <label class="mdl-textfield__label" for="name">Name</label>
 			    </div>
 
 			   	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-				    <input class="mdl-textfield__input" type="text" id="uni" value="ahg2142">
+				    <input class="mdl-textfield__input" type="text" id="uni" value={{ current_user.uni }}>
 				    <label class="mdl-textfield__label" for="uni">UNI</label>
 			    </div>
 
@@ -65,7 +65,7 @@
 			    </div>
 
 			    <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-			        <select class="mdl-selectfield__select" id="school" name="School" value="Columbia College">
+			        <select class="mdl-selectfield__select" id="school" name="School" value={{ current_user.school }}>
 			          <option value=""></option>
 			          <option selected= "selected" value="columbia">Columbia College</option>
 			          <option value="barnard">Barnard</option>
@@ -76,7 +76,7 @@
 		        </div>
 
 		       	<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-			        <select class="mdl-selectfield__select" id="year" name="Year" value="2018">
+			        <select class="mdl-selectfield__select" id="year" name="Year" value=current_user.year>
 			          <option value=""></option>
 			          <option selected="selected" value="2018">2018</option>
 			          <option value="2019">2019</option>
@@ -87,7 +87,7 @@
 		        </div>
 
 			    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-				    <textarea class="mdl-textfield__input" type="text" rows="4" id="bio">I finished all my core requirements like a good boy</textarea>
+				    <textarea class="mdl-textfield__input" type="text" rows="4" id="bio">{{ current_user.interests }}</textarea>
 				    <label class="mdl-textfield__label" for="bio">Bio</label>
 				</div>
 			</form>
@@ -117,38 +117,39 @@
                   <div class="mdl-card__title">
                     <h2 class='mdl-card__title-text'>Your Listings</h2>
                 </div>
-              </li>
+            </li>
+
+              {%  for yourListing in yourListings %}
+
               <li>
-                <div class="mdl-card mdl-shadow--2dp posting" onclick="expandPost(this);">
+                <div class="mdl-card mdl-shadow--2dp posting fadeup" style="animation-delay: .{{ loop.index - 1 }}s" onclick="expandPost(this);">
                   <div class="mdl-card__title lunch">
-                    <h2 class='mdl-card__title-text'>Wednesday, 12:30 PM</h2>
+                      <h2 class='mdl-card__title-text'>{{ yourListing.week_day_name() }}, {{ yourListing.get_date() }} at {{ yourListing.get_time() }}</h2>
                   </div>
                   <div class="mdl-card__supporting-text post-description">
-                    Offered by: Adrian Garza
+                    Offered by: {{ current_user.first_name() }}
                   </div>
                   <div class="panel-hidden">
                     <div class="personal-info">
                       <div class="mdl-card__supporting-text info-list">
-                        <h3>Adrian Garza</h3>
-                        <p><b>School: </b>Columbia College</p>
-                        <p><b>Year: </b>Senior</p>
-                        <p><b>Interests: </b>Running, hiking, complaining about things</p>
-                        <p><b>Bio: </b>I'm a second-semester senior who has completed all his core requirements like a good boy</p>
+                        <h3>{{ current_user.first_name() }}</h3>
+                        <p><b>School: </b>{{ current_user.school }}</p>
+                        <p><b>Year: </b>{{ current_user.class_name() }}</p>
+                        <p><b>Interests: </b>{{ current_user.interests }}</p>
                       </div>
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
                         <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
-                          ahg2142@columbia.edu
+                          {{ current_user.uni }}@{% if current_user.school == 'Barnard'%}barnard{% else %}columbia{% endif %}.edu
                         </a>
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent redbg">
-						  	Delete Listing
-						</button>
                     </div>
                   </div>
 
                   <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
                 </div>
               </li>
+
+              {% endfor %}
           </ul>
       </div>
 

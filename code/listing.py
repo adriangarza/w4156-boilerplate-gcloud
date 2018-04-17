@@ -3,7 +3,7 @@ import datetime
 class Listing:
 
     def __init__(self, expirytime, uni, place, needSwipe):
-        self.expirytime= expirytime
+        self.expirytime = expirytime
         self.uni = uni
         self.place = place
         self.needSwipe = needSwipe
@@ -26,19 +26,8 @@ class Listing:
         return wkday
         # 0 = Monday, 1 = Tuesday, 2 = Wednesday, 3 = Thursday, 4 = Friday, 5 = Saturday, 6 = Sunday
 
-class ListingPost:
-
-    def __init__(self, listing, user):
-        """
-
-        :type listing: object
-        """
-        # type:(Listing, User)
-        self.listing = listing
-        self.user = user
-
-    def week_day(self):
-        day = self.listing.list_day_of_week()
+    def week_day_name(self):
+        day = self.list_day_of_week()
         if day == 0:
             day = 'Monday'
         if day == 1:
@@ -53,25 +42,40 @@ class ListingPost:
             day = 'Saturday'
         if day == 6:
             day = 'Sunday'
+        return day
 
+
+class ListingPost:
+
+    def __init__(self, listing, user):
+        """
+
+        :type listing: object
+        """
+        # type:(Listing, User)
+        self.listing = listing
+        self.user = user
+
+    def week_day(self):
+        day = self.listing.week_day_name()
         return day
 
     def get_date(self):
         # returns date as a string in the format "Jan. 1"
-        date = self.listing.parse_date()
-        y, m, d = [int(i) for i in date.split('-')]
-        month= datetime.date(y, m, d).strftime("%b")
-        listing_date = "{}. {}".format(month, d)
-        #month = self.listing.date.strftime("%b")
-        #listing_date = "{}. {}".format(month, self.listing.date.day)
+        #date = self.listing.parse_date()
+        #y, m, d = [int(i) for i in date.split('-')]
+        #month= datetime.date(y, m, d).strftime("%b")
+        #listing_date = "{}. {}".format(month, d)
+        month = self.listing.expiryTime.strftime("%b")
+        listing_date = "{}. {}".format(month, self.listing.expiryTime.day)
         return listing_date
 
     def get_time(self):
         # returns time in the format 01:00pm or 11:00am
-        time = self.listing.parse_time()
-        h, m = [int(i) for i in time.split(':')]
-        time_no_military = datetime.time(h,m,0).strftime("%I:%M%p")
-        #time_no_military = self.listing.time.strftime("%I:%M%p")
+        # time = self.listing.parse_time()
+        # h, m = [int(i) for i in time.split(':')]
+        # time_no_military = datetime.time(h,m,0).strftime("%I:%M%p")
+        time_no_military = self.listing.expiryTime.strftime("%I:%M%p")
         return time_no_military
 
 
@@ -121,11 +125,11 @@ class ListForm:
                 elif day == 5:  # Saturday hours
                     start = datetime.time (9, 0, 0)
                     end = datetime.time (21, 0, 0)
-                    lChecker = time_range (start, end, time)
+                    lChecker = time_range(start, end, time)
                 elif day == 4:  # Friday hours
-                    start = datetime.time (7, 30, 0)
-                    end = datetime.time (21, 0, 0)
-                    lChecker = time_range (start, end, time)
+                    start = datetime.time(7, 30, 0)
+                    end = datetime.time(21, 0, 0)
+                    lChecker = time_range(start, end, time)
                 else:
                     start = datetime.time (7, 30, 0)
                     end = datetime.time (20, 0, 0)
