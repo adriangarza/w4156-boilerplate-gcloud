@@ -310,7 +310,6 @@ def get_cursor():
     cursor.execute("use cuLunch")
     return cursor
 
-@app.route('/profile')
 def dt_to_date(dt_string):
     # gets an SQL DATETIME string and returns a datetime.date
     # 1997-07-18 14:00:00 -> [1997, 7, 18]
@@ -326,7 +325,7 @@ def dt_to_time(dt_string):
     return datetime.time(l[0], l[1], l[2])
 
 
-@app.route('/settings')
+@app.route('/profile')
 def show_settings():
     return render_template('/profile/index.html')
 
