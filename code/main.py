@@ -241,6 +241,7 @@ def output():
         return redirect("/")
 
     # then fetch the listings
+    # TODO: make this a self-contained function to get listings of not a current UNI?
     uni = email_to_uni(user.email())
 
     cursor = get_cursor()
@@ -256,26 +257,8 @@ def output():
         # we need to convert datetime into a separate date and time for the listing object
         l = Listing(dt_to_date(r[5]), dt_to_time(r[5]), r[0], r[7])
         posts.append(ListingPost(l, u))
+
     # serve index template
-
-
-    #  Need to: get listings and associated users from db
-    #  sort listings by date and time
-
-    u1 = User('cck2127', 'Carson Kraft', 2019, 'skiing', 'Barnard')
-    u2 = User('jds2246', 'Jonathan Shapiro', 2018, 'singing', 'Columbia College')
-    u3 = User('test', 'John Doe', 2000, 'interests', 'General Studies')
-
-    l1 = Listing(datetime.date(2018, 7, 18), datetime.time(7, 30, 0), 'cck2127', 'Diana Center')
-    l2 = Listing(datetime.date(2018, 6, 20), datetime.time(13, 30, 0), 'jds2246', 'Diana Center')
-    l3 = Listing(datetime.date(2018, 5, 11), datetime.time(18, 30, 0), 'test', 'Diana Center')
-
-    lp1 = ListingPost(l1, u1)
-    lp2 = ListingPost(l2, u2)
-    lp3 = ListingPost(l3, u3)
-
-    listingposts = [lp1, lp2, lp3]
-
     return render_template('/listings/index.html', listingposts=posts, name=user.nickname(), logout_link=users.create_logout_url("/"))
 
   
@@ -303,11 +286,13 @@ def email_to_uni(email):
     return email.split('@')[0]
 
 
+# not great practice but the connection is closed once it leaves scope
 def get_cursor():
     db = connect_to_cloudsql()
     cursor = db.cursor()
     cursor.execute("use cuLunch")
     return cursor
+
 
 def dt_to_date(dt_string):
     # gets an SQL DATETIME string and returns a datetime.date
@@ -325,6 +310,7 @@ def dt_to_time(dt_string):
 
 
 # gets the user info from the database from a uni
+# returns a new User object
 def get_user_info():
     user = users.get_current_user()
     uni = email_to_uni(user.email())
