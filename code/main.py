@@ -214,7 +214,7 @@ def create_listing():
             db.close()
 
         elif not listing_check and lerror == 'bad time':
-            lerror = listform_input.cafeteria + " is not open at the time selected"
+            lerror = listing.place + " is not open at the time selected"
             db.close()
 
         else:
