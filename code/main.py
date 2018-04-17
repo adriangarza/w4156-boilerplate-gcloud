@@ -225,7 +225,7 @@ def create_listing():
 
 @app.route("/listform", methods=["GET"])
 def show_listings():
-    return render_template('/listings/index.html')
+    return render_template('/listform/index.html')
 
 
 @app.route('/listings', methods=["GET"])

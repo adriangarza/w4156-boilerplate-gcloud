@@ -100,7 +100,7 @@ class ListForm:
         time = datetime.time (h, m, 0)
         return time
 
-    def time_range(start, end, x):
+    def time_range(self, start, end, x):
         if start <= end:
             return start <= x <= end
         else:
@@ -113,8 +113,8 @@ class ListForm:
             lChecker = False
             error = "empty"
         else:
-            time = time_parser()
-            day = day_of_week()
+            time = self.time_parser()
+            day = self.day_of_week()
             # Ferris Booth Hours
             if self.cafeteria == "Ferris Booth":
                 if day == 6:  # Sunday closed
@@ -122,15 +122,15 @@ class ListForm:
                 elif day == 5:  # Saturday hours
                     start = datetime.time (9, 0, 0)
                     end = datetime.time (21, 0, 0)
-                    lChecker = time_range(start, end, time)
+                    lChecker = self.time_range(start, end, time)
                 elif day == 4:  # Friday hours
                     start = datetime.time(7, 30, 0)
                     end = datetime.time(21, 0, 0)
-                    lChecker = time_range(start, end, time)
+                    lChecker = self.time_range(start, end, time)
                 else:
                     start = datetime.time (7, 30, 0)
                     end = datetime.time (20, 0, 0)
-                    lChecker = time_range (start, end, time)
+                    lChecker = self.time_range (start, end, time)
 
             # John Jay Hours
             elif self.cafeteria == "John Jay":
@@ -139,24 +139,24 @@ class ListForm:
                 else:
                     start = datetime.time (9, 30, 0)
                     end = datetime.time (21, 0, 0)
-                    lChecker = time_range (start, end, time)
+                    lChecker = self.time_range (start, end, time)
 
             # JJ's Hours
             elif self.cafeteria == "JJs Place":
                 start = datetime.time (12, 0, 0)
                 end = datetime.time (10, 0, 0)
-                lChecker = time_range (start, end, time)
+                lChecker = self.time_range (start, end, time)
 
             # Hewitt Hours
             elif self.cafeteria == "Hewitt":
                 if day == 6:  # Sunday hours
                     start = datetime.time (10, 0, 0)
                     end = datetime.time (15, 0, 0)
-                    lChecker = time_range (start, end, time)
+                    lChecker = self.time_range (start, end, time)
                     if lChecker == False:
                         start = datetime.time (17, 0, 0)
                         end = datetime.time (19, 45, 0)
-                        lChecker = time_range (start, end, time)
+                        lChecker = self.time_range (start, end, time)
                 elif day == 5:  # Saturday hours
                     start = datetime.time (10, 0, 0)
                     end = datetime.time (15, 0, 0)
@@ -164,15 +164,15 @@ class ListForm:
                     if lChecker == False:
                         start = datetime.time (17, 0, 0)
                         end = datetime.time (19, 0, 0)
-                        lChecker = time_range (start, end, time)
+                        lChecker = self.time_range (start, end, time)
                 else:
                     start = datetime.time (8, 0, 0)
                     end = datetime.time (15, 0, 0)
-                    lChecker = time_range (start, end, time)
+                    lChecker = self.time_range (start, end, time)
                     if lChecker == False:
                         start = datetime.time (16, 0, 0)
                         end = datetime.time (19, 45, 0)
-                        lChecker = time_range (start, end, time)
+                        lChecker = self.time_range (start, end, time)
             # Diana Hours
             elif self.cafeteria == "Diana":
                 if day == 5:  # Saturday closed
@@ -180,35 +180,35 @@ class ListForm:
                 elif day == 6:  # Sunday hours
                     start = datetime.time (17, 0, 0)
                     end = datetime.time (19, 45, 0)
-                    lChecker = time_range (start, end, time)
+                    lChecker = self.time_range (start, end, time)
                     if lChecker == False:
                         start = datetime.time (20, 45, 0)
                         end = datetime.time (23, 0, 0)
-                        lChecker = time_range (start, end, time)
+                        lChecker = self.time_range (start, end, time)
                 elif day == 4:  # Friday hours
                     start = datetime.time (9, 30, 0)
                     end = datetime.time (11, 0, 0)
-                    lChecker = time_range (start, end, time)
+                    lChecker = self.time_range (start, end, time)
                     if lChecker == False:
                         start = datetime.time (11, 30, 0)
                         end = datetime.time (15, 0, 0)
-                        lChecker = time_range (start, end, time)
+                        lChecker = self.time_range (start, end, time)
                 else:
                     start = datetime.time (9, 30, 0)
                     end = datetime.time (11, 0, 0)
-                    lChecker = time_range (start, end, time)
+                    lChecker = self.time_range (start, end, time)
                     if lChecker == False:
                         start = datetime.time (11, 30, 0)
                         end = datetime.time (15, 0, 0)
-                        lChecker = time_range (start, end, time)
+                        lChecker = self.time_range (start, end, time)
                         if lChecker == False:
                             start = datetime.time (17, 0, 0)
                             end = datetime.time (19, 45, 0)
-                            lChecker = time_range (start, end, time)
+                            lChecker = self.time_range (start, end, time)
                             if lChecker == False:
                                 start = datetime.time (20, 45, 0)
                                 end = datetime.time (23, 0, 0)
-                                lChecker = time_range (start, end, time)
+                                lChecker = self.time_range (start, end, time)
             if lChecker == False:
                 error = "bad time"
 
