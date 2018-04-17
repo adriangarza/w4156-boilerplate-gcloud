@@ -75,7 +75,6 @@ def showDatabases():
 def create_user():
     error = None
 
-    request.method == 'POST':
     f_name = request.form['first_name_field']
     l_name = request.form['last_name_field']
     uni = request.form['uni_field']
@@ -138,7 +137,7 @@ def create_user():
         # return redirect(url_for('static', filename='index.html', error=error))
         db.close()
 
-return render_template('index.html', error=error)
+    return render_template('index.html', error=error)
 
 
 @app.route('/', methods=['GET'])
@@ -173,6 +172,8 @@ def landing_page():
 @app.route('/listform', methods=['POST'])
 def create_listing():
     error = None
+    user = users.get_current_user()
+    uni = email_to_uni(user.email())
     cafeteria = request.form['Cafeteria']
     date = request.form['date']
     time = request.form['time']
@@ -189,10 +190,10 @@ def create_listing():
 
     if listing_check: 
 
-        expirytime = listform_input.date + " " + listform_input.time
-        query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (listing.expirytime, listing.uni, listing.needSwipe, listing.place)
+        expirytime = date + " " + time
+        query = "INSERT INTO listings VALUES ('%s', '%s', '%d', '%s')" % (expirytime, uni, needSwipe, cafeteria)
         # print('query generated')
-        # print(query)
+        print(query)
 
         try:
             cursor.execute(query)
@@ -221,8 +222,14 @@ def create_listing():
 
 
 @app.route("/listform", methods=["GET"])
-def show_listings():
-    return render_template('/listform/index.html')
+def show_listform():
+    user = users.get_current_user()
+    if user:
+        return render_template('/listform/index.html')
+    else:
+        login_url = users.create_login_url('/')
+        return render_template("index.html", user_logged_in=False, login_url=login_url)
+
 
 
 @app.route('/listings', methods=["GET"])
