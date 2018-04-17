@@ -23,6 +23,7 @@ app = Flask(__name__, template_folder=tmpl_dir)
 from google.appengine.api import users
 
 def connect_to_cloudsql():
+
     # When deployed to App Engine, the `SERVER_SOFTWARE` environment variable
     # will be set to 'Google App Engine/version'.
     if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
@@ -77,10 +78,11 @@ def create_user():
 
     f_name = request.form['first_name_field']
     l_name = request.form['last_name_field']
-    uni = request.form['uni_field']
     school = request.form['school_field']
     year = request.form['year_field']
     interests = request.form['interests_field']
+    user = users.get_current_user()
+    uni = email_to_uni(user.email())
 
     # connect to db
     db = connect_to_cloudsql()
@@ -88,7 +90,7 @@ def create_user():
     cursor.execute('use cuLunch')
 
     # check if uni is already registered
-    unique = check_registered_user(uni)
+    registered = check_registered_user(uni)
 
     form_input = Form(f_name, l_name, uni, school, year, interests)
     user_check, error = form_input.form_input_valid()
@@ -101,15 +103,14 @@ def create_user():
         db.close()'''
 
 
-    if user_check and unique:
+    if user_check and not registered:
 
         name = form_input.f_name + ' ' + form_input.l_name
         user = User(uni, name, year, interests, school)
         # else send error to user
 
         # store in database
-        insert_query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s')" % (user.uni, user.name,
-                                                                                       user.year, user.interests, user.school)
+        insert_query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s')" % (uni, name, year, interests, school)
         # print('query generated')
         # print(query)
 
@@ -129,7 +130,7 @@ def create_user():
         error = 'Empty answer in one field'
         db.close()
 
-    elif not unique:
+    elif registered:
         error = 'This UNI has been registered already.'
         db.close()
 
@@ -269,12 +270,20 @@ def valid_uni(email):
         return False
 
 
-# given an email, checks if it corresponds to a registered user in the database
+ 
 def check_registered_user(uni):
+    """ 
+    Given an email, checks if it corresponds to a registered user in the database 
+    If user is registered, this function returns True; otherwise, it returns False
+
+    """
+
     cursor = get_cursor()
 
     query = "SELECT * FROM users WHERE users.uni = '{}'".format(uni)
+    print(query)
     cursor.execute(query)
+
 
     if not cursor.rowcount:
         return False
@@ -295,23 +304,29 @@ def get_cursor():
 
 
 def dt_to_date(dt_string):
-    # gets an SQL DATETIME string and returns a datetime.date
-    # 1997-07-18 14:00:00 -> [1997, 7, 18]
-    # delightfully devilish, seymour
+    """
+    gets an SQL DATETIME string and returns a datetime.date
+    1997-07-18 14:00:00 -> [1997, 7, 18]
+    delightfully devilish, seymour
+    """
     l = [int(x) for x in str(dt_string).split(" ")[0].split("-")]
     return datetime.date(l[0], l[1], l[2])
 
 
 def dt_to_time(dt_string):
-    # gets an SQL DATETIME string and returns a datetime.time
-    # 1997-07-18 14:00:00 -> [14, 0, 0]
+    """
+    gets an SQL DATETIME string and returns a datetime.time
+    1997-07-18 14:00:00 -> [14, 0, 0]
+    """
     l = [int(x) for x in str(dt_string).split(" ")[1].split(":")]
     return datetime.time(l[0], l[1], l[2])
 
-
-# gets the user info from the database from a uni
-# returns a new User object
 def get_user_info():
+    """
+    gets the user info from the database from a uni
+    returns a new User object
+
+    """
     user = users.get_current_user()
     uni = email_to_uni(user.email())
 
@@ -330,7 +345,7 @@ def get_user_info():
 
 @app.route('/profile')
 def show_profile():
-    # find current user
+    """ find current user """
     current_user = None
     if users.get_current_user():
         current_user = get_user_info()
