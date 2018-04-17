@@ -114,8 +114,9 @@
           <ul id="post-container">
             <li>
                 <div class="mdl-card mdl-shadow--2dp posting-title">
-                  <div class="mdl-card__title">
+                    <div class="mdl-card__title">
                     <h2 class='mdl-card__title-text'>Your Listings</h2>
+                    </div>
                 </div>
             </li>
 
@@ -124,7 +125,7 @@
               <li>
                 <div class="mdl-card mdl-shadow--2dp posting fadeup" style="animation-delay: .{{ loop.index - 1 }}s" onclick="expandPost(this);">
                   <div class="mdl-card__title lunch">
-                      <h2 class='mdl-card__title-text'>{{ yourListing.week_day_name() }}, {{ yourListing.get_date() }} at {{ yourListing.get_time() }}</h2>
+                      <h2 class='mdl-card__title-text'>{{ yourListing.week_day_name() }}, {{ yourListing.parse_date() }} at {{ yourListing.parse_time() }}</h2>
                   </div>
                   <div class="mdl-card__supporting-text post-description">
                     Offered by: {{ current_user.first_name() }}

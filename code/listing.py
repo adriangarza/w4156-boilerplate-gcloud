@@ -10,19 +10,17 @@ class Listing:
 
     # copied code from ListForm -- is there a way to consolidate?
     def parse_date(self):
-        expirytime = self.expirytime.partition(" ")
-        date = expirytime[0]
-        return date
+        month = self.expirytime.strftime("%b")
+        listing_date = "{}. {}".format(month, self.expirytime.day)
+        return listing_date
 
     def parse_time(self):
-        expirytime = self.expirytime.partition(" ")
-        time = expirytime[2]
-        return time
+        time_no_military = self.expirytime.strftime("%I:%M%p")
+        return time_no_military
 
     def list_day_of_week(self):
-        # parsing the dateime input
-        date = self.parse_date()
-        wkday = date.weekday()
+        # parsing the datetime input
+        wkday = self.expirytime.weekday()
         return wkday
         # 0 = Monday, 1 = Tuesday, 2 = Wednesday, 3 = Thursday, 4 = Friday, 5 = Saturday, 6 = Sunday
 
@@ -66,16 +64,15 @@ class ListingPost:
         #y, m, d = [int(i) for i in date.split('-')]
         #month= datetime.date(y, m, d).strftime("%b")
         #listing_date = "{}. {}".format(month, d)
-        month = self.listing.expiryTime.strftime("%b")
-        listing_date = "{}. {}".format(month, self.listing.expiryTime.day)
-        return listing_date
+        date = self.listing.parse_date()
+        return date
 
     def get_time(self):
         # returns time in the format 01:00pm or 11:00am
         # time = self.listing.parse_time()
         # h, m = [int(i) for i in time.split(':')]
         # time_no_military = datetime.time(h,m,0).strftime("%I:%M%p")
-        time_no_military = self.listing.expiryTime.strftime("%I:%M%p")
+        time_no_military = self.listing.parse_time()
         return time_no_military
 
 
@@ -116,8 +113,8 @@ class ListForm:
             lChecker = False
             error = "empty"
         else:
-            time = time_parser ()
-            day = day_of_week ()
+            time = time_parser()
+            day = day_of_week()
             # Ferris Booth Hours
             if self.cafeteria == "Ferris Booth":
                 if day == 6:  # Sunday closed
