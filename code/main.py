@@ -130,11 +130,6 @@ def create_user():
             error = 'Empty answer in one field'
             db.close()
 
-        elif not user_check and error == 'bad pass':
-            error = 'Password is not valid: length of password is at least 8, and it should contain at all three of the \
-                    following: digits, uppercase letters, and lowercase letters.'
-            db.close()
-
         elif not unique:
             error = 'This UNI has been registered already.'
             db.close()
@@ -219,7 +214,7 @@ def create_listing():
             db.close()
 
         elif not listing_check and lerror == 'bad time':
-            lerror = listform_input.cafeteria + " is not open at the time selected"
+            lerror = listing.place + " is not open at the time selected"
             db.close()
 
         else:
