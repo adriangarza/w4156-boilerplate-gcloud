@@ -112,7 +112,7 @@ def create_user():
         # store in database
         insert_query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s')" % (uni, name, year, interests, school)
         # print('query generated')
-        # print(query)
+        print(insert_query)
 
         try:
             cursor.execute(insert_query)
