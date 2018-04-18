@@ -374,10 +374,10 @@ def show_profile():
 
 
     if not listingposts:
-        return render_template('/profile/index.html', current_user=u, listingposts=False)
+        return render_template('/profile/index.html', current_user=u, listingposts=False, logout_link=users.create_logout_url("/"))
 
     else:
-        return render_template('/profile/index.html', current_user=u, listingposts=listingposts)
+        return render_template('/profile/index.html', current_user=u, listingposts=listingposts, logout_link=users.create_logout_url("/"))
 
     # print("Your Listings: " + yourListings)
 
