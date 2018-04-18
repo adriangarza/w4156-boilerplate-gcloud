@@ -140,8 +140,7 @@
                   </div>
                   <div class="mdl-card__supporting-text post-description">
                       <p>Offered by: {{ listingpost.user.first_name() }}</p>
-                      <p><b> {% if listingpost.listing.needSwipe %} {{ listingpost.user.first_name() }} is offering a swipe {% else %}
-                          {{ listingpost.user.first_name() }} is in need of a swipe
+                      <p><b> {% if listingpost.listing.needSwipe %} {{ listingpost.user.first_name() }} is in need of a swipe 
                       {% endif %}</b></p>
                   </div>
                   <div class="panel-hidden">
