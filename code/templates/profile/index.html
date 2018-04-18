@@ -120,28 +120,40 @@
                 </div>
             </li>
 
-              {%  for yourListing in yourListings %}
+          {% if not listingposts %}
+
+              <li>
+                 <div class="mdl-card mdl-shadow--2dp posting fadeup" onclick="expandPost(this);">
+                  <div class="mdl-card__title lunch">
+                      <h2 class='mdl-card__title-text'> You have no listings!</h2>
+                  </div>
+                </div>
+              </li>
+
+          {% else %}
+
+              {%  for listingpost in listingposts %}
 
               <li>
                 <div class="mdl-card mdl-shadow--2dp posting fadeup" style="animation-delay: .{{ loop.index - 1 }}s" onclick="expandPost(this);">
                   <div class="mdl-card__title lunch">
-                      <h2 class='mdl-card__title-text'>{{ yourListing.week_day_name() }}, {{ yourListing.parse_date() }} at {{ yourListing.parse_time() }}</h2>
+                      <h2 class='mdl-card__title-text'>{{ listingpost.week_day() }}, {{ listingpost.get_date() }} at {{ listingpost.get_time() }}</h2>
                   </div>
                   <div class="mdl-card__supporting-text post-description">
-                    Offered by: {{ current_user.first_name() }}
+                    Offered by: {{ listingpost.user.first_name() }}
                   </div>
                   <div class="panel-hidden">
                     <div class="personal-info">
                       <div class="mdl-card__supporting-text info-list">
-                        <h3>{{ current_user.first_name() }}</h3>
-                        <p><b>School: </b>{{ current_user.school }}</p>
-                        <p><b>Year: </b>{{ current_user.class_name() }}</p>
-                        <p><b>Interests: </b>{{ current_user.interests }}</p>
+                        <h3>{{ listingpost.user.first_name() }}</h3>
+                        <p><b>School: </b>{{ listingpost.user.school }}</p>
+                        <p><b>Year: </b>{{ listingpost.user.class_name() }}</p>
+                        <p><b>Interests: </b>{{ listingpost.user.interests }}</p>
                       </div>
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
                         <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
-                          {{ current_user.uni }}@{% if current_user.school == 'Barnard'%}barnard{% else %}columbia{% endif %}.edu
+                          {{ listingpost.user.uni }}@{% if listingpost.user.school == 'Barnard'%}barnard{% else %}columbia{% endif %}.edu
                         </a>
                     </div>
                   </div>
@@ -151,6 +163,8 @@
               </li>
 
               {% endfor %}
+
+          {% endif %}
           </ul>
       </div>
 

@@ -346,20 +346,41 @@ def get_user_info():
 @app.route('/profile')
 def show_profile():
     """ find current user """
-    current_user = None
-    if users.get_current_user():
-        current_user = get_user_info()
-    else:
+
+    user = users.get_current_user()
+
+    if not user or not check_registered_user(email_to_uni(user.email())):
         return redirect("/")
 
-    # find their listings in the database
-    l1 = Listing(datetime.date(2018, 7, 18), datetime.time(7, 30, 0), 'cck2127', 'Diana Center')
-    l2 = Listing(datetime.date(2018, 6, 20), datetime.time(13, 30, 0), 'cck2127', 'Diana Center')
-    l3 = Listing(datetime.date(2018, 5, 11), datetime.time (18, 30, 0), 'cck2127', 'Diana Center')
+    uni = email_to_uni(user.email())
 
-    yourListings = [l1, l2, l3]
+    print(uni)
 
-    return render_template('/profile/index.html', current_user=current_user, yourListings=yourListings)
+    cursor = get_cursor()
+    # grab only the current user's listings
+    query = "SELECT l.expiryTime, l.needsSwipes, l.Place, u.uni, u.name, u.schoolYear, u.interests, u.schoolName" \
+            " from users u JOIN listings l ON u.uni=l.uni WHERE l.uni = '{}'".format(uni)
+
+    u = None
+    cursor.execute(query)
+    listingposts = []
+    for r in cursor.fetchall():
+        # TODO: make schoolYear an int
+        u = User(r[3], r[4], int(r[5]), r[6], r[7])
+        # we need to convert datetime into a separate date and time for the listing object
+        l = Listing(dt_to_date(r[0]), uni, r[2], r[1])
+        listingposts.append(ListingPost(l, u))
+        print(l.place)
+
+    if not listingposts:
+        return render_template('/profile/index.html', current_user=u, listingposts=False)
+
+    else:
+        return render_template('/profile/index.html', current_user=u, listingposts=listingposts)
+
+    # print("Your Listings: " + yourListings)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
