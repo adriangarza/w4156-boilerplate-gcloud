@@ -42,3 +42,7 @@ form {
 #bio {
     resize: none;
 }
+
+.error {
+    background: #f0d6d6; padding: 0.5em; 
+}

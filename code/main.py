@@ -213,13 +213,13 @@ def create_listing():
         db.close()
 
     elif not listing_check and lerror == 'bad time':
-        error = listing.place + " is not open at the time selected"
+        error = cafeteria + " is not open at the time selected"
         db.close()
 
     else:
         db.close()
 
-    return render_template('/listform/index.html', error=lerror)
+    return render_template('/listform/index.html', error=error)
 
 
 @app.route("/listform", methods=["GET"])
