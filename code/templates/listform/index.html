@@ -35,6 +35,9 @@
 <div class="fullpage" id="listing-container">
 	<div id="listing-card" class="mdl-card">
 		<h3>Where to eat?</h3>
+		{% if error %}
+			<p class=error><strong>Error:</strong> {{ error }} </p>
+		{% endif %}
 		<form action="#" method="post">
 		    
 		     	<div class="mdl-selectfield mdl-js-selectfield">
