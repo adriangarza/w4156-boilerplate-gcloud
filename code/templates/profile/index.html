@@ -137,10 +137,13 @@
               <li>
                 <div class="mdl-card mdl-shadow--2dp posting fadeup" style="animation-delay: .{{ loop.index - 1 }}s" onclick="expandPost(this);">
                   <div class="mdl-card__title lunch">
-                      <h2 class='mdl-card__title-text'>{{ listingpost.week_day() }}, {{ listingpost.get_date() }} at {{ listingpost.get_time() }}</h2>
+                      <h2 class='mdl-card__title-text'>{{ listingpost.listing.place }}, {{ listingpost.week_day() }}, {{ listingpost.get_date() }} at {{ listingpost.get_time() }}</h2>
                   </div>
                   <div class="mdl-card__supporting-text post-description">
-                    Offered by: {{ listingpost.user.first_name() }}
+                      <p>Offered by: {{ listingpost.user.first_name() }}</p>
+                      <p><b> {% if listingpost.listing.needSwipe %} {{ listingpost.user.first_name() }} is offering a swipe {% else %}
+                          {{ listingpost.user.first_name() }} is in need of a swipe
+                      {% endif %}</b></p>
                   </div>
                   <div class="panel-hidden">
                     <div class="personal-info">

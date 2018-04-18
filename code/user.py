@@ -13,7 +13,7 @@ class User:
         self.listings = []
 
     def add_listing(self, listing):
-        self.listings.append (self, listing)
+        self.listings.append(self, listing)
 
     def create_listing(self, expiry_time, place):
         listing = Listing (expiry_time, self.uni, place)

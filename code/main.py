@@ -256,7 +256,7 @@ def output():
         #TODO: make schoolYear an int
         u = User(r[0], r[1], int(r[2]), r[3], r[4])
         # we need to convert datetime into a separate date and time for the listing object
-        l = Listing(dt_to_date(r[5]), dt_to_time(r[5]), r[0], r[7])
+        l = Listing(r[5], r[0], r[7], r[6])
         posts.append(ListingPost(l, u))
 
     # serve index template
@@ -371,6 +371,7 @@ def show_profile():
         l = Listing(dt_to_date(r[0]), uni, r[2], r[1])
         listingposts.append(ListingPost(l, u))
         print(l.place)
+
 
     if not listingposts:
         return render_template('/profile/index.html', current_user=u, listingposts=False)

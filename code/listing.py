@@ -75,6 +75,10 @@ class ListingPost:
         time_no_military = self.listing.parse_time()
         return time_no_military
 
+    def get_place(self):
+        place = self.listing.place
+        return place
+
 
 class ListForm:
 
