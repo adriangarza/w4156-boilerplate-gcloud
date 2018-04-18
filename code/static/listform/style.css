@@ -9,6 +9,7 @@ body {
     background-size: cover;
 }
 
+
 #listing-container, #landing-container {
     display: flex;
     align-items: center;
@@ -59,6 +60,11 @@ h3 {
     font-family: "Fira Sans Condensed", sans-serif;
     border: 5px solid white;
     padding: 1rem 3rem;
+}
+
+.errormsg {
+    background: #f0d6d6; 
+    padding: 0.5em; 
 }
 
 #landing-container {
