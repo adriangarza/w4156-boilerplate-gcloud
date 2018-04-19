@@ -7,3 +7,8 @@
 Flask==0.10
 MySQL-python
 python-dateutil
+
+# potential fix: yaml not installed, somehow here locally and not in circleci
+# potential issues: differing versions of python
+# will putting yaml in requirements.txt fix it
+# indicative of environment management issues
