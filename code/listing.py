@@ -116,7 +116,7 @@ class ListForm:
         if self.cafeteria == "" or self.date == "" or self.time == "":
             lChecker = False
             error = "empty"
-        else:
+        elif True:
             time = self.time_parser()
             day = self.day_of_week()
             # Ferris Booth Hours
@@ -215,5 +215,12 @@ class ListForm:
                                 lChecker = self.time_range(start, end, time)
             if lChecker == False:
                 error = "bad time"
+        else: 
+            now = datetime.datetime.now()
+            exp = self.date + ' ' + self.time
+            exp = datetime.datetime.strptime(exp, '%Y-%m-%d %H:%M')
+            if exp < now:
+                lChecker = False
+                error = "past time"
 
         return lChecker, error
