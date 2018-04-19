@@ -47,8 +47,6 @@ class MainTest(unittest.TestCase):
 
     def setUp(self):
         self.app = main.app.test_client()
-
-
         # for mocking the users API
         self.testbed = testbed.Testbed()
         self.testbed.activate()
@@ -59,6 +57,7 @@ class MainTest(unittest.TestCase):
         pass
 
     def test_settings(self):
+        self.loginUser()
         rv = self.app.get("/profile")
         self.check_culunch(rv)
 
@@ -98,6 +97,7 @@ class ListingValidTest(unittest.TestCase):
         #good
         listform = ListForm("Diana", "2018-04-18", "13:00", 1)
         self.assertTrue(listform.listform_datetime_valid())
+        #                        listform_dateime_valid
 
         #no cafeteria
         listform = ListForm("", "2018-04-18", "13:00", 0)

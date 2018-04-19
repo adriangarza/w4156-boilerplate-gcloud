@@ -110,7 +110,7 @@ class ListForm:
         else:
             return start <= x or x <= end
 
-    def listform_dateime_valid(self):
+    def listform_datetime_valid(self):
         lChecker = True
         error = ''
         if self.cafeteria == "" or self.date == "" or self.time == "":
