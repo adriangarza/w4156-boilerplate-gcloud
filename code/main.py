@@ -212,12 +212,12 @@ def create_listing():
         error = 'Empty answer in one field'
         db.close()
 
-    elif not listing_check and lerror == 'past time':
-        error = 'You chose a time or date of the past'
-        db.close()
-
     elif not listing_check and lerror == 'bad time':
         error = cafeteria + " is not open at the time selected"
+        db.close()
+
+    elif not listing_check and lerror == 'past time':
+        error = 'You chose a time or date of the past'
         db.close()
 
     else:
