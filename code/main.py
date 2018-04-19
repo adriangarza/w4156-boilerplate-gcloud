@@ -187,7 +187,7 @@ def create_listing():
     cursor.execute('use cuLunch')
 
     listform_input = ListForm(cafeteria, date, time, needSwipe)
-    listing_check, lerror = listform_input.listform_dateime_valid()
+    listing_check, error = listform_input.listform_datetime_valid()
 
     if listing_check: 
 
@@ -208,15 +208,15 @@ def create_listing():
         db.close()
         return redirect(url_for('output'))
 
-    elif not listing_check and lerror == 'empty':
+    elif not listing_check and error == 'empty':
         error = 'Empty answer in one field'
         db.close()
 
-    elif not listing_check and lerror == 'bad time':
+    elif not listing_check and error == 'bad time':
         error = cafeteria + " is not open at the time selected"
         db.close()
 
-    elif not listing_check and lerror == 'past time':
+    elif not listing_check and error == 'past time':
         error = 'You chose a time or date of the past'
         db.close()
 
