@@ -53,7 +53,7 @@ class MainTest(unittest.TestCase):
         self.testbed.init_user_stub()
 
     def test_index(self):
-        # make sure it stays on the landing page for a non-registered user
+        """ make sure it stays on the landing page for a non-registered user """
         pass
 
     def test_settings(self):
@@ -67,11 +67,11 @@ class MainTest(unittest.TestCase):
         self.check_culunch(rv)
 
     def tearDown(self):
-        # self.testbed.deactivate()
+        """ self.testbed.deactivate() """
         pass
 
-# user creation validation
 class UserValidTest(unittest.TestCase):
+    """user creation validation"""
 
     def test_form(self):
         # good
@@ -90,8 +90,8 @@ class UserValidTest(unittest.TestCase):
         form = Form("Shelley", "S", "", "school", "year", "interests")
         self.assertTrue((form.form_input_valid() == (False, 'empty')))
 
-# some listing creation validation
 class ListingValidTest(unittest.TestCase):
+    """ some listing creation validation """
     
     def test_listform(self):
         #good
