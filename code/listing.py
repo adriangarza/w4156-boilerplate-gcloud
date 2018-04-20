@@ -222,5 +222,5 @@ class ListForm:
                 if exp < now:
                     lChecker = False
                     error = "past time"
-] 
+                     
         return lChecker, error
