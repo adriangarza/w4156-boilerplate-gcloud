@@ -120,7 +120,7 @@ class ListingValidTest(unittest.TestCase):
         self.assertTrue(listform.listform_datetime_valid() == (False, 'bad time'))
 
         #invalid JJ time
-        listform = ListForm("JJs Place", "2018-06-29", "8:00", 1)
+        listform = ListForm("JJs Place", "2018-06-29", "11:00", 1)
         self.assertTrue(listform.listform_datetime_valid() == (False, 'bad time'))
 
         #invalid Hewitt time
