@@ -113,16 +113,10 @@ class ListForm:
     def listform_datetime_valid(self):
         lChecker = True
         error = ''
-        now = datetime.datetime.now()
-        exp = self.date + ' ' + self.time
-        exp = datetime.datetime.strptime(exp, '%Y-%m-%d %H:%M')
         if self.cafeteria == "" or self.date == "" or self.time == "":
             lChecker = False
             error = "empty"
-        elif exp < now:
-            lChecker = False
-            error = "past time"
-        else:
+        elif lChecker == True:
             time = self.time_parser()
             day = self.day_of_week()
             # Ferris Booth Hours
@@ -221,6 +215,12 @@ class ListForm:
                                 lChecker = self.time_range(start, end, time)
             if lChecker == False:
                 error = "bad time"
-            
-
+            else:
+                now = datetime.datetime.now()
+                exp = self.date + ' ' + self.time
+                exp = datetime.datetime.strptime(exp, '%Y-%m-%d %H:%M')
+                if exp < now:
+                    lChecker = False
+                    error = "past time"
+] 
         return lChecker, error
