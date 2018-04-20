@@ -112,19 +112,23 @@ class ListingValidTest(unittest.TestCase):
         self.assertTrue(listform.listform_datetime_valid() == (False, 'empty'))
 
         #invalid Ferris time
-        listform = ListForm("Ferris Booth", "2018-06-30", "13:00", 1)
+        listform = ListForm("Ferris Booth", "2018-06-24", "13:00", 1)
         self.assertTrue(listform.listform_datetime_valid() == (False, 'bad time'))
 
         #invalid John Jay time
-        listform = ListForm("John Jay", "2018-06-29", "13:00", 1)
+        listform = ListForm("John Jay", "2018-06-29", "13:00", 0)
+        self.assertTrue(listform.listform_datetime_valid() == (False, 'bad time'))
+
+        #invalid JJ time
+        listform = ListForm("JJs Place", "2018-06-29", "4:00", 1)
         self.assertTrue(listform.listform_datetime_valid() == (False, 'bad time'))
 
         #invalid Hewitt time
-        listform = ListForm("Hewitt", "2018-06-30", "16:00", 1)
+        listform = ListForm("Hewitt", "2018-06-24", "16:00", 0)
         self.assertTrue(listform.listform_datetime_valid() == (False, 'bad time'))
 
         #invalid Diana time
-        listform = ListForm("Diana", "2018-06-25", "20:00", 1)
+        listform = ListForm("Diana", "2018-06-30", "20:00", 1)
         self.assertTrue(listform.listform_datetime_valid() == (False, 'bad time'))
 
 
