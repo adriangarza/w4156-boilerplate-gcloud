@@ -4,7 +4,7 @@ import datetime
 import os
 import re
 import sys
-from user import *
+from user import User, Form
 from listing import *
 
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
@@ -348,7 +348,6 @@ def show_profile():
     listingposts = []
     for r in cursor.fetchall():
         u = User(r[3], r[4], r[5], r[6], r[7])
-        # we need to convert datetime into a separate date and time for the listing object
         l = Listing(r[0], uni, r[2], r[1])
         listingposts.append(ListingPost(l, u))
         print(l.place)
