@@ -81,8 +81,8 @@ def create_user():
     school = request.form['school_field']
     year = int(request.form['year_field'])
     interests = request.form['interests_field']
-    user = users.get_current_user()
-    uni = email_to_uni(user.email())
+    curr_user = users.get_current_user()
+    uni = email_to_uni(curr_user.email())
 
     # connect to db
     db = connect_to_cloudsql()
@@ -142,14 +142,14 @@ def create_user():
 
 @app.route('/', methods=['GET'])
 def landing_page():
-    user = users.get_current_user()
-    if user:
+    curr_user = users.get_current_user()
+    if curr_user:
         logout_url = users.create_logout_url('/')
 
         # then check if it's a valid uni and they have an account
-        if valid_uni(user.email()):
+        if valid_uni(curr_user.email()):
             # if they have an account
-            if check_registered_user(email_to_uni(user.email())):
+            if check_registered_user(email_to_uni(curr_user.email())):
                 # redirect them to the listings page for their user
                 return redirect("/listings")
             else:
@@ -158,7 +158,7 @@ def landing_page():
                                        account_creation=True,
                                        user_logged_in=True,
                                        logout_url=logout_url,
-                                       uni=email_to_uni(user.email()))
+                                       uni=email_to_uni(curr_user.email()))
 
         else:
             # then immediately log them out (unauthorized email)
@@ -364,9 +364,9 @@ def show_profile():
 @app.route("/profile/delete", methods=['POST'])
 def delete_posting():
     """ get the current user """
-    user = users.get_current_user()
-    uni = email_to_uni(user.email())
-    if not user or not check_registered_user(uni):
+    curr_user = users.get_current_user()
+    uni = email_to_uni(curr_user.email())
+    if not curr_user or not check_registered_user(uni):
         print("unauthorized DELETE request from {}".format(uni))
         return redirect("/", code=401)
 
