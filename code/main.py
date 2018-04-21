@@ -9,7 +9,7 @@ from listing import *
 
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
-from flask import Flask, make_response, request, url_for, redirect, render_template
+from flask import Flask, make_response, request, url_for, redirect, render_template, json
 import MySQLdb
 
 
@@ -305,25 +305,6 @@ def get_cursor():
     cursor.execute("use cuLunch")
     return cursor
 
-
-def dt_to_date(dt_string):
-    """
-    gets an SQL DATETIME string and returns a datetime.date
-    1997-07-18 14:00:00 -> [1997, 7, 18]
-    delightfully devilish, seymour
-    """
-    l = [int(x) for x in str(dt_string).split(" ")[0].split("-")]
-    return datetime.date(l[0], l[1], l[2])
-
-
-def dt_to_time(dt_string):
-    """
-    gets an SQL DATETIME string and returns a datetime.time
-    1997-07-18 14:00:00 -> [14, 0, 0]
-    """
-    l = [int(x) for x in str(dt_string).split(" ")[1].split(":")]
-    return datetime.time(l[0], l[1], l[2])
-
 def get_user_info():
     """
     gets the user info from the database from a uni
@@ -345,14 +326,9 @@ def get_user_info():
     return User(r[0], r[1], r[2], r[3], r[4])
 
 
-@app.route('/profile', methods=['GET', 'POST'])
+@app.route('/profile', methods=['GET'])
 def show_profile():
     """ find current user """
-
-    if request.method == 'POST':
-        if request.form['submit'] == 'delete_button':
-            print("wants to delete")
-
     user = users.get_current_user()
 
     if not user or not check_registered_user(email_to_uni(user.email())):
@@ -373,18 +349,43 @@ def show_profile():
     for r in cursor.fetchall():
         u = User(r[3], r[4], r[5], r[6], r[7])
         # we need to convert datetime into a separate date and time for the listing object
-        l = Listing(dt_to_date(r[0]), uni, r[2], r[1])
+        l = Listing(r[0], uni, r[2], r[1])
         listingposts.append(ListingPost(l, u))
         print(l.place)
 
+    return render_template('/profile/index.html',
+                           current_user=u,
+                           listingposts=listingposts if listingposts else False,
+                           logout_link=users.create_logout_url("/"),
+                           user_email = user.email())
 
-    if not listingposts:
-        return render_template('/profile/index.html', current_user=u, listingposts=False, logout_link=users.create_logout_url("/"))
 
-    else:
-        return render_template('/profile/index.html', current_user=u, listingposts=listingposts, logout_link=users.create_logout_url("/"))
+""" this has to be post so flask will accept a request body """
+@app.route("/profile/delete", methods=['POST'])
+def delete_posting():
+    """ get the current user """
+    user = users.get_current_user()
+    uni = email_to_uni(user.email())
+    if not user or not check_registered_user(uni):
+        print("unauthorized DELETE request from {}".format(uni))
+        return redirect("/", code=401)
 
-    # print("Your Listings: " + yourListings)
+
+    post_info = request.get_json()
+    print(post_info)
+    uni = post_info["uni"]
+    """ this datetime exactly matches the SQL datetime format, no parsing needed """
+    datetime = post_info["datetime"]
+    print("delete request from uni {} for datetime {}".format(uni, datetime))
+
+    """ then make sure it exists in the database and remove it with commit/rollback if it fails """
+
+    """ on success, do this, otherwise return failure with a 404 if there's no matching request object """
+    """ actually if that's the last listing from the user it might be better to reload to get the 
+        "you have no listings!" message
+        (or just do it with jquery or something) """
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+
 
 
 if __name__ == '__main__':

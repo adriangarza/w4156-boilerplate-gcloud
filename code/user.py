@@ -11,6 +11,10 @@ class User:
         self.interests = interests
         self.school = school
         self.listings = []
+        if school == "Barnard":
+            self.email = self.uni + "@barnard.edu"
+        else:
+            self.email = self.uni + "@columbia.edu"
 
     def add_listing(self, listing):
         self.listings.append(self, listing)

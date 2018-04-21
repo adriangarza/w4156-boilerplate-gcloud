@@ -2,25 +2,26 @@ import datetime
 
 class Listing:
 
-    def __init__(self, expirytime, uni, place, needSwipe):
-        self.expirytime = expirytime
+    def __init__(self, sql_dateTime, uni, place, needSwipe):
+        self.expiryTime = self.dt_to_date(sql_dateTime)
+        self.expiryDateTime = sql_dateTime
         self.uni = uni
         self.place = place
         self.needSwipe = needSwipe
 
     # copied code from ListForm -- is there a way to consolidate?
     def parse_date(self):
-        month = self.expirytime.strftime("%b")
-        listing_date = "{}. {}".format(month, self.expirytime.day)
+        month = self.expiryTime.strftime("%b")
+        listing_date = "{}. {}".format(month, self.expiryTime.day)
         return listing_date
 
     def parse_time(self):
-        time_no_military = self.expirytime.strftime("%I:%M%p")
+        time_no_military = self.expiryTime.strftime("%I:%M%p")
         return time_no_military
 
     def list_day_of_week(self):
         # parsing the datetime input
-        wkday = self.expirytime.weekday()
+        wkday = self.expiryTime.weekday()
         return wkday
         # 0 = Monday, 1 = Tuesday, 2 = Wednesday, 3 = Thursday, 4 = Friday, 5 = Saturday, 6 = Sunday
 
@@ -42,6 +43,22 @@ class Listing:
             day = 'Sunday'
         return day
 
+    def dt_to_date(self, dt_string):
+        """
+        gets an SQL DATETIME string and returns a datetime.date
+        1997-07-18 14:00:00 -> [1997, 7, 18]
+        delightfully devilish, seymour
+        """
+        l = [int(x) for x in str(dt_string).split(" ")[0].split("-")]
+        return datetime.date(l[0], l[1], l[2])
+
+    def dt_to_time(self, dt_string):
+        """
+        gets an SQL DATETIME string and returns a datetime.time
+        1997-07-18 14:00:00 -> [14, 0, 0]
+        """
+        l = [int(x) for x in str(dt_string).split(" ")[1].split(":")]
+        return datetime.time(l[0], l[1], l[2])
 
 class ListingPost:
 

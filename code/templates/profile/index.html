@@ -2,185 +2,195 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css" />
-  <link rel="stylesheet" href="https://cdn.rawgit.com/kybarg/mdl-selectfield/mdl-menu-implementation/mdl-selectfield.min.css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.rawgit.com/kybarg/mdl-selectfield/mdl-menu-implementation/mdl-selectfield.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 
-  <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"> </script>
-  	<script src="https://cdn.rawgit.com/kybarg/mdl-selectfield/mdl-menu-implementation/mdl-selectfield.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="../../static/settings/style.css">
-  <link rel="stylesheet" type="text/css" href="../../static/listings/style.css">
-  <title>My Profile | CU@Lunch</title>
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
+    <script src="https://cdn.rawgit.com/kybarg/mdl-selectfield/mdl-menu-implementation/mdl-selectfield.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../static/settings/style.css">
+    <link rel="stylesheet" type="text/css" href="../../static/listings/style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js "></script>
+
+
+    <title>My Profile | CU@Lunch</title>
 </head>
 
 <body class="dotbg">
-	<div class="mdl-layout mdl-js-layout dotbg">
-	  <header class="mdl-layout__header mdl-layout__header--transparent gradientbg">
-	    <div class="mdl-layout__header-row">
-	      <!-- Title -->
-	      <span class="mdl-layout-title">My Profile</span>
-	      <!-- Add spacer, to align navigation to the right -->
-	      <div class="mdl-layout-spacer"></div>
-	      <!-- Navigation -->
-	      <nav class="mdl-navigation">
-	      	<a class="mdl-navigation__link" href="../listings">Home</a>
-	        <a class="mdl-navigation__link" href="">My Profile</a>
-	        <a class="mdl-navigation__link" href={{ logout_link }}>Logout</a>
-	      </nav>
-	    </div>
-	  </header>
-	  <div class="mdl-layout__drawer">
-	    <span class="mdl-layout-title">Navigation</span>
-	    <nav class="mdl-navigation">
-	      <a class="mdl-navigation__link" href="">My Profile</a>
-	      <a class="mdl-navigation__link" href="listings">All Listings</a>
-	    </nav>
-	  </div>
-	  <main class="mdl-layout__content">
-
-	    <div class="container mdl-grid">
-
-	      <div class='mdl-cell mdl-cell--4-col'></div>
-
-	      <div class='mdl-cell mdl-cell--4-col' >
-	      	<div class="mdl-card mdl-shadow--2dp settings-card">
-	      		  <div class="mdl-card__title">
-				    <h2 class="mdl-card__title-text">Edit Profile</h2>
-				  </div>
-			<form action="#">
-			    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-				    <input class="mdl-textfield__input" type="text" id="name" value={{ current_user.name }}>
-				    <label class="mdl-textfield__label" for="name">Name</label>
-			    </div>
-
-			   	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-				    <input class="mdl-textfield__input" type="text" id="uni" value={{ current_user.uni }}>
-				    <label class="mdl-textfield__label" for="uni">UNI</label>
-			    </div>
-
-			   	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-				    <input class="mdl-textfield__input" type="password" id="password" value="don't">
-				    <label class="mdl-textfield__label" for="password">Password</label>
-			    </div>
-
-			    <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-			        <select class="mdl-selectfield__select" id="school" name="School" value={{ current_user.school }}>
-			          <option value=""></option>
-			          <option selected= "selected" value="cc">Columbia College</option>
-			          <option value="barnard">Barnard</option>
-			          <option value="seas">SEAS</option>
-                      <option value="general_studies">General Studies</option>
-			        </select>
-			        <label class="mdl-selectfield__label" for="school">School</label>
-		        </div>
-
-		       	<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-			        <select class="mdl-selectfield__select" id="year" name="Year" value=current_user.year>
-			          <option value=""></option>
-			          <option selected="selected" value="2018">2018</option>
-			          <option value="2019">2019</option>
-			          <option value="2020">2020</option>
-			          <option value="2021">2021</option>
-			        </select>
-			        <label class="mdl-selectfield__label" for="year">Year</label>
-		        </div>
-
-			    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-				    <textarea class="mdl-textfield__input" type="text" rows="4" id="bio">{{ current_user.interests }}</textarea>
-				    <label class="mdl-textfield__label" for="bio">Bio</label>
-				</div>
-			</form>
-
-			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent gradientbg" id="register-button">
-			  	Save
-			</button>
-	      	</div>
-	      </div>
-
-	      <div class="mdl-cell mdl-cell--4-col"></div>
-
-	    </div>
-
-
-
-
-
-	    <div class="container mdl-grid">
-
-      <div class='mdl-cell mdl-cell--3-col'></div>
-
-      <div class='mdl-cell mdl-cell--6-col' >
-          <ul id="post-container">
-            <li>
-                <div class="mdl-card mdl-shadow--2dp posting-title">
-                    <div class="mdl-card__title">
-                    <h2 class='mdl-card__title-text'>Your Listings</h2>
-                    </div>
-                </div>
-            </li>
-
-          {% if not listingposts %}
-
-              <li>
-                 <div class="mdl-card mdl-shadow--2dp posting fadeup">
-                  <div class="mdl-card__title lunch">
-                      <h2 class='mdl-card__title-text'> You have no listings!</h2>
-                  </div>
-                </div>
-              </li>
-
-          {% else %}
-
-              {%  for listingpost in listingposts %}
-
-              <li>
-                <div class="mdl-card mdl-shadow--2dp posting fadeup" style="animation-delay: .{{ loop.index - 1 }}s" onclick="expandPost(this);">
-                  <div class="mdl-card__title lunch">
-                      <h2 class='mdl-card__title-text' id="info" place={{ listingpost.listing.place }} expirytime={{ listingpost.listing.expirytime }}>{{ listingpost.listing.place }}, {{ listingpost.week_day() }}, {{ listingpost.get_date() }} at {{ listingpost.get_time() }}</h2>
-                  </div>
-                  <div class="mdl-card__supporting-text post-description">
-                      <p>Offered by: {{ listingpost.user.first_name() }}</p>
-                      <p><b> {% if listingpost.listing.needSwipe %} {{ listingpost.user.first_name() }} is in need of a swipe 
-                      {% endif %}</b></p>
-                  </div>
-                  <div class="panel-hidden">
-                    <div class="personal-info">
-                      <div class="mdl-card__supporting-text info-list">
-                        <h3>{{ listingpost.user.first_name() }}</h3>
-                        <p><b>School: </b>{{ listingpost.user.school }}</p>
-                        <p><b>Year: </b>{{ listingpost.user.class_name() }}</p>
-                        <p><b>Interests: </b>{{ listingpost.user.interests }}</p>
-                      </div>
-                    </div>
-                    <div class="mdl-card__actions mdl-card--border">
-                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="mailto:ahg2142@columbia.edu">
-                          {{ listingpost.user.uni }}@{% if listingpost.user.school == 'Barnard'%}barnard{% else %}columbia{% endif %}.edu
-                        </a>
-                    </div>
-                    <form action = "profile", method = "post">
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent gradientbg" input type= "submit" name="submit" value="delete_button" id="delete-button">
-                            Delete
-                        </button>
-                    </form>
-                  </div>
-
-                  <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
-                </div>
-              </li>
-
-              {% endfor %}
-
-          {% endif %}
-          </ul>
-      </div>
-
-      <div class='mdl-cell mdl-cell--3-col'></div>
-
+<div class="mdl-layout mdl-js-layout dotbg">
+    <header class="mdl-layout__header mdl-layout__header--transparent gradientbg">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title">My Profile</span>
+            <!-- Add spacer, to align navigation to the right -->
+            <div class="mdl-layout-spacer"></div>
+            <!-- Navigation -->
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" href="../listings">Home</a>
+                <a class="mdl-navigation__link" href="">My Profile</a>
+                <a class="mdl-navigation__link" href={{ logout_link }}>Logout</a>
+            </nav>
+        </div>
+    </header>
+    <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Navigation</span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="">My Profile</a>
+            <a class="mdl-navigation__link" href="listings">All Listings</a>
+        </nav>
     </div>
-	</main>
-	</div>
+    <main class="mdl-layout__content">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js "></script>
-    <script type="text/javascript" src="../../static/listings/listings.js"></script>
+        <div class="container mdl-grid">
+
+            <div class='mdl-cell mdl-cell--4-col'></div>
+
+            <div class='mdl-cell mdl-cell--4-col'>
+                <div class="mdl-card mdl-shadow--2dp settings-card">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Edit Profile</h2>
+                    </div>
+                    <form action="#">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="name" value={{ current_user.name }}>
+                            <label class="mdl-textfield__label" for="name">Name</label>
+                        </div>
+
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="uni" value={{ current_user.uni }}>
+                            <label class="mdl-textfield__label" for="uni">UNI</label>
+                        </div>
+
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="password" id="password" value="don't">
+                            <label class="mdl-textfield__label" for="password">Password</label>
+                        </div>
+
+                        <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
+                            <select class="mdl-selectfield__select" id="school" name="School"
+                                    value={{ current_user.school }}>
+                                <option value=""></option>
+                                <option selected="selected" value="cc">Columbia College</option>
+                                <option value="barnard">Barnard</option>
+                                <option value="seas">SEAS</option>
+                                <option value="general_studies">General Studies</option>
+                            </select>
+                            <label class="mdl-selectfield__label" for="school">School</label>
+                        </div>
+
+                        <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
+                            <select class="mdl-selectfield__select" id="year" name="Year" value=current_user.year>
+                                <option value=""></option>
+                                <option selected="selected" value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                            </select>
+                            <label class="mdl-selectfield__label" for="year">Year</label>
+                        </div>
+
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <textarea class="mdl-textfield__input" type="text" rows="4"
+                                      id="bio">{{ current_user.interests }}</textarea>
+                            <label class="mdl-textfield__label" for="bio">Bio</label>
+                        </div>
+                    </form>
+
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent gradientbg"
+                            id="register-button">
+                        Save
+                    </button>
+                </div>
+            </div>
+
+            <div class="mdl-cell mdl-cell--4-col"></div>
+
+        </div>
+
+
+        <div class="container mdl-grid">
+
+            <div class='mdl-cell mdl-cell--3-col'></div>
+
+            <div class='mdl-cell mdl-cell--6-col'>
+                <ul id="post-container">
+                    <li>
+                        <div class="mdl-card mdl-shadow--2dp posting-title">
+                            <div class="mdl-card__title">
+                                <h2 class='mdl-card__title-text'>Your Listings</h2>
+                            </div>
+                        </div>
+                    </li>
+
+                    {% if not listingposts %}
+
+                        <li>
+                            <div class="mdl-card mdl-shadow--2dp posting fadeup">
+                                <div class="mdl-card__title lunch">
+                                    <h2 class='mdl-card__title-text'> You have no listings!</h2>
+                                </div>
+                            </div>
+                        </li>
+
+                    {% else %}
+
+                        {% for listingpost in listingposts %}
+
+                            <li>
+                                <div class="mdl-card mdl-shadow--2dp posting fadeup"
+                                     uni = "{{ listingpost.user.uni }}"
+                                     datetime = "{{ listingpost.listing.expiryDateTime }}"
+                                     style="animation-delay:0.{{ loop.index - 1 }}s" onclick="expandPost(this);">
+                                    <div class="mdl-card__title lunch">
+                                        <h2 class='mdl-card__title-text' id="info"
+                                            place={{ listingpost.listing.place }} expirytime={{ listingpost.listing.expirytime }}>{{ listingpost.listing.place }}, {{ listingpost.week_day() }}, {{ listingpost.get_date() }}
+                                            at {{ listingpost.get_time() }}</h2>
+                                    </div>
+                                    <div class="mdl-card__supporting-text post-description">
+                                        <p>Offered by: {{ listingpost.user.first_name() }}</p>
+                                        <p><b> {% if listingpost.listing.needSwipe %}
+                                            {{ listingpost.user.first_name() }} is in need of a swipe
+                                        {% endif %}</b></p>
+                                    </div>
+                                    <div class="panel-hidden">
+                                        <div class="personal-info">
+                                            <div class="mdl-card__supporting-text info-list">
+                                                <h3>{{ listingpost.user.first_name() }}</h3>
+                                                <p><b>School: </b>{{ listingpost.user.school }}</p>
+                                                <p><b>Year: </b>{{ listingpost.user.class_name() }}</p>
+                                                <p><b>Interests: </b>{{ listingpost.user.interests }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="mdl-card__actions mdl-card--border">
+                                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                                               href="mailto:{{ listingpost.user.email }}">
+                                                {{ listingpost.user.email }}
+                                            </a>
+                                        </div>
+                                            <button class="delete-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent gradientbg">
+                                                Delete
+                                            </button>
+                                    </div>
+
+                                    <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
+                                </div>
+                            </li>
+
+                        {% endfor %}
+
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class='mdl-cell mdl-cell--3-col'></div>
+
+        </div>
+    </main>
+</div>
+
+<script type="text/javascript" src="../../static/profile.js"></script>
+<script type="text/javascript" src="../../static/listings/listings.js"></script>
 </body>
 </html>
