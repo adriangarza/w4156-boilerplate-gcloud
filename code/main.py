@@ -79,7 +79,7 @@ def create_user():
     f_name = request.form['first_name_field']
     l_name = request.form['last_name_field']
     school = request.form['school_field']
-    year = request.form['year_field']
+    year = int(request.form['year_field'])
     interests = request.form['interests_field']
     user = users.get_current_user()
     uni = email_to_uni(user.email())
@@ -106,11 +106,10 @@ def create_user():
     if user_check and not registered:
 
         name = form_input.f_name + ' ' + form_input.l_name
-        user = User(uni, name, year, interests, school)
         # else send error to user
 
         # store in database
-        insert_query = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s', '%s')" % (uni, name, year, interests, school)
+        insert_query = "INSERT INTO users VALUES ('%s', '%s', '%d', '%s', '%s')" % (uni, name, year, interests, school)
         # print('query generated')
         print(insert_query)
 
@@ -187,7 +186,7 @@ def create_listing():
     cursor.execute('use cuLunch')
 
     listform_input = ListForm(cafeteria, date, time, needSwipe)
-    listing_check, lerror = listform_input.listform_dateime_valid()
+    listing_check, error = listform_input.listform_datetime_valid()
 
     if listing_check: 
 
@@ -208,12 +207,16 @@ def create_listing():
         db.close()
         return redirect(url_for('output'))
 
-    elif not listing_check and lerror == 'empty':
+    elif not listing_check and error == 'empty':
         error = 'Empty answer in one field'
         db.close()
 
-    elif not listing_check and lerror == 'bad time':
+    elif not listing_check and error == 'bad time':
         error = cafeteria + " is not open at the time selected"
+        db.close()
+
+    elif not listing_check and error == 'past time':
+        error = 'You chose a time or date of the past'
         db.close()
 
     else:
@@ -247,14 +250,14 @@ def output():
 
     cursor = get_cursor()
     # grab the relevant information and make sure the user doesn't see their own listings there
+    # TODO: determine whether the user should actually see their own listings (would let us consolidate code)
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
             "users u JOIN listings l ON u.uni=l.uni WHERE NOT u.uni = '{}'".format(uni)
 
     cursor.execute(query)
     posts = []
     for r in cursor.fetchall():
-        #TODO: make schoolYear an int
-        u = User(r[0], r[1], int(r[2]), r[3], r[4])
+        u = User(r[0], r[1], r[2], r[3], r[4])
         # we need to convert datetime into a separate date and time for the listing object
         l = Listing(r[5], r[0], r[7], r[6])
         posts.append(ListingPost(l, u))
@@ -338,8 +341,8 @@ def get_user_info():
         raise ValueError("User {} not found in database!".format(uni))
 
     r = cursor.fetchone()
-    #TODO: make the schoolyear an int (again)
-    return User(r[0], r[1], int(r[2]), r[3], r[4])
+    
+    return User(r[0], r[1], r[2], r[3], r[4])
 
 
 
@@ -365,8 +368,7 @@ def show_profile():
     cursor.execute(query)
     listingposts = []
     for r in cursor.fetchall():
-        # TODO: make schoolYear an int
-        u = User(r[3], r[4], int(r[5]), r[6], r[7])
+        u = User(r[3], r[4], r[5], r[6], r[7])
         # we need to convert datetime into a separate date and time for the listing object
         l = Listing(dt_to_date(r[0]), uni, r[2], r[1])
         listingposts.append(ListingPost(l, u))

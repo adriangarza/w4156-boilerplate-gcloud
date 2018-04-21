@@ -47,18 +47,17 @@ class MainTest(unittest.TestCase):
 
     def setUp(self):
         self.app = main.app.test_client()
-
-
         # for mocking the users API
         self.testbed = testbed.Testbed()
         self.testbed.activate()
         self.testbed.init_user_stub()
 
     def test_index(self):
-        # make sure it stays on the landing page for a non-registered user
+        """ make sure it stays on the landing page for a non-registered user """
         pass
 
     def test_settings(self):
+        self.loginUser()
         rv = self.app.get("/profile")
         self.check_culunch(rv)
 
@@ -68,11 +67,11 @@ class MainTest(unittest.TestCase):
         self.check_culunch(rv)
 
     def tearDown(self):
-        # self.testbed.deactivate()
+        """ self.testbed.deactivate() """
         pass
 
-# user creation validation
 class UserValidTest(unittest.TestCase):
+    """user creation validation"""
 
     def test_form(self):
         # good
@@ -91,16 +90,17 @@ class UserValidTest(unittest.TestCase):
         form = Form("Shelley", "S", "", "school", "year", "interests")
         self.assertTrue((form.form_input_valid() == (False, 'empty')))
 
-# some listing creation validation
 class ListingValidTest(unittest.TestCase):
+    """ some listing creation validation """
     
     def test_listform(self):
         #good
-        listform = ListForm("Diana", "2018-04-18", "13:00", 1)
+        listform = ListForm("Diana", "2018-06-27", "13:00", 1)
         self.assertTrue(listform.listform_datetime_valid())
+        #                        listform_dateime_valid
 
         #no cafeteria
-        listform = ListForm("", "2018-04-18", "13:00", 0)
+        listform = ListForm("", "2018-06-27", "13:00", 0)
         self.assertTrue(listform.listform_datetime_valid() == (False, 'empty'))
 
         #no date
@@ -108,23 +108,27 @@ class ListingValidTest(unittest.TestCase):
         self.assertTrue(listform.listform_datetime_valid() == (False, 'empty'))
 
         #no time
-        listform = ListForm("Diana", "2018-04-18", "", 0)
+        listform = ListForm("Diana", "2018-06-27", "", 0)
         self.assertTrue(listform.listform_datetime_valid() == (False, 'empty'))
 
         #invalid Ferris time
-        listform = ListForm("Ferris Booth", "2018-04-21", "13:00", 1)
+        listform = ListForm("Ferris Booth", "2018-06-24", "13:00", 1)
         self.assertTrue(listform.listform_datetime_valid() == (False, 'bad time'))
 
         #invalid John Jay time
-        listform = ListForm("John Jay", "2018-04-20", "13:00", 1)
+        listform = ListForm("John Jay", "2018-06-29", "13:00", 0)
+        self.assertTrue(listform.listform_datetime_valid() == (False, 'bad time'))
+
+        #invalid JJ time
+        listform = ListForm("JJs Place", "2018-06-29", "11:00", 1)
         self.assertTrue(listform.listform_datetime_valid() == (False, 'bad time'))
 
         #invalid Hewitt time
-        listform = ListForm("Hewitt", "2018-04-21", "16:00", 1)
+        listform = ListForm("Hewitt", "2018-06-24", "16:00", 0)
         self.assertTrue(listform.listform_datetime_valid() == (False, 'bad time'))
 
         #invalid Diana time
-        listform = ListForm("Diana", "2018-04-18", "20:00", 1)
+        listform = ListForm("Diana", "2018-06-30", "20:00", 1)
         self.assertTrue(listform.listform_datetime_valid() == (False, 'bad time'))
 
 
