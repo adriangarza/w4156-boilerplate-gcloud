@@ -122,7 +122,7 @@
           {% if not listingposts %}
 
               <li>
-                 <div class="mdl-card mdl-shadow--2dp posting fadeup" onclick="expandPost(this);">
+                 <div class="mdl-card mdl-shadow--2dp posting fadeup">
                   <div class="mdl-card__title lunch">
                       <h2 class='mdl-card__title-text'> You have no listings!</h2>
                   </div>
@@ -136,7 +136,7 @@
               <li>
                 <div class="mdl-card mdl-shadow--2dp posting fadeup" style="animation-delay: .{{ loop.index - 1 }}s" onclick="expandPost(this);">
                   <div class="mdl-card__title lunch">
-                      <h2 class='mdl-card__title-text'>{{ listingpost.listing.place }}, {{ listingpost.week_day() }}, {{ listingpost.get_date() }} at {{ listingpost.get_time() }}</h2>
+                      <h2 class='mdl-card__title-text' id="info" place={{ listingpost.listing.place }} expirytime={{ listingpost.listing.expirytime }}>{{ listingpost.listing.place }}, {{ listingpost.week_day() }}, {{ listingpost.get_date() }} at {{ listingpost.get_time() }}</h2>
                   </div>
                   <div class="mdl-card__supporting-text post-description">
                       <p>Offered by: {{ listingpost.user.first_name() }}</p>
@@ -157,9 +157,11 @@
                           {{ listingpost.user.uni }}@{% if listingpost.user.school == 'Barnard'%}barnard{% else %}columbia{% endif %}.edu
                         </a>
                     </div>
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent gradientbg" id="delete-button">
-			  			Delete
-					</button>
+                    <form action = "profile", method = "post">
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent gradientbg" input type= "submit" name="submit" value="delete_button" id="delete-button">
+                            Delete
+                        </button>
+                    </form>
                   </div>
 
                   <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>

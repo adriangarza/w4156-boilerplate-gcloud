@@ -345,10 +345,13 @@ def get_user_info():
     return User(r[0], r[1], r[2], r[3], r[4])
 
 
-
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def show_profile():
     """ find current user """
+
+    if request.method == 'POST':
+        if request.form['submit'] == 'delete_button':
+            print("wants to delete")
 
     user = users.get_current_user()
 
@@ -382,7 +385,6 @@ def show_profile():
         return render_template('/profile/index.html', current_user=u, listingposts=listingposts, logout_link=users.create_logout_url("/"))
 
     # print("Your Listings: " + yourListings)
-
 
 
 if __name__ == '__main__':
