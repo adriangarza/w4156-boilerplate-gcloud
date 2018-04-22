@@ -2,8 +2,8 @@ from __future__ import print_function
 from google.appengine.ext import vendor
 import os
 import re
-from user import User, Form
-from listing import *
+from code.user import User, Form
+from code.listing import *
 
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
