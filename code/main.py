@@ -252,7 +252,7 @@ def output():
     # grab the relevant information and make sure the user doesn't see their own listings there
     # TODO: determine whether the user should actually see their own listings (would let us consolidate code)
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
-            "users u JOIN listings l ON u.uni=l.uni WHERE NOT u.uni = '{}'".format(uni)
+            "users u JOIN listings l ON u.uni=l.uni WHERE NOT u.uni = '{}' ORDER BY l.expiryTime".format(uni)
 
     me = find_user(uni)
     cursor.execute(query)
