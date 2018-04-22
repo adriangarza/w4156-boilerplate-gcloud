@@ -348,7 +348,14 @@ def show_profile():
         u = User(r[3], r[4], r[5], r[6], r[7])
         l = Listing(r[0], uni, r[2], r[1])
         listingposts.append(ListingPost(l, u))
-        print(l.place)
+
+    # find user
+    query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName from users u WHERE u.uni = '{}'".format(uni)
+
+    cursor.execute(query)
+
+    for r in cursor.fetchall():
+        u = User(r[0], r[1], r[2], r[3], r[4])
 
     return render_template('/profile/index.html',
                            current_user=u,
