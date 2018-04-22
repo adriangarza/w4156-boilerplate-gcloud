@@ -248,6 +248,7 @@ def output():
     # TODO: make this a self-contained function to get listings of not a current UNI?
     uni = email_to_uni(user.email())
 
+    
     cursor = get_cursor()
     # grab the relevant information and make sure the user doesn't see their own listings there
     # TODO: determine whether the user should actually see their own listings (would let us consolidate code)
