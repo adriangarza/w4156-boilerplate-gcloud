@@ -373,7 +373,7 @@ def show_profile():
     query = "SELECT l.expiryTime, l.needsSwipes, l.Place, u.uni, u.name, u.schoolYear, u.interests, u.schoolName" \
             " from users u JOIN listings l ON u.uni=l.uni WHERE l.uni = '{}'".format(uni)
 
-    u = current_user(uni)
+    u = find_user(uni)
     print(u.name, u.school)
     cursor.execute(query)
     listingposts = []
@@ -424,7 +424,7 @@ def delete_posting():
         db.rollback()
         return json.dumps({'success': False}), 404, {'ContentType': 'application/json'}
 
-def current_user(uni):
+def find_user(uni):
     cursor = get_cursor()
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName from users u WHERE u.uni = '{}'".format(uni)
     cursor.execute(query)
