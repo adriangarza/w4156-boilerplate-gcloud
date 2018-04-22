@@ -20,6 +20,8 @@ app = Flask(__name__, template_folder=tmpl_dir)
 
 from google.appengine.api import users
 
+schools = {"cc" : 'Columbia College', "barnard" : 'Barnard', "seas" : 'SEAS', "general_studies" : 'General Studies'}
+
 def connect_to_cloudsql():
 
     # When deployed to App Engine, the `SERVER_SOFTWARE` environment variable
@@ -271,8 +273,39 @@ def valid_uni(email):
     else:
         return False
 
+@app.route('/listings', methods=["POST"])
+def search_listings():
+    cafeteria = request.form['Cafeteria']
 
- 
+    user = users.get_current_user()
+
+    # can't see listings if you don't have an account :^)
+    if not user or not check_registered_user (email_to_uni (user.email ())):
+        return redirect("/")
+
+    # then fetch the listings
+    # TODO: make this a self-contained function to get listings of not a current UNI?
+    uni = email_to_uni (user.email ())
+
+    cursor = get_cursor ()
+    # grab the relevant information and make sure the user doesn't see their own listings there
+    # TODO: determine whether the user should actually see their own listings (would let us consolidate code)
+    query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
+            "users u JOIN listings l ON u.uni=l.uni WHERE l.Place = '{}' AND NOT u.uni = '{}'".format(cafeteria, uni)
+
+    cursor.execute(query)
+    posts = []
+    for r in cursor.fetchall ():
+        u = User(r[0], r[1], r[2], r[3], r[4])
+        # we need to convert datetime into a separate date and time for the listing object
+        l = Listing(r[5], r[0], r[7], r[6])
+        posts.append(ListingPost(l, u))
+
+    # serve index template
+    return render_template('/listings/index.html', listingposts=posts, name=user.nickname (),
+                            logout_link=users.create_logout_url("/"))
+
+
 def check_registered_user(uni):
     """ 
     Given an email, checks if it corresponds to a registered user in the database 
@@ -335,24 +368,29 @@ def show_profile():
 
     uni = email_to_uni(user.email())
 
+    print(uni)
+
     cursor = get_cursor()
     # grab only the current user's listings
     query = "SELECT l.expiryTime, l.needsSwipes, l.Place, u.uni, u.name, u.schoolYear, u.interests, u.schoolName" \
             " from users u JOIN listings l ON u.uni=l.uni WHERE l.uni = '{}'".format(uni)
 
-    u = current_user()
+    u = None
     cursor.execute(query)
     listingposts = []
     for r in cursor.fetchall():
-        u = User(r[3], r[4], r[5], r[6], r[7])
+        print(r[3], r[4], r[5], r[6], r[7])
+        u = User(r[3], r[4], r[5], r[6], schools[r[7]])
         l = Listing(r[0], uni, r[2], r[1])
         listingposts.append(ListingPost(l, u))
+        print(u.name, u.school)
+        print(l.place)
 
     return render_template('/profile/index.html',
                            current_user=u,
                            listingposts=listingposts if listingposts else False,
                            logout_link=users.create_logout_url("/"),
-                           user_email=user.email())
+                           user_email = user.email())
 
 
 """ this has to be post so flask will accept a request body """
@@ -389,20 +427,6 @@ def delete_posting():
         db.rollback()
         return json.dumps({'success': False}), 404, {'ContentType': 'application/json'}
 
-
-def current_user():
-    user = users.get_current_user()
-    uni = email_to_uni(user.email())
-
-    cursor = get_cursor()
-    query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName from users u WHERE u.uni = '{}'".format(uni)
-
-    cursor.execute(query)
-
-    for r in cursor.fetchall():
-        u = User(r[0], r[1], r[2], r[3], r[4])
-
-    return u
 
 if __name__ == '__main__':
     app.run(debug=True)
