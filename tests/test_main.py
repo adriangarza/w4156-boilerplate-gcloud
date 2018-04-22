@@ -131,6 +131,10 @@ class ListingValidTest(unittest.TestCase):
         listform = ListForm("Diana", "2018-06-30", "20:00", 1)
         self.assertTrue(listform.listform_datetime_valid() == (False, 'bad time'))
 
+        #invalid past time
+        listform = ListForm("Ferris Booth", "2018-03-30", "20:00", 1)
+        self.assertTrue(listform.listform_datetime_valid() == (False, 'past time'))
+
 
 if __name__ == '__main__':
     unittest.main()

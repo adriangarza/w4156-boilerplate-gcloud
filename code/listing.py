@@ -1,5 +1,6 @@
 import datetime
 
+
 class Listing:
 
     def __init__(self, sql_dateTime, uni, place, needSwipe):
@@ -100,7 +101,7 @@ class ListingPost:
 class ListForm:
 
     def __init__(self, cafeteria, date, time, swipe):
-        # type:(object, object, object, bool)
+        # type:(object, object, object, bool) -> object
         self.cafeteria = cafeteria
         self.date = date
         self.time = time
