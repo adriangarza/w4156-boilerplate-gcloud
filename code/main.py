@@ -254,6 +254,7 @@ def output():
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
             "users u JOIN listings l ON u.uni=l.uni WHERE NOT u.uni = '{}'".format(uni)
 
+    me = current_user()
     cursor.execute(query)
     posts = []
     for r in cursor.fetchall():
@@ -263,7 +264,7 @@ def output():
         posts.append(ListingPost(l, u))
 
     # serve index template
-    return render_template('/listings/index.html', listingposts=posts, name=user.nickname(), logout_link=users.create_logout_url("/"))
+    return render_template('/listings/index.html', current_user=me, listingposts=posts, name=user.nickname(), logout_link=users.create_logout_url("/"))
 
   
 def valid_uni(email):
