@@ -369,20 +369,27 @@ def delete_posting():
 
 
     post_info = request.get_json()
-    print(post_info)
     uni = post_info["uni"]
     """ this datetime exactly matches the SQL datetime format, no parsing needed """
     datetime = post_info["datetime"]
     print("delete request from uni {} for datetime {}".format(uni, datetime))
 
     """ then make sure it exists in the database and remove it with commit/rollback if it fails """
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute("use cuLunch")
 
-    """ on success, do this, otherwise return failure with a 404 if there's no matching request object """
-    """ actually if that's the last listing from the user it might be better to reload to get the 
-        "you have no listings!" message
-        (or just do it with jquery or something) """
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+    query = "DELETE FROM listings WHERE uni='{}' AND expiryTime='{}'".format(uni, datetime)
+    print(query)
 
+    try:
+        cursor.execute(query)
+        db.commit()
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+    except:
+        # rollback when an error occurs
+        db.rollback()
+        return json.dumps({'success': False}), 404, {'ContentType': 'application/json'}
 
 
 if __name__ == '__main__':
