@@ -187,3 +187,11 @@ ul {
 .error {
     background: #f0d6d6; padding: 0.5em; 
 }
+
+.search-card {
+    margin-top: 4rem;
+}
+
+.search-card .mdl-card__title {
+    background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+}
