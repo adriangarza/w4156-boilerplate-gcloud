@@ -10,6 +10,8 @@
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="../../static/listings/style.css">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>All Listings | CU@Lunch</title>
 </head>
 
@@ -95,9 +97,7 @@
                                 </div>
                                 <div class="mdl-card__supporting-text post-description">
                                     <p>Offered by: {{ listingpost.user.first_name() }}</p>
-                                    <p><b> {% if listingpost.listing.needSwipe %} {{ listingpost.user.first_name() }} is
-                                        in need of a swipe
-                                    {% endif %}</b></p>
+                                    {% if listingpost.listing.needSwipe %}  <div class="needSwipe">credit_card</div> {% endif %}
                                 </div>
                                 <div class="panel-hidden">
                                     <div class="personal-info">
@@ -106,6 +106,9 @@
                                             <p><b>School: </b>{{ listingpost.user.school }}</p>
                                             <p><b>Year: </b>{{ listingpost.user.class_name() }}</p>
                                             <p><b>Interests: </b>{{ listingpost.user.interests }}</p>
+                                            {% if listingpost.listing.needSwipe %}
+                                                <p><b>{{ listingpost.user.first_name() }} requests a swipe </b></p>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="mdl-card__actions mdl-card--border">
