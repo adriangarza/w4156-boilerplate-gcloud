@@ -1,9 +1,7 @@
 from __future__ import print_function
 from google.appengine.ext import vendor
-import datetime
 import os
 import re
-import sys
 from user import User, Form
 from listing import *
 
