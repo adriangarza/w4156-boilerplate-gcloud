@@ -367,22 +367,19 @@ def show_profile():
 
     uni = email_to_uni(user.email())
 
-    print(uni)
-
     cursor = get_cursor()
     # grab only the current user's listings
     query = "SELECT l.expiryTime, l.needsSwipes, l.Place, u.uni, u.name, u.schoolYear, u.interests, u.schoolName" \
             " from users u JOIN listings l ON u.uni=l.uni WHERE l.uni = '{}'".format(uni)
 
-    u = None
+    u = current_user(uni)
+    print(u.name, u.school)
     cursor.execute(query)
     listingposts = []
     for r in cursor.fetchall():
-        print(r[3], r[4], r[5], r[6], r[7])
         u = User(r[3], r[4], r[5], r[6], schools[r[7]])
         l = Listing(r[0], uni, r[2], r[1])
         listingposts.append(ListingPost(l, u))
-        print(u.name, u.school)
         print(l.place)
 
     return render_template('/profile/index.html',
@@ -425,6 +422,14 @@ def delete_posting():
         # rollback when an error occurs
         db.rollback()
         return json.dumps({'success': False}), 404, {'ContentType': 'application/json'}
+
+def current_user(uni):
+    cursor = get_cursor()
+    query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName from users u WHERE u.uni = '{}'".format(uni)
+    cursor.execute(query)
+    for r in cursor.fetchall():
+        u = User(r[0], r[1], r[2], r[3], schools[r[4]])
+    return u
 
 
 if __name__ == '__main__':
