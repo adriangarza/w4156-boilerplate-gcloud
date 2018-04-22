@@ -195,3 +195,37 @@ ul {
 .search-card .mdl-card__title {
     background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
 }
+
+.needSwipe {
+    font-family: "Material Icons";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24pt;  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+
+    content: "credit_card";
+    position: absolute;
+    right: 0px;
+    color: gray;
+    width: 28pt;
+    height: 28pt;
+    text-align: center;
+    vertical-align: middle;
+}
