@@ -110,7 +110,8 @@
                                     </div>
                                     <div class="mdl-card__actions mdl-card--border">
                                         <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-                                           href="mailto:ahg2142@columbia.edu">
+                                           href="{{ listingpost.user.uni }}@{% if listingpost.user.school == 'Barnard' %}
+                                            barnard{% else %}columbia{% endif %}.edu">
                                             {{ listingpost.user.uni }}@{% if listingpost.user.school == 'Barnard' %}
                                             barnard{% else %}columbia{% endif %}.edu
                                         </a>
