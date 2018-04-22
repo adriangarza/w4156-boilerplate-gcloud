@@ -4,7 +4,7 @@ import datetime
 class Listing:
 
     def __init__(self, sql_dateTime, uni, place, needSwipe):
-        self.expiryTime = self.dt_to_date(sql_dateTime)
+        self.expiryDate = self.dt_to_date(sql_dateTime)
         self.expiryDateTime = sql_dateTime
         self.uni = uni
         self.place = place
@@ -12,17 +12,17 @@ class Listing:
 
     # copied code from ListForm -- is there a way to consolidate?
     def parse_date(self):
-        month = self.expiryTime.strftime("%b")
-        listing_date = "{}. {}".format(month, self.expiryTime.day)
+        month = self.expiryDate.strftime("%b")
+        listing_date = "{}. {}".format(month, self.expiryDate.day)
         return listing_date
 
     def parse_time(self):
-        time_no_military = self.expiryTime.strftime("%I:%M%p")
+        time_no_military = self.dt_to_time(self.expiryDateTime).strftime("%I:%M%p")
         return time_no_military
 
     def list_day_of_week(self):
         # parsing the datetime input
-        wkday = self.expiryTime.weekday()
+        wkday = self.expiryDate.weekday()
         return wkday
         # 0 = Monday, 1 = Tuesday, 2 = Wednesday, 3 = Thursday, 4 = Friday, 5 = Saturday, 6 = Sunday
 
