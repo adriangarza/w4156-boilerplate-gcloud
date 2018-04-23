@@ -29,7 +29,8 @@
     <header class="mdl-layout__header mdl-layout__header--transparent">
         <div class="mdl-layout__header-row">
             <!-- Title -->
-            <span class="mdl-layout-title">All Listings</span>
+            <span class="mdl-layout-title">All Listings
+            </span>
             <!-- Add spacer, to align navigation to the right -->
             <div class="mdl-layout-spacer"></div>
             <!-- Navigation -->
@@ -47,6 +48,8 @@
             <a class="mdl-navigation__link" href="listings">All Listings</a>
         </nav>
     </div>
+
+
     <main class="mdl-layout__content">
 
         <div class="container mdl-grid">
@@ -56,9 +59,11 @@
             <div class='mdl-cell mdl-cell--2-col'>
                 <div class="mdl-card mdl-shadow--2dp posting-title search-card">
                     <div class="mdl-card__title">
-                        <h2 class='mdl-card__title-text'> Hello {{ current_user.name }}! </h2>
+                        <h2 class='mdl-card__title-text'> Hello, {{ current_user.first_name() }}! </h2>
                     </div>
                     <div class="mdl-card__supporting-text post-description">
+                        <p><b>There are currently {{ swipes }} students in need of swipes.</b></p>
+
                         Filter by:
                         <form class="filter-form" action="#" method="post">
                            <div class="mdl-selectfield mdl-js-selectfield">
@@ -128,8 +133,6 @@
                     {% endfor %}
 
                     <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
-            </div>
-            </li>
 
             </ul>
         </div>

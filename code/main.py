@@ -266,6 +266,7 @@ def output():
     except:
         print("SELECT for listings failed!")
         
+    swipes = 0
     posts = []
     for r in cursor.fetchall():
         u = User(r[0], r[1], r[2], r[3], r[4])
@@ -274,11 +275,13 @@ def output():
         if l.expiryDateTime > datetime.datetime.now():
             posts.append(ListingPost(l, u))
             print(str(l.expiryDateTime) + " ")
+            if l.needSwipe:
+                swipes += 1
 
     db.close()
 
     # serve index template
-    return render_template('/listings/index.html', current_user=me, listingposts=posts, name=user.nickname(), logout_link=users.create_logout_url("/"))
+    return render_template('/listings/index.html', swipes=swipes, current_user=me, listingposts=posts, name=user.nickname(), logout_link=users.create_logout_url("/"))
 
   
 def valid_uni(email):
@@ -309,18 +312,21 @@ def search_listings():
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
             "users u JOIN listings l ON u.uni=l.uni WHERE l.Place = '{}' AND NOT u.uni = '{}'".format(cafeteria, uni)
 
-    me = find_user (uni)
+    me = find_user(uni)
     try:
         cursor.execute(query)
         
     except:
         print("SELECT for listings failed!")
+
     posts = []
     for r in cursor.fetchall():
         u = User(r[0], r[1], r[2], r[3], r[4])
         # we need to convert datetime into a separate date and time for the listing object
         l = Listing(r[5], r[0], r[7], r[6])
-        posts.append(ListingPost(l, u))
+        if l.expiryDateTime > datetime.datetime.now():
+            posts.append(ListingPost(l, u))
+            print(str(l.expiryDateTime) + " ")
 
     db.close()
 
