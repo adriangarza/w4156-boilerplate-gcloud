@@ -62,7 +62,10 @@
                         <h2 class='mdl-card__title-text'> Hello, {{ current_user.first_name() }}! </h2>
                     </div>
                     <div class="mdl-card__supporting-text post-description">
-                        <p><b>There are currently {{ swipes }} students in need of swipes.</b></p>
+                        {% if not place %}<p><b>There are currently {{ swipes }} students in need of swipes.</b></p>
+                        {% else %}<p>You are viewing listings at <b>{{ place }}</b></p>
+                            <p><a class="mdl-navigation__link" href="listings">View all listings</a></p>
+                        {% endif %}
 
                         Filter by:
                         <form class="filter-form" action="#" method="post">

@@ -331,7 +331,7 @@ def search_listings():
     db.close()
 
     # serve index template
-    return render_template('/listings/index.html', current_user=me, listingposts=posts, name=user.nickname (),
+    return render_template('/listings/index.html', place=cafeteria, current_user=me, listingposts=posts, name=user.nickname (),
                             logout_link=users.create_logout_url("/"))
 
 
