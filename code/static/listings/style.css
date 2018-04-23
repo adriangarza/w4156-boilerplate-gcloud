@@ -197,7 +197,7 @@ ul {
 }
 
 .needSwipe {
-    font-family: "Material Icons";
+    font-family: "Material Icons", sans-serif;
     font-weight: normal;
     font-style: normal;
     font-size: 24pt;  /* Preferred icon size */
