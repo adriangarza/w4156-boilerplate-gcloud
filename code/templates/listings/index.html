@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="../../static/listings/style.css">
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans+Condensed:400,800" rel="stylesheet">
     <title>All Listings | CU@Lunch</title>
 </head>
 
@@ -54,7 +55,7 @@
 
         <div class="container mdl-grid">
 
-            <div class='mdl-cell mdl-cell--4-col'>
+            <div class='mdl-cell mdl-cell--3-col'>
                 <div class="mdl-card mdl-shadow--2dp posting-title search-card">
                     <div class="mdl-card__title">
                         <h2 class='mdl-card__title-text'> Hello, {{ current_user.first_name() }}! </h2>
@@ -141,12 +142,15 @@
 
 
 
-        <div class='mdl-cell mdl-cell--2-col'>
+        <div class='mdl-cell mdl-cell--3-col'>
             <div class="mdl-card mdl-shadow--2dp stats-container">
                 <div class="stats">
                     {% if not place %}
-                        <p><b>There are currently {{ swipes }} students in need of swipes.</b></p>
-                        <p><b>There are currently {{ numlistings }} listings.</b></p>
+                        <div class="bargraph mdl-shadow--2dp">
+                            <div class="bargraph-fill slideright" style="width: {{( swipes / numlistings ) * 100 }}% "></div>
+                        </div>
+                        <p><span class="bigstat blue">{{ swipes }}</span> students in need of swipes</p>
+                        <p><span class="bigstat purple">{{ numlistings }}</span> listings</p>
                     {% endif %}
                 </div>
             </div>
