@@ -21,19 +21,8 @@
 </head>
 
 <body class="mdc-typography">
-<div id="landing-container" class="fullpage">
-	<div id="title-container">
-		<span class="title">CU@Lunch</span>
-		<br>
-		<br>
-		<br>
-		<br>
-		<button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="startbutton">Create Listing</button>
-	</div>
-</div>
-
 <div class="fullpage" id="listing-container">
-	<div id="listing-card" class="mdl-card">
+	<div id="listing-card" class="mdl-card mdl-shadow--2dp">
 		<h3>Where to eat?</h3>
 		{% if error %}
 			<p class=errormsg><strong>Error:</strong> {{ error }} </p>
