@@ -271,7 +271,9 @@ def output():
         u = User(r[0], r[1], r[2], r[3], r[4])
         # we need to convert datetime into a separate date and time for the listing object
         l = Listing(r[5], r[0], r[7], r[6])
-        posts.append(ListingPost(l, u))
+        if l.expiryDateTime > datetime.datetime.now():
+            posts.append(ListingPost(l, u))
+            print(str(l.expiryDateTime) + " ")
 
     db.close()
 
