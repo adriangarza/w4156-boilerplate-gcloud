@@ -27,6 +27,7 @@ function delete_posting(del_button) {
     del_request.done(function(result) {
             console.log("post deleted successfully!");
             hide_post(post_obj);
+            window.reload();
     });
 
 }
