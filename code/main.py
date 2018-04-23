@@ -478,8 +478,8 @@ def show_profile():
     for r in cursor.fetchall():
         u = User(r[3], r[4], r[5], r[6], schools[r[7]])
         l = Listing(r[0], uni, r[2], r[1])
+    if l.expiryDateTime > datetime.datetime.now():
         listingposts.append(ListingPost(l, u))
-        print(l.place)
     db.close()
 
     return render_template('/profile/index.html',
