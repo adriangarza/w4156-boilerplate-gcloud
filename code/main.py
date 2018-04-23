@@ -281,9 +281,14 @@ def output():
                 swipes += 1
 
     db.close()
+    d = get_popular_place()
+    best_hall = d["place"]
+    best_count = d["count"]
 
     # serve index template
-    return render_template('/listings/index.html', numlistings = num_listings, swipes=swipes, current_user=me, listingposts=posts, name=user.nickname(), logout_link=users.create_logout_url("/"))
+    return render_template('/listings/index.html', numlistings = num_listings, swipes=swipes, current_user=me,
+                           listingposts=posts, name=user.nickname(), logout_link=users.create_logout_url("/"),
+                           best_hall=best_hall, best_count=best_count)
 
   
 def valid_uni(email):
@@ -556,6 +561,7 @@ def find_user(uni):
     cursor.execute("use cuLunch")
 
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName from users u WHERE u.uni = '{}'".format(uni)
+    u = None
 
     try:
         cursor.execute(query)
@@ -568,6 +574,28 @@ def find_user(uni):
 
     db.close()
     return u
+
+
+def get_popular_place():
+    query = "SELECT place, COUNT(place) AS place_occurrence FROM listings GROUP BY place ORDER BY place ASC LIMIT 1"
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute("use cuLunch")
+
+    try:
+        cursor.execute(query)
+
+    except:
+        print("finding most popular place failed!")
+        db.close()
+        return
+
+    row = cursor.fetchone()
+    db.close()
+    return {
+        "place":row[0],
+        "count":row[1]
+    }
 
 
 if __name__ == '__main__':

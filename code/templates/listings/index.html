@@ -143,16 +143,22 @@
 
 
         <div class='mdl-cell mdl-cell--3-col'>
-            <div class="mdl-card mdl-shadow--2dp stats-container">
+            {% if not place %}
+            <div class="mdl-card mdl-shadow--2dp stats-card">
+                <div class="mdl-card__title">
+                    <h2 class='mdl-card__title-text'> Quick Stats </h2>
+                </div>
                 <div class="stats">
-                    {% if not place %}
+                        <br>
+                        <p><span class="bigstat darkgray">{{ best_hall }}</span></p>
+                        <p>Most popular dining hall with {{ best_count }} posts</p>
                         <div class="bargraph mdl-shadow--2dp">
                             <div class="bargraph-fill slideright" style="width: {{( swipes / numlistings ) * 100 }}% "></div>
                         </div>
                         <p><span class="bigstat blue">{{ swipes }}</span> students in need of swipes</p>
                         <p><span class="bigstat purple">{{ numlistings }}</span> listings</p>
-                    {% endif %}
                 </div>
+                {% endif %}
             </div>
         </div>
 
