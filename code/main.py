@@ -379,8 +379,10 @@ def search_listings():
         db.close()
 
         # serve index template
-        return render_template('/listings/index.html', locnumlistings = loc_num_listings, locswipes= loc_swipes, place=cafeteria, current_user=me, listingposts=posts, name=user.nickname (),
-                            logout_link=users.create_logout_url("/"))
+        return render_template('/listings/index.html', locnumlistings=loc_num_listings,
+                               locswipes=loc_swipes, place=cafeteria, current_user=me,
+                               listingposts=posts, name=user.nickname(),logout_link=users.create_logout_url("/"), needs=show_swipe_needers,
+                               offers=show_swipe_offerers)
 
 
 def check_registered_user(uni):
@@ -476,8 +478,8 @@ def show_profile():
     for r in cursor.fetchall():
         u = User(r[3], r[4], r[5], r[6], schools[r[7]])
         l = Listing(r[0], uni, r[2], r[1])
+    if l.expiryDateTime > datetime.datetime.now():
         listingposts.append(ListingPost(l, u))
-        print(l.place)
     db.close()
 
     return render_template('/profile/index.html',

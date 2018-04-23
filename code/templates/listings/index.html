@@ -69,11 +69,11 @@
                                 <select class="mdl-selectfield__select" id="cafeteria" name="Cafeteria">
                                   <option value=""></option>
                                   <option value="All Cafeterias">All Cafeterias</option>
-                                  <option value="Ferris Booth">Ferris Booth</option>
-                                  <option value="John Jay">John Jay</option>
-                                  <option value ="JJs Place">JJs Place</option>
-                                  <option value="Hewitt">Hewitt</option>
-                                  <option value="Diana">Diana</option>
+                                  <option value="Ferris Booth" {% if place == 'Ferris Booth' %} selected='selected'{% endif %}>Ferris Booth</option>
+                                  <option value="John Jay" {% if place == 'John Jay' %} selected='selected'{% endif %}>John Jay</option>
+                                  <option value ="JJs Place" {% if place == 'JJs Place' %} selected='selected'{% endif %}>JJs Place</option>
+                                  <option value="Hewitt" {% if place == 'Hewitt' %} selected='selected'{% endif %}>Hewitt</option>
+                                  <option value="Diana" {% if place == 'Diana' %} selected='selected'{% endif %}>Diana</option>
                                 </select>
                                 <label class="mdl-selectfield__label" for="cafeteria">Cafeteria</label>
                             </div>
@@ -81,7 +81,7 @@
                         <div class="demo-checkbox">
                                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="need">
                                         <span class="mdl-checkbox__label">Swipe Needers</span>
-                                        <input type="checkbox" id="need" class="mdl-checkbox__input" name='swipe_needers'/>
+                                        <input type="checkbox" id="need" class="mdl-checkbox__input" name='swipe_needers'{% if needs %}checked{% endif %}>
                                     </label>
                             </div>
 
@@ -90,7 +90,7 @@
                           <div class="demo-checkbox">
                                 <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="offer">
                                     <span class="mdl-checkbox__label">Swipe Offerers</span>
-                                    <input type="checkbox" id="offer" class="mdl-checkbox__input" name='swipe_offerers'/>
+                                    <input type="checkbox" id="offer" class="mdl-checkbox__input" name='swipe_offerers'{% if offers %}checked{% endif %}>
                                 </label>
                             </div>
 
@@ -99,9 +99,6 @@
                             </button>
                             <br>
                             <br>
-                            {% if place %}<p>You are viewing listings at <b>{{ place }}</b></p>
-                            <p><a class="mdl-navigation__link mdl-color-text--deep-purple-500" href="listings"><b>View all listings</b></a></p>
-                            {% endif %}
                         </form>
                     </div>
                 </div>
