@@ -2,6 +2,10 @@ $(".delete-button").click(function() {
     delete_posting(this)
 });
 
+$("#register-button").click(function() {
+    window.location.href = "settings/index.html"
+});
+
 // takes the delete button for a post element as an argument and gets the relevant info to send to the server
 function delete_posting(del_button) {
     // get the first parent of class posting

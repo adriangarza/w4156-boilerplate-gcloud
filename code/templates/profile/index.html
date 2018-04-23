@@ -52,14 +52,14 @@
                     <div class="mdl-card__title">
                         <h2 class="mdl-card__title-text">Edit Profile</h2>
                     </div>
-                    <form action="#">
+                    <form action="#" method="post">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="name" value="{{ current_user.name }}">
+                            <input class="mdl-textfield__input" type="text" id="name" value="{{ current_user.name }}" name="new_name">
                             <label class="mdl-textfield__label" for="name">Name</label>
                         </div>
 
                         <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-                            <select class="mdl-selectfield__select" id="school" name="School"
+                            <select class="mdl-selectfield__select" id="school" name="new_school"
                                     value={{ current_user.school }}>
                                 <option value="cc" {% if current_user.school == 'Columbia College' %} selected='selected'{% endif %}>Columbia College</option>
                                 <option value= "barnard" {% if current_user.school == 'Barnard' %} selected='selected'{% endif %}>Barnard</option>
@@ -70,7 +70,7 @@
                         </div>
 
                         <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-                            <select class="mdl-selectfield__select" id="year" name="Year">
+                            <select class="mdl-selectfield__select" id="year" name="new_year">
                                 <option value="2018" {% if current_user.year == 2018 %} selected='selected'{% endif %}>2018</option>
                                 <option value="2019" {% if current_user.year == 2019 %} selected='selected'{% endif %}>2019</option>
                                 <option value="2020" {% if current_user.year == 2020 %} selected='selected'{% endif %}>2020</option>
@@ -80,16 +80,14 @@
                         </div>
 
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <textarea class="mdl-textfield__input" type="text" rows="4"
-                                      id="bio">{{ current_user.interests }}</textarea>
-                            <label class="mdl-textfield__label" for="bio">Bio</label>
+                            <input class="mdl-textfield__input" type="text" id="interests" value="{{ current_user.interests }}" name="new_interests">
+                            <label class="mdl-textfield__label" for="bio">Interests</label>
                         </div>
-                    </form>
 
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent gradientbg"
-                            id="register-button">
+                    <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent gradientbg" id="register-button">
                         Save
                     </button>
+                    </form>
                 </div>
             </div>
 

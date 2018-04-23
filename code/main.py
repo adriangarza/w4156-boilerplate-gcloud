@@ -391,6 +391,61 @@ def show_profile():
                            logout_link=users.create_logout_url("/"),
                            user_email = user.email())
 
+@app.route('/profile', methods=['POST'])
+def update_profile():
+    """ find current user """
+    error = None
+    user = users.get_current_user()
+    uni = email_to_uni(user.email())
+
+    if request.form.get('new_name') is None:
+        error = "Name field should not be empty!"
+
+    new_name = request.form['new_name']
+    new_school = request.form['new_school']
+    new_year = int(request.form['new_year'])
+    new_interests = request.form['new_interests']
+
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute('use cuLunch')
+
+
+    update_query = "UPDATE users SET name = '%s', schoolYear = %d, interests = '%s', schoolName = '%s'" \
+            " WHERE uni='%s'" % (new_name, new_year, new_interests, new_school, uni)
+    print(update_query)
+
+    try:
+        cursor.execute(update_query)
+        # commit the changes in the DB
+        db.commit()
+    except:
+        # rollback when an error occurs
+        db.rollback()
+        print("UPDATE failed!")
+
+    # grab only the current user's listings
+    get_query = "SELECT l.expiryTime, l.needsSwipes, l.Place, u.uni, u.name, u.schoolYear, u.interests, u.schoolName" \
+            " from users u JOIN listings l ON u.uni=l.uni WHERE l.uni = '{}'".format(uni)
+
+    u = find_user(uni)
+    print(u.name, u.school)
+    cursor.execute(get_query)
+    listingposts = []
+    for r in cursor.fetchall():
+        u = User(r[3], r[4], r[5], r[6], schools[r[7]])
+        l = Listing(r[0], uni, r[2], r[1])
+        listingposts.append(ListingPost(l, u))
+        print(l.place)
+
+    db.close()
+
+    return render_template('/profile/index.html',
+                           current_user=u,
+                           listingposts=listingposts if listingposts else False,
+                           logout_link=users.create_logout_url("/"),
+                           user_email = user.email())
+
 
 """ this has to be post so flask will accept a request body """
 @app.route("/profile/delete", methods=['POST'])
