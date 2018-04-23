@@ -1,4 +1,5 @@
 import datetime
+from datetime import timedelta
 
 
 class Listing:
@@ -234,9 +235,10 @@ class ListForm:
             if lChecker == False:
                 error = "bad time"
             else:
-                now = datetime.datetime.now()
+                now =  datetime.datetime.now() - timedelta(hours=4)
                 exp = self.date + ' ' + self.time
                 exp = datetime.datetime.strptime(exp, '%Y-%m-%d %H:%M')
+                print(now, exp)
                 if exp < now:
                     lChecker = False
                     error = "past time"
