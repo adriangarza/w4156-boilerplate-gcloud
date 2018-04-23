@@ -145,8 +145,9 @@
             <div class="mdl-card mdl-shadow--2dp stats-container">
                 <div class="stats">
                     {% if not place %}
-                        <p><b>There are currently {{ swipes }} students in need of swipes.</b></p>
-                        <p><b>There are currently {{ numlistings }} listings.</b></p>
+                        <p><b>There are currently {{ swipes }} student(s) in need of swipes.</b></p>
+                        <p><b>There are currently {{ numlistings }} listing(s).</b></p>
+                        {% else %}<p><b>There are currently {{ locswipes }} student(s) in need of swipes at {{ place }}.</b></p> <p><b>There are currently {{ locnumlistings }} listing(s) at {{ place }}</b></p>
                     {% endif %}
                 </div>
             </div>

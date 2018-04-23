@@ -325,6 +325,8 @@ def search_listings():
         except:
             print("SELECT for listings failed!")
 
+        loc_swipes = 0
+        loc_num_listings = 0
         posts = []
         for r in cursor.fetchall():
             u = User(r[0], r[1], r[2], r[3], r[4])
@@ -333,11 +335,14 @@ def search_listings():
             if l.expiryDateTime > datetime.datetime.now():
                 posts.append(ListingPost(l, u))
                 print(str(l.expiryDateTime) + " ")
+                loc_num_listings +=1
+                if l.needSwipe:
+                    loc_swipes += 1
 
         db.close()
 
         # serve index template
-        return render_template('/listings/index.html', place=cafeteria, current_user=me, listingposts=posts, name=user.nickname (),
+        return render_template('/listings/index.html', locnumlistings = loc_num_listings, locswipes= loc_swipes, place=cafeteria, current_user=me, listingposts=posts, name=user.nickname (),
                             logout_link=users.create_logout_url("/"))
 
 
