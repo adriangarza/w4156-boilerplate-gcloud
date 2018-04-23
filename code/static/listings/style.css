@@ -143,13 +143,17 @@ ul {
 }
 
 .filter-form {
-	width: 50%;
+	width: 80%;
 	margin: auto;
-	padding-bottom: 2em;	
+	padding-bottom: 2em;
 }
 
 .filter-form > * {
 	width: 100%;
+}
+
+.filter-form > button {
+	margin-top: 4em;
 }
 
 .fadeup {
