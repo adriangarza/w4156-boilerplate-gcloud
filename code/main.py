@@ -423,7 +423,7 @@ def show_profile():
         l = Listing(r[0], uni, r[2], r[1])
         listingposts.append(ListingPost(l, u))
         print(l.place)
-        db.close()
+    db.close()
 
     return render_template('/profile/index.html',
                            current_user=u,
@@ -438,31 +438,32 @@ def update_profile():
     user = users.get_current_user()
     uni = email_to_uni(user.email())
 
-    if request.form.get('new_name') is None:
-        error = "Name field should not be empty!"
-
     new_name = request.form['new_name']
     new_school = request.form['new_school']
     new_year = int(request.form['new_year'])
     new_interests = request.form['new_interests']
 
+    if new_name == '' or new_interests == '':
+        error = "No field should be empty!"
+
     db = connect_to_cloudsql()
     cursor = db.cursor()
     cursor.execute('use cuLunch')
 
+    if error is None:
 
-    update_query = "UPDATE users SET name = '%s', schoolYear = %d, interests = '%s', schoolName = '%s'" \
+        update_query = "UPDATE users SET name = '%s', schoolYear = %d, interests = '%s', schoolName = '%s'" \
             " WHERE uni='%s'" % (new_name, new_year, new_interests, new_school, uni)
-    print(update_query)
+        print(update_query)
 
-    try:
-        cursor.execute(update_query)
-        # commit the changes in the DB
-        db.commit()
-    except:
-        # rollback when an error occurs
-        db.rollback()
-        print("UPDATE failed!")
+        try:
+            cursor.execute(update_query)
+            # commit the changes in the DB
+            db.commit()
+        except:
+            # rollback when an error occurs
+            db.rollback()
+            print("UPDATE failed!")
 
     # grab only the current user's listings
     get_query = "SELECT l.expiryTime, l.needsSwipes, l.Place, u.uni, u.name, u.schoolYear, u.interests, u.schoolName" \
@@ -490,7 +491,8 @@ def update_profile():
                            current_user=u,
                            listingposts=listingposts if listingposts else False,
                            logout_link=users.create_logout_url("/"),
-                           user_email = user.email())
+                           user_email = user.email(),
+                           error = error)
 
 
 """ this has to be post so flask will accept a request body """
@@ -544,6 +546,8 @@ def find_user(uni):
 
     for r in cursor.fetchall():
         u = User(r[0], r[1], r[2], r[3], schools[r[4]])
+
+    db.close()
     return u
 
 
