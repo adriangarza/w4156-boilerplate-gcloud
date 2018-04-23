@@ -610,7 +610,7 @@ def find_user(uni):
 
 
 def get_popular_place():
-    query = "SELECT place, COUNT(place) AS place_occurrence FROM listings GROUP BY place ORDER BY place ASC LIMIT 1"
+    query = "SELECT place, COUNT(place) AS place_occurrence FROM listings GROUP BY place ORDER BY place_occurrence DESC LIMIT 1"
     db = connect_to_cloudsql()
     cursor = db.cursor()
     cursor.execute("use cuLunch")
