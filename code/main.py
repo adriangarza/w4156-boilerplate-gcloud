@@ -302,36 +302,40 @@ def search_listings():
 
     # then fetch the listings
     # TODO: make this a self-contained function to get listings of not a current UNI?
-    uni = email_to_uni (user.email ())
+    
+    if cafeteria == '':
+        return redirect("/listings")
+    else:
+        uni = email_to_uni (user.email ())
 
-    db = connect_to_cloudsql()
-    cursor = db.cursor()
-    cursor.execute('use cuLunch')
-    # grab the relevant information and make sure the user doesn't see their own listings there
-    # TODO: determine whether the user should actually see their own listings (would let us consolidate code)
-    query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
+        db = connect_to_cloudsql()
+        cursor = db.cursor()
+        cursor.execute('use cuLunch')
+        # grab the relevant information and make sure the user doesn't see their own listings there
+        # TODO: determine whether the user should actually see their own listings (would let us consolidate code)
+        query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
             "users u JOIN listings l ON u.uni=l.uni WHERE l.Place = '{}' AND NOT u.uni = '{}'".format(cafeteria, uni)
 
-    me = find_user(uni)
-    try:
-        cursor.execute(query)
+        me = find_user(uni)
+        try:
+            cursor.execute(query)
         
-    except:
-        print("SELECT for listings failed!")
+        except:
+            print("SELECT for listings failed!")
 
-    posts = []
-    for r in cursor.fetchall():
-        u = User(r[0], r[1], r[2], r[3], r[4])
-        # we need to convert datetime into a separate date and time for the listing object
-        l = Listing(r[5], r[0], r[7], r[6])
-        if l.expiryDateTime > datetime.datetime.now():
-            posts.append(ListingPost(l, u))
-            print(str(l.expiryDateTime) + " ")
+        posts = []
+        for r in cursor.fetchall():
+            u = User(r[0], r[1], r[2], r[3], r[4])
+            # we need to convert datetime into a separate date and time for the listing object
+            l = Listing(r[5], r[0], r[7], r[6])
+            if l.expiryDateTime > datetime.datetime.now():
+                posts.append(ListingPost(l, u))
+                print(str(l.expiryDateTime) + " ")
 
-    db.close()
+        db.close()
 
-    # serve index template
-    return render_template('/listings/index.html', place=cafeteria, current_user=me, listingposts=posts, name=user.nickname (),
+        # serve index template
+        return render_template('/listings/index.html', place=cafeteria, current_user=me, listingposts=posts, name=user.nickname (),
                             logout_link=users.create_logout_url("/"))
 
 
