@@ -120,6 +120,7 @@ def create_user():
         except:
             # rollback when an error occurs
             db.rollback()
+            print("USERS Insert failed!")
 
         # disconnect from db after use
         db.close()
@@ -202,6 +203,7 @@ def create_listing():
         except:
             # rollback when an error occurs
             db.rollback()
+            print("LISTINGS Insert failed!")
 
         # disconnect from db after use
         db.close()
@@ -249,20 +251,29 @@ def output():
     uni = email_to_uni(user.email())
 
     
-    cursor = get_cursor()
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute('use cuLunch')
+
     # grab the relevant information and make sure the user doesn't see their own listings there
-    # TODO: determine whether the user should actually see their own listings (would let us consolidate code)
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
             "users u JOIN listings l ON u.uni=l.uni WHERE NOT u.uni = '{}' ORDER BY l.expiryTime".format(uni)
 
     me = find_user(uni)
-    cursor.execute(query)
+    try:
+        cursor.execute(query)
+        
+    except:
+        print("SELECT for listings failed!")
+        
     posts = []
     for r in cursor.fetchall():
         u = User(r[0], r[1], r[2], r[3], r[4])
         # we need to convert datetime into a separate date and time for the listing object
         l = Listing(r[5], r[0], r[7], r[6])
         posts.append(ListingPost(l, u))
+
+    db.close()
 
     # serve index template
     return render_template('/listings/index.html', current_user=me, listingposts=posts, name=user.nickname(), logout_link=users.create_logout_url("/"))
@@ -288,20 +299,28 @@ def search_listings():
     # TODO: make this a self-contained function to get listings of not a current UNI?
     uni = email_to_uni (user.email ())
 
-    cursor = get_cursor ()
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute('use cuLunch')
     # grab the relevant information and make sure the user doesn't see their own listings there
     # TODO: determine whether the user should actually see their own listings (would let us consolidate code)
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
             "users u JOIN listings l ON u.uni=l.uni WHERE l.Place = '{}' AND NOT u.uni = '{}'".format(cafeteria, uni)
 
     me = find_user (uni)
-    cursor.execute(query)
+    try:
+        cursor.execute(query)
+        
+    except:
+        print("SELECT for listings failed!")
     posts = []
-    for r in cursor.fetchall ():
+    for r in cursor.fetchall():
         u = User(r[0], r[1], r[2], r[3], r[4])
         # we need to convert datetime into a separate date and time for the listing object
         l = Listing(r[5], r[0], r[7], r[6])
         posts.append(ListingPost(l, u))
+
+    db.close()
 
     # serve index template
     return render_template('/listings/index.html', current_user=me, listingposts=posts, name=user.nickname (),
@@ -315,29 +334,31 @@ def check_registered_user(uni):
 
     """
 
-    cursor = get_cursor()
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute('use cuLunch')
 
     query = "SELECT * FROM users WHERE users.uni = '{}'".format(uni)
     print(query)
-    cursor.execute(query)
+    
+    try:
+        cursor.execute(query)
+        
+    except:
+        print("SELECT for checking registered users failed!")
 
 
     if not cursor.rowcount:
+        db.close()
         return False
     else:
+        db.close()
         return True
 
 
 def email_to_uni(email):
+    """parse emails to retrieve UNIs"""
     return email.split('@')[0]
-
-
-# not great practice but the connection is closed once it leaves scope
-def get_cursor():
-    db = connect_to_cloudsql()
-    cursor = db.cursor()
-    cursor.execute("use cuLunch")
-    return cursor
 
 def get_user_info():
     """
@@ -348,14 +369,24 @@ def get_user_info():
     user = users.get_current_user()
     uni = email_to_uni(user.email())
 
-    cursor = get_cursor()
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute('use cuLunch')
+
+    
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName FROM users u WHERE u.uni='{}'".format(uni)
-    cursor.execute(query)
+    
+    try:
+        cursor.execute(query)
+        
+    except:
+        print("SELECT for getting user info failed!")
 
     if not cursor.rowcount:
         raise ValueError("User {} not found in database!".format(uni))
 
     r = cursor.fetchone()
+    db.close()
     
     return User(r[0], r[1], r[2], r[3], r[4])
 
@@ -370,20 +401,29 @@ def show_profile():
 
     uni = email_to_uni(user.email())
 
-    cursor = get_cursor()
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute('use cuLunch')
     # grab only the current user's listings
     query = "SELECT l.expiryTime, l.needsSwipes, l.Place, u.uni, u.name, u.schoolYear, u.interests, u.schoolName" \
             " from users u JOIN listings l ON u.uni=l.uni WHERE l.uni = '{}'".format(uni)
 
     u = find_user(uni)
     print(u.name, u.school)
-    cursor.execute(query)
+    
+    try:
+        cursor.execute(query)
+        
+    except:
+        print("SELECT for show_profile failed!")
+
     listingposts = []
     for r in cursor.fetchall():
         u = User(r[3], r[4], r[5], r[6], schools[r[7]])
         l = Listing(r[0], uni, r[2], r[1])
         listingposts.append(ListingPost(l, u))
         print(l.place)
+        db.close()
 
     return render_template('/profile/index.html',
                            current_user=u,
@@ -430,7 +470,13 @@ def update_profile():
 
     u = find_user(uni)
     print(u.name, u.school)
-    cursor.execute(get_query)
+
+    try:
+        cursor.execute(get_query)
+        
+    except:
+        print("SELECT for update_profile failed!")
+
     listingposts = []
     for r in cursor.fetchall():
         u = User(r[3], r[4], r[5], r[6], schools[r[7]])
@@ -475,16 +521,27 @@ def delete_posting():
     try:
         cursor.execute(query)
         db.commit()
+        db.close()
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
     except:
         # rollback when an error occurs
         db.rollback()
+        db.close()
         return json.dumps({'success': False}), 404, {'ContentType': 'application/json'}
 
 def find_user(uni):
-    cursor = get_cursor()
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute("use cuLunch")
+
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName from users u WHERE u.uni = '{}'".format(uni)
-    cursor.execute(query)
+
+    try:
+        cursor.execute(query)
+        
+    except:
+        print("SELECT for find_user failed!")
+
     for r in cursor.fetchall():
         u = User(r[0], r[1], r[2], r[3], schools[r[4]])
     return u
