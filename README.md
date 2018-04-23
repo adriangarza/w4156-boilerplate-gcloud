@@ -15,7 +15,7 @@ Here is where CU@Lunch comes to the rescue, by pairing students in need of swipe
 
 The advantages include no wastage of meal swipes, meeting other students at Columbia and Barnard, and ensuring those who would like to eat at the dining hall are given the opportunity to. This will increase the probability that users are eating a healthier diet and bridge the gap between students. 
 
-What?s a swipe?
+What's a swipe?
 
 A 'swipe' is a transaction done using a University ID card to enter a dining hall. At Columbia/Barnard specifically, students can opt for a lump sum of meal swipes for the semester or weekly allotted swipes.
 
