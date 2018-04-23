@@ -123,7 +123,7 @@ def create_user():
 
         # disconnect from db after use
         db.close()
-        return redirect(url_for('create_listing'))
+        return redirect(url_for('output'))
 
     elif not user_check and error == 'empty':
         error = 'Empty answer in one field'
