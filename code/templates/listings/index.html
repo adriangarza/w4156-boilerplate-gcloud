@@ -82,7 +82,7 @@
                             </button>
                             <br>
                             <br>
-                            {% if not place %}<p><b>There are currently {{ swipes }} students in need of swipes.</b></p>
+                            {% if not place %}<p><b>There are currently {{ swipes }} students in need of swipes.</b></p> <p><b>There are currently {{ numlistings }} listings</b></p>
                             {% else %}<p>You are viewing listings at <b>{{ place }}</b></p>
                             <p><a class="mdl-navigation__link mdl-color-text--deep-purple-500" href="listings"><b>View all listings</b></a></p>
                             {% endif %}
@@ -140,6 +140,9 @@
 
             </ul>
         </div>
+
+
+
 
         <div class='mdl-cell mdl-cell--2-col'></div>
 

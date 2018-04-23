@@ -267,6 +267,7 @@ def output():
         print("SELECT for listings failed!")
         
     swipes = 0
+    num_listings = 0
     posts = []
     for r in cursor.fetchall():
         u = User(r[0], r[1], r[2], r[3], r[4])
@@ -275,13 +276,14 @@ def output():
         if l.expiryDateTime > datetime.datetime.now():
             posts.append(ListingPost(l, u))
             print(str(l.expiryDateTime) + " ")
+            num_listings +=1
             if l.needSwipe:
                 swipes += 1
 
     db.close()
 
     # serve index template
-    return render_template('/listings/index.html', swipes=swipes, current_user=me, listingposts=posts, name=user.nickname(), logout_link=users.create_logout_url("/"))
+    return render_template('/listings/index.html', numlistings = num_listings, swipes=swipes, current_user=me, listingposts=posts, name=user.nickname(), logout_link=users.create_logout_url("/"))
 
   
 def valid_uni(email):
