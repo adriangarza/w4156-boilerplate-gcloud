@@ -303,7 +303,7 @@ def search_listings():
     # then fetch the listings
     # TODO: make this a self-contained function to get listings of not a current UNI?
     
-    if cafeteria == '':
+    if cafeteria == '' or cafeteria == 'All Cafeterias':
         return redirect("/listings")
     else:
         uni = email_to_uni (user.email ())
