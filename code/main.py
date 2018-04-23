@@ -484,7 +484,7 @@ def show_profile():
                            current_user=u,
                            listingposts=listingposts if listingposts else False,
                            logout_link=users.create_logout_url("/"),
-                           user_email = user.email())
+                           user_email=user.email())
 
 @app.route('/profile', methods=['POST'])
 def update_profile():
