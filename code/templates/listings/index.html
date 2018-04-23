@@ -75,6 +75,23 @@
                                 </select>
                                 <label class="mdl-selectfield__label" for="cafeteria">Cafeteria</label>
                             </div>
+
+                        <div class="demo-checkbox">
+                                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="need">
+                                        <span class="mdl-checkbox__label">Swipe Needers</span>
+                                        <input type="checkbox" id="need" class="mdl-checkbox__input" name='swipe_needers'/>
+                                    </label>
+                            </div>
+
+                        <br>
+
+                          <div class="demo-checkbox">
+                                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="offer">
+                                    <span class="mdl-checkbox__label">Swipe Offerers</span>
+                                    <input type="checkbox" id="offer" class="mdl-checkbox__input" name='swipe_offerers'/>
+                                </label>
+                            </div>
+
                             <button type="submit" class="mdl-button mdl-js-button mdl-color-text--indigo-500" id="register-button">
                                 Search
                             </button>
@@ -102,7 +119,7 @@
                                 </div>
                                 <div class="mdl-card__supporting-text post-description">
                                     <p>{% if listingpost.listing.needSwipe %}Needed by: {% else %}Offered by: {% endif %}{{ listingpost.user.first_name() }}</p>
-                                    {% if not listingpost.listing.needSwipe %}  <div class="needSwipe">credit_card</div> {% endif %}
+                                    {% if listingpost.listing.needSwipe %}  <div class="needSwipe">credit_card</div> {% endif %}
                                 </div>
                                 <div class="panel-hidden">
                                     <div class="personal-info">

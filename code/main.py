@@ -294,7 +294,15 @@ def valid_uni(email):
 
 @app.route('/listings', methods=["POST"])
 def search_listings():
+
     cafeteria = request.form['Cafeteria']
+    show_swipe_needers = request.form.get ('swipe_needers') != None
+    show_swipe_offerers = request.form.get ('swipe_offerers') != None
+
+    if show_swipe_needers:
+        print("Showing swipe needers")
+    if show_swipe_offerers:
+        print("Showing swipe offerers")
 
     user = users.get_current_user()
 
@@ -304,19 +312,43 @@ def search_listings():
 
     # then fetch the listings
     # TODO: make this a self-contained function to get listings of not a current UNI?
-    
-    if cafeteria == '' or cafeteria == 'All Cafeterias':
+
+    if not show_swipe_needers and not show_swipe_offerers and (cafeteria == '' or cafeteria == 'All Cafeterias'):
         return redirect("/listings")
     else:
-        uni = email_to_uni (user.email ())
+        uni = email_to_uni(user.email())
 
         db = connect_to_cloudsql()
         cursor = db.cursor()
         cursor.execute('use cuLunch')
         # grab the relevant information and make sure the user doesn't see their own listings there
         # TODO: determine whether the user should actually see their own listings (would let us consolidate code)
-        query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
-            "users u JOIN listings l ON u.uni=l.uni WHERE l.Place = '{}' AND NOT u.uni = '{}'".format(cafeteria, uni)
+
+        if (cafeteria == '' or cafeteria == 'All Cafeterias') and show_swipe_offerers:
+            query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
+                    "users u JOIN listings l ON u.uni=l.uni WHERE l.needsSwipes=0 AND NOT u.uni = '{}'".format(uni)
+            print(query)
+
+        elif (cafeteria == '' or cafeteria == 'All Cafeterias') and show_swipe_needers:
+            query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
+                    "users u JOIN listings l ON u.uni=l.uni WHERE l.needsSwipes=1 AND NOT u.uni = '{}'".format(uni)
+            print(query)
+
+        if cafeteria != '' and cafeteria != 'All Cafeterias' and show_swipe_needers:
+            query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
+                "users u JOIN listings l ON u.uni=l.uni WHERE l.Place = '{}' AND l.needsSwipes=1 AND NOT u.uni = '{}'".format(cafeteria, uni)
+            print(query)
+
+        elif cafeteria != '' and cafeteria != 'All Cafeterias' and show_swipe_offerers:
+            query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
+                    "users u JOIN listings l ON u.uni=l.uni WHERE l.Place = '{}' AND l.needsSwipes=0 AND NOT u.uni = '{}'".format(
+                    cafeteria, uni)
+            print(query)
+
+        elif cafeteria != '' and cafeteria != 'All Cafeterias':
+            query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
+                "users u JOIN listings l ON u.uni=l.uni WHERE l.Place = '{}' AND NOT u.uni = '{}'".format(cafeteria, uni)
+            print(query)
 
         me = find_user(uni)
         try:
@@ -332,7 +364,6 @@ def search_listings():
             l = Listing(r[5], r[0], r[7], r[6])
             if l.expiryDateTime > datetime.datetime.now():
                 posts.append(ListingPost(l, u))
-                print(str(l.expiryDateTime) + " ")
 
         db.close()
 
@@ -353,7 +384,6 @@ def check_registered_user(uni):
     cursor.execute('use cuLunch')
 
     query = "SELECT * FROM users WHERE users.uni = '{}'".format(uni)
-    print(query)
     
     try:
         cursor.execute(query)
