@@ -107,6 +107,21 @@
             <div class='mdl-cell mdl-cell--6-col'>
                 <ul id="post-container">
 
+                {% if not listingposts %}
+
+                        <li>
+                            <div class="mdl-card mdl-shadow--2dp posting fadeup">
+                                <div class="mdl-card__title lunch">
+                                    <h2 class='mdl-card__title-text'> There aren't any listings for your query! </h2>
+                                </div>
+                                <div class="mdl-card__supporting-text post-description">
+                                     <p><b><a class="mdl-navigation__link" href="listings">Go back to home</a></b></p>
+                                </div>
+                            </div>
+                        </li>
+
+                {% else %}
+
                     {% for listingpost in listingposts %}
 
                         <li>
@@ -149,6 +164,7 @@
 
                     {% endfor %}
 
+                {% endif %}
                     <i class="material-icons bottomright expander" onclick="contractPost(this);">expand_more</i>
 
             </ul>

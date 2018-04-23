@@ -332,28 +332,23 @@ def search_listings():
         if (cafeteria == '' or cafeteria == 'All Cafeterias') and show_swipe_offerers:
             query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
                     "users u JOIN listings l ON u.uni=l.uni WHERE l.needsSwipes=0 AND NOT u.uni = '{}'".format(uni)
-            print(query)
 
         elif (cafeteria == '' or cafeteria == 'All Cafeterias') and show_swipe_needers:
             query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
                     "users u JOIN listings l ON u.uni=l.uni WHERE l.needsSwipes=1 AND NOT u.uni = '{}'".format(uni)
-            print(query)
 
         if cafeteria != '' and cafeteria != 'All Cafeterias' and show_swipe_needers:
             query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
                 "users u JOIN listings l ON u.uni=l.uni WHERE l.Place = '{}' AND l.needsSwipes=1 AND NOT u.uni = '{}'".format(cafeteria, uni)
-            print(query)
 
         elif cafeteria != '' and cafeteria != 'All Cafeterias' and show_swipe_offerers:
             query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
                     "users u JOIN listings l ON u.uni=l.uni WHERE l.Place = '{}' AND l.needsSwipes=0 AND NOT u.uni = '{}'".format(
                     cafeteria, uni)
-            print(query)
 
         elif cafeteria != '' and cafeteria != 'All Cafeterias':
             query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
                 "users u JOIN listings l ON u.uni=l.uni WHERE l.Place = '{}' AND NOT u.uni = '{}'".format(cafeteria, uni)
-            print(query)
 
         me = find_user(uni)
         try:
@@ -372,7 +367,7 @@ def search_listings():
             if l.expiryDateTime > datetime.datetime.now():
                 posts.append(ListingPost(l, u))
                 print(str(l.expiryDateTime) + " ")
-                loc_num_listings +=1
+                loc_num_listings += 1
                 if l.needSwipe:
                     loc_swipes += 1
 
