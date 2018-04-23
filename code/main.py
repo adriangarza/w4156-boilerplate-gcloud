@@ -248,11 +248,12 @@ def output():
     # TODO: make this a self-contained function to get listings of not a current UNI?
     uni = email_to_uni(user.email())
 
+    
     cursor = get_cursor()
     # grab the relevant information and make sure the user doesn't see their own listings there
     # TODO: determine whether the user should actually see their own listings (would let us consolidate code)
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
-            "users u JOIN listings l ON u.uni=l.uni WHERE NOT u.uni = '{}'".format(uni)
+            "users u JOIN listings l ON u.uni=l.uni WHERE NOT u.uni = '{}' ORDER BY l.expiryTime".format(uni)
 
     me = find_user(uni)
     cursor.execute(query)
@@ -293,6 +294,7 @@ def search_listings():
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
             "users u JOIN listings l ON u.uni=l.uni WHERE l.Place = '{}' AND NOT u.uni = '{}'".format(cafeteria, uni)
 
+    me = find_user (uni)
     cursor.execute(query)
     posts = []
     for r in cursor.fetchall ():
@@ -302,7 +304,7 @@ def search_listings():
         posts.append(ListingPost(l, u))
 
     # serve index template
-    return render_template('/listings/index.html', listingposts=posts, name=user.nickname (),
+    return render_template('/listings/index.html', current_user=me, listingposts=posts, name=user.nickname (),
                             logout_link=users.create_logout_url("/"))
 
 
