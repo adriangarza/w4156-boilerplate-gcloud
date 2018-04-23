@@ -100,8 +100,8 @@
                                         {{ listingpost.get_date() }} at {{ listingpost.get_time() }}</h2>
                                 </div>
                                 <div class="mdl-card__supporting-text post-description">
-                                    <p>Offered by: {{ listingpost.user.first_name() }}</p>
-                                    {% if listingpost.listing.needSwipe %}  <div class="needSwipe">credit_card</div> {% endif %}
+                                    <p>{% if listingpost.listing.needSwipe %}Needed by: {% else %}Offered by: {% endif %}{{ listingpost.user.first_name() }}</p>
+                                    {% if not listingpost.listing.needSwipe %}  <div class="needSwipe">credit_card</div> {% endif %}
                                 </div>
                                 <div class="panel-hidden">
                                     <div class="personal-info">
