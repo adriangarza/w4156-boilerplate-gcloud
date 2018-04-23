@@ -257,7 +257,7 @@ def output():
 
     # grab the relevant information and make sure the user doesn't see their own listings there
     query = "SELECT u.uni, u.name, u.schoolYear, u.interests, u.schoolName, l.expiryTime, l.needsSwipes, l.Place from " \
-            "users u JOIN listings l ON u.uni=l.uni WHERE NOT u.uni = '{}' ORDER BY l.expiryTime".format(uni)
+            "users u JOIN listings l ON u.uni=l.uni WHERE NOT u.uni = '{}' AND l.expiryTime > NOW() ORDER BY l.expiryTime".format(uni)
 
     me = find_user(uni)
     try:
@@ -273,12 +273,11 @@ def output():
         u = User(r[0], r[1], r[2], r[3], r[4])
         # we need to convert datetime into a separate date and time for the listing object
         l = Listing(r[5], r[0], r[7], r[6])
-        if l.expiryDateTime > datetime.datetime.now():
-            posts.append(ListingPost(l, u))
-            print(str(l.expiryDateTime) + " ")
-            num_listings +=1
-            if l.needSwipe:
-                swipes += 1
+        posts.append(ListingPost(l, u))
+        print(str(l.expiryDateTime) + " ")
+        num_listings +=1
+        if l.needSwipe:
+            swipes += 1
 
     db.close()
     d = get_popular_place()
