@@ -319,6 +319,8 @@ def search_listings():
 
     if not show_swipe_needers and not show_swipe_offerers and (cafeteria == '' or cafeteria == 'All Cafeterias'):
         return redirect("/listings")
+    elif show_swipe_needers and show_swipe_offerers and (cafeteria == '' or cafeteria == 'All Cafeterias'):
+        return redirect("/listings")
     else:
         uni = email_to_uni(user.email())
 
