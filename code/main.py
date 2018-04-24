@@ -4,6 +4,7 @@ import os
 import re
 from code.user import User, Form
 from code.listing import *
+from datetime import timedelta
 
 vendor.add(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib'))
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
@@ -474,7 +475,7 @@ def show_profile():
     for r in cursor.fetchall():
         u = User(r[3], r[4], r[5], r[6], schools[r[7]])
         l = Listing(r[0], uni, r[2], r[1])
-        if l.expiryDateTime > datetime.datetime.now():
+        if l.expiryDateTime > (datetime.datetime.now()-- timedelta(hours=4)):
             listingposts.append(ListingPost(l, u))
     db.close()
 
