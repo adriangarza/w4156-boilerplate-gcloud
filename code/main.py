@@ -275,11 +275,11 @@ def output():
         # we need to convert datetime into a separate date and time for the listing object
         l = Listing(r[5], r[0], r[7], r[6])
         if l.expiryDateTime > (datetime.datetime.now() - timedelta(hours=4)):
+            num_listings += 1
+            if l.needSwipe:
+                swipes += 1
             posts.append(ListingPost(l, u))
         print(str(l.expiryDateTime) + " ")
-        num_listings +=1
-        if l.needSwipe:
-            swipes += 1
 
     db.close()
     d = get_popular_place()
