@@ -98,6 +98,17 @@ class ListingPost:
         place = self.listing.place
         return place
 
+    def get_named_time(self):
+        hour = self.listing.dt_to_time(self.listing.expiryDateTime).hour
+        if hour < 3:
+            return "dinner"
+        elif hour < 11:
+            return "breakfast"
+        elif hour < 16:
+            return "lunch"
+        else:
+            return "dinner"
+
 
 class ListForm:
 
