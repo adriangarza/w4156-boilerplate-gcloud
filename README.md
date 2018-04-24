@@ -2,6 +2,8 @@
 
 ### CU@Lunch
 
+https://cu-lunch-cicd.appspot.com
+
 This code is used for the purposes of COMS 4156 - Advanced Software Engineering course at Columbia University, New York. 
 This is the CU@Lunch python flask code along with configurations for Circle CI and Google Cloud.
 
