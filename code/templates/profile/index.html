@@ -125,7 +125,7 @@
                                      uni = "{{ listingpost.user.uni }}"
                                      datetime = "{{ listingpost.listing.expiryDateTime }}"
                                      style="animation-delay:0.{{ loop.index - 1 }}s" onclick="expandPost(this);">
-                                    <div class="mdl-card__title lunch">
+                                    <div class="mdl-card__title {{ listingpost.get_named_time() }}">
                                         <h2 class='mdl-card__title-text' id="info"
                                             place={{ listingpost.listing.place }} expirytime={{ listingpost.listing.expirytime }}>{{ listingpost.listing.place }}, {{ listingpost.week_day() }}, {{ listingpost.get_date() }}
                                             at {{ listingpost.get_time() }}</h2>
